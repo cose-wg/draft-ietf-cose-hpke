@@ -47,7 +47,7 @@ normative:
   RFC9052:
   RFC9053:
   RFC8949:
-  
+
 informative:
   RFC8937:
   RFC5652:
@@ -62,7 +62,7 @@ informative:
 
 --- abstract
 
-This specification defines hybrid public-key encryption (HPKE) for use with 
+This specification defines hybrid public-key encryption (HPKE) for use with
 CBOR Object Signing and Encryption (COSE). HPKE offers a variant of
 public-key encryption of arbitrary-sized plaintexts for a recipient public key.
 
@@ -78,8 +78,8 @@ variant of HPKE.
 
 #  Introduction
 
-Hybrid public-key encryption (HPKE) {{RFC9180}} is a scheme that 
-provides public key encryption of arbitrary-sized plaintexts given a 
+Hybrid public-key encryption (HPKE) {{RFC9180}} is a scheme that
+provides public key encryption of arbitrary-sized plaintexts given a
 recipient's public key.
 
 This document defines the use of HPKE with COSE ({{RFC9052}}, {{RFC9053}})
@@ -109,12 +109,12 @@ This specification uses the following abbreviations and terms:
 
 ## Overview
 
-This specification supports two modes of HPKE in COSE, namely 
+This specification supports two modes of HPKE in COSE, namely
 
  *  HPKE Integrated Encryption mode, where HPKE is used to encrypt
 the plaintext. This mode can only be used with a single recipient.
 {{one-layer}} provides the details.
-  
+
  *  HPKE Key Encryption mode, where HPKE is used to encrypt a
 content encryption key (CEK) and the CEK is subsequently used to
 encrypt the plaintext. This mode supports multiple recipients.
@@ -182,7 +182,7 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - enc: The contents of the layer 'ek' parameter.
 - ct: The contents of the layer ciphertext.
 
-The plaintext output is the raw message plaintext. 
+The plaintext output is the raw message plaintext.
 
 The COSE_Encrypt0 MAY be tagged or untagged.
 
@@ -192,14 +192,14 @@ An example is shown in {{one-layer-example}}.
 
 This mode is selected if the COSE_recipient structure uses a COSE-HPKE algorithm.
 
-In this approach the following layers are involved: 
+In this approach the following layers are involved:
 
 - Layer 0 (corresponding to the COSE_Encrypt structure) contains the content (plaintext)
 encrypted with the CEK. This ciphertext may be detached, and if not detached, then
 it is included in the COSE_Encrypt structure.
 
-- Layer 1 (corresponding to a recipient structure) contains parameters needed for 
-HPKE to generate a shared secret used to encrypt the CEK. This layer conveys the 
+- Layer 1 (corresponding to a recipient structure) contains parameters needed for
+HPKE to generate a shared secret used to encrypt the CEK. This layer conveys the
 encrypted CEK in the COSE_recipient structure using a COSE-HPKE algorithm.
 The unprotected header MAY contain the kid parameter to identify the static recipient
 public key that the sender has been using with HPKE.
@@ -374,7 +374,7 @@ as defined in {{I-D.irtf-cfrg-dnhpke}}, may be standardized for use in
 constrained environments.
 
 As a guideline for ciphersuite submissions to the IANA COSE algorithm
-registry, the designated experts must only register combinations of 
+registry, the designated experts must only register combinations of
 (KEM, KDF, AEAD) triple that constitute valid combinations for use with
 HPKE, the KDF used should (if possible) match one internally used by the
 KEM, and components should not be mixed between global and national standards.
@@ -454,14 +454,14 @@ This example uses the following:
 
 In this example we assume that a sender wants to transmit a
 payload to two recipients using the HPKE Key Encryption mode.
-Note that it is possible to send two single-layer payloads, 
+Note that it is possible to send two single-layer payloads,
 although it will be less efficient.
 
 ### COSE_Encrypt
 
 An example of key encryption using the COSE_Encrypt structure using HPKE is
 shown in {{hpke-example-cose-encrypt}}. Line breaks and comments have been
-inserted for better readability. 
+inserted for better readability.
 
 This example uses the following input parameters:
 
@@ -473,7 +473,7 @@ This example uses the following input parameters:
 
 Alice uses the following NIST P-256 ECC keys.
 
-Private Key: 
+Private Key:
 
 ~~~
 0xaf, 0xf9, 0x07, 0xc9, 0x9f, 0x9a, 0xd3, 0xaa,
@@ -504,18 +504,18 @@ As a result, the following COSE_Encrypt payload is
 created:
 
 ~~~
-d8 60 84 43 a1 01 01 a1 05 50 7f 55 a2 6b 98 c0 
-49 b4 28 a7 cf 25 9d c3 0e 54 58 23 3f ae 53 ee 
-83 55 ee 40 4e 86 7c 00 74 f8 c3 8c 6d 13 6b 65 
-bb 61 93 92 79 b4 38 48 c5 8c b6 a4 76 03 55 81 
-83 4b a2 01 18 23 04 45 61 6c 69 63 65 a1 23 58 
-41 04 fe 73 6d 1d 93 11 4d f6 11 3b c2 87 cd 8e 
-63 67 e1 0a b4 78 d7 fe df ac a1 6e 12 6f f0 16 
-d6 95 d5 f7 22 34 03 e3 99 60 75 55 bc cf b9 65 
-17 5f 49 14 e0 47 73 f7 04 07 5b 46 58 bf 7a dd 
-84 a3 58 20 55 12 c2 35 7d 4c b6 bd 23 8a 5f bc 
-10 84 b6 c9 74 0a c2 41 1d 93 63 7a 51 e6 9d 51 
-0b 4f ae f8 
+d8 60 84 43 a1 01 01 a1 05 50 7f 55 a2 6b 98 c0
+49 b4 28 a7 cf 25 9d c3 0e 54 58 23 3f ae 53 ee
+83 55 ee 40 4e 86 7c 00 74 f8 c3 8c 6d 13 6b 65
+bb 61 93 92 79 b4 38 48 c5 8c b6 a4 76 03 55 81
+83 4b a2 01 18 23 04 45 61 6c 69 63 65 a1 23 58
+41 04 fe 73 6d 1d 93 11 4d f6 11 3b c2 87 cd 8e
+63 67 e1 0a b4 78 d7 fe df ac a1 6e 12 6f f0 16
+d6 95 d5 f7 22 34 03 e3 99 60 75 55 bc cf b9 65
+17 5f 49 14 e0 47 73 f7 04 07 5b 46 58 bf 7a dd
+84 a3 58 20 55 12 c2 35 7d 4c b6 bd 23 8a 5f bc
+10 84 b6 c9 74 0a c2 41 1d 93 63 7a 51 e6 9d 51
+0b 4f ae f8
 ~~~
 
 Decoded, this hex-sequence has the following
@@ -534,7 +534,7 @@ The payload in {{hpke-example-sign}} is meant to contain the content of
 Bob uses the following signature key to sign the COSE_Encrypt payload
 without any additional data.
 
-Private Key: 
+Private Key:
 
 ~~~
 0xd9, 0xb5, 0xe7, 0x1f, 0x77, 0x28, 0xbf, 0xe5,
@@ -633,7 +633,7 @@ Both HPKE and HPKE COSE assume that the sender possesses the recipient's
 public key. Therefore, some form of public key distribution mechanism is
 assumed to exist, but this is outside the scope of this document.
 
-HPKE relies on a source of randomness to be available on the device. Additionally, 
+HPKE relies on a source of randomness to be available on the device. Additionally,
 with the two layer structure the CEK is randomly generated and it MUST be
 ensured that the guidelines in {{RFC8937}} for random number generation are followed.
 
@@ -642,7 +642,7 @@ case COSE constructs like COSE_Sign, COSE_Sign1, COSE_Mac, or COSE_Mac0 can be
 used to add authentication.
 
 If COSE_Encrypt or COSE_Encrypt0 is used with a detached ciphertext then the
-subsequently applied integrity protection via COSE_Sign, COSE_Sign1, COSE_Mac, 
+subsequently applied integrity protection via COSE_Sign, COSE_Sign1, COSE_Mac,
 or COSE_Mac0 does not cover this detached ciphertext. Implementers MUST ensure
 that the detached ciphertext also experiences integrity protection. This is, for
 example, the case when an AEAD cipher is used to produce the detached ciphertext
@@ -650,7 +650,7 @@ but may not be guaranteed by non-AEAD ciphers.
 
 #  IANA Considerations {#IANA}
 
-This document requests IANA to add new values to the 'COSE Algorithms' and to 
+This document requests IANA to add new values to the 'COSE Algorithms' and to
 the 'COSE Header Parameters' registries.
 
 ## COSE Algorithms Registry
@@ -751,7 +751,7 @@ as defined in {{Section 5.1.2 of RFC9180}}
 # Contributors
 
 We would like to thank the following individuals for their contributions
-to the design of embedding the HPKE output into the COSE structure 
+to the design of embedding the HPKE output into the COSE structure
 following a long and lively mailing list discussion:
 
 - Richard Barnes
