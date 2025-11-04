@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-12T01:45:35.785915+00:00",
+  "timestamp": "2025-11-04T01:48:24.323789+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1498,6 +1498,22 @@
           "updatedAt": "2025-09-19T15:52:52Z"
         }
       ]
+    },
+    {
+      "number": 94,
+      "id": "I_kwDOGr5frc7VYSWF",
+      "title": "Define HPKE-7",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/94",
+      "state": "OPEN",
+      "author": "selfissued",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Define the HPKE-7 algorithm, corresponding to https://www.ietf.org/archive/id/draft-ietf-jose-hpke-encrypt-14.html#name-hpke-7 in the JOSE HPKE specification.",
+      "createdAt": "2025-11-02T20:26:20Z",
+      "updatedAt": "2025-11-02T20:26:20Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
