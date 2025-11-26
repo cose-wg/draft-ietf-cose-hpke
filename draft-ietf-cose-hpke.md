@@ -131,8 +131,8 @@ which is the output of the HPKE KEM. The value of 'ek' MUST be a
 bstr.
 
 HPKE defines several authentication modes, as described in Table 1 of {{RFC9180}}.
-In COSE HPKE, only 'mode_base' and 'mode_psk' are supported. The mode is 'mode_psk' if
-the 'psk_id' header parameter is present; otherwise, the mode defaults to 'mode_base'.
+In COSE HPKE, only 'mode_base' and 'mode_psk' are supported.
+The mode is 'mode_psk' if the 'psk_id' header parameter is present; otherwise, the mode defaults to 'mode_base'.
 'mode_base' is described in {{Section 5.1.1 of RFC9180}}, which only enables encryption
 to the holder of a given KEM private key. 'mode_psk' is described in {{Section 5.1.2 of RFC9180}},
 which authenticates using a pre-shared key.
