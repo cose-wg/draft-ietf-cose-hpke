@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-04T01:48:24.323789+00:00",
+  "timestamp": "2025-11-27T01:48:40.281963+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1514,6 +1514,30 @@
       "updatedAt": "2025-11-02T20:26:20Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 95,
+      "id": "I_kwDOGr5frc7aeg56",
+      "title": "Use fully-specified algorithms",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/95",
+      "state": "OPEN",
+      "author": "selfissued",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "JOSE HPKE is in the process of using separate algorithms for Integrated Encryption versus Key Encryption.  See https://github.com/ietf-wg-jose/draft-ietf-jose-hpke-encrypt/pull/84 and the rendered version at https://self-issued.info/tmp/draft-ietf-jose-hpke-encrypt.html.  You'll see that there are now HPKE-[0-7] algorithms for Integrated Encryption and parallel HPKE-[0-7]-KE algorithms for Key Encryption.\n\nIt seems to me that COSE should do the same.",
+      "createdAt": "2025-11-26T02:36:12Z",
+      "updatedAt": "2025-11-26T13:48:08Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "There is no need to duplicate the algorithms, as any bulk encryption algorithm in COSE can also be used for keys. The same is not true for JOSE.\n\nThere is even precedent for this: In COSE, A256GCM can be used for both bulk encryption and Key Wrap, while in JOSE, A256GCM is only for bulk encryption, and the corresponding Key Wrapping algorithm is A256GCMKW.\n\nOne could even fully merge the modes by making it always use Recipient_structure, and having next_layer_alg be nil on layer zero.",
+          "createdAt": "2025-11-26T09:16:10Z",
+          "updatedAt": "2025-11-26T13:48:08Z"
+        }
+      ]
     }
   ],
   "pulls": [
