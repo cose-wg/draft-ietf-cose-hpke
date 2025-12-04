@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-27T01:48:40.281963+00:00",
+  "timestamp": "2025-12-04T01:53:36.468016+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -6601,6 +6601,46 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 96,
+      "id": "PR_kwDOGr5frc62oovQ",
+      "title": "Update defaults for 'info' and 'aad' fields",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/96",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Clarify defaults for 'info' and 'aad' fields in COSE-HPKE.",
+      "createdAt": "2025-12-02T15:50:54Z",
+      "updatedAt": "2025-12-02T15:54:16Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "8e685334d97a993a8de74c829f746c9a6f9f2a1c",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "hannestschofenig-patch-9",
+      "headRefOid": "93f3c90caf8f7cf1ec2e11fb060798fb148a1001",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7SdRtT",
+          "commit": {
+            "abbreviatedOid": "93f3c90"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-12-02T15:54:16Z",
+          "updatedAt": "2025-12-02T15:54:16Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
