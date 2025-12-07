@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-04T01:53:36.468016+00:00",
+  "timestamp": "2025-12-07T02:02:35.508192+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1527,7 +1527,7 @@
       "labels": [],
       "body": "JOSE HPKE is in the process of using separate algorithms for Integrated Encryption versus Key Encryption.  See https://github.com/ietf-wg-jose/draft-ietf-jose-hpke-encrypt/pull/84 and the rendered version at https://self-issued.info/tmp/draft-ietf-jose-hpke-encrypt.html.  You'll see that there are now HPKE-[0-7] algorithms for Integrated Encryption and parallel HPKE-[0-7]-KE algorithms for Key Encryption.\n\nIt seems to me that COSE should do the same.",
       "createdAt": "2025-11-26T02:36:12Z",
-      "updatedAt": "2025-11-26T13:48:08Z",
+      "updatedAt": "2025-12-05T20:38:11Z",
       "closedAt": null,
       "comments": [
         {
@@ -1536,6 +1536,34 @@
           "body": "There is no need to duplicate the algorithms, as any bulk encryption algorithm in COSE can also be used for keys. The same is not true for JOSE.\n\nThere is even precedent for this: In COSE, A256GCM can be used for both bulk encryption and Key Wrap, while in JOSE, A256GCM is only for bulk encryption, and the corresponding Key Wrapping algorithm is A256GCMKW.\n\nOne could even fully merge the modes by making it always use Recipient_structure, and having next_layer_alg be nil on layer zero.",
           "createdAt": "2025-11-26T09:16:10Z",
           "updatedAt": "2025-11-26T13:48:08Z"
+        },
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I am not convinced about this argument, Ilari.\n\nConsider the example in Section 6.1.3 of https://datatracker.ietf.org/doc/draft-ietf-suit-firmware-encryption/\n\nThere, we use the algorithm \"ECDH-ES + A128KW\" for the CEK encryption and then \"A128GCM\" for encryption of the firmware image (the content).",
+          "createdAt": "2025-12-05T16:23:59Z",
+          "updatedAt": "2025-12-05T16:23:59Z"
+        },
+        {
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Any algorithm that can be used on layer 0 can be used on any layer, due to AE/AEAD ciphers recursing into non-direct recipients.\n\nHowever, vice versa is not true, because there are algorithms that are unsafe on layer 0 due to lack of proper cryptographic separation. Having two algorithms does not help, since there is cross-mode attack.\n\nOnly (quasi-)AEAD algorithms like Section 5.3 ciphers and COSE-HPKE should be used on layer 0, as those do have the proper separation.",
+          "createdAt": "2025-12-05T18:29:19Z",
+          "updatedAt": "2025-12-05T18:31:40Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> Having two algorithms does not help, since there is cross-mode attack.\n\nIlari, can you describe the cross-mode attack you have in mind (how it works and what the effects of it are) and whether and how it can be employed against the COSE HPKE algorithms?  And can you also describe what you mean by \"cryptographic separation\" and how it relates to the attack you have in mind?  (I looked for the term \"cryptographic separation\" in RFC 9052 but it wasn't used there.)\n\nThanks.",
+          "createdAt": "2025-12-05T19:05:39Z",
+          "updatedAt": "2025-12-05T19:05:39Z"
+        },
+        {
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The idea is:\n\n- Attacker takes a COSE_recipient structure from message and sends it as COSE_Encrypt or COSE_Encrypt0 message.\n- If this message successfully decrypts, it will decrypt into CEK.\n- The message is gibberish, but there are badly done applications that can handle those in dangerous ways.\n\nThe proper way to prevent this attack is to cryptographically ensure that the decryption of COSE_recipient as COSE_Encrypt/COSE_Encrypt0 will fail. For example, RFC 9052 AEAD algorithms do this via the `Enc_structure.context` field.\n\ndraft-ietf-cose-hpke-14 (later versions break some stuff) also does this, as Enc_structure used on layer 0 and Recipient_structure used on layer >0 are hard incompatible.\n\nHowever, with various algorithms using AES-KW (and maybe some others), it is possible that the decryption will succeed. This comes down to implementation checks, which is not great.\n\nThe reverse is not useful, as there is no message authentication. Attacker can use recipient public key to send arbitrary messages.",
+          "createdAt": "2025-12-05T20:38:11Z",
+          "updatedAt": "2025-12-05T20:38:11Z"
         }
       ]
     }
@@ -6607,25 +6635,49 @@
       "id": "PR_kwDOGr5frc62oovQ",
       "title": "Update defaults for 'info' and 'aad' fields",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/96",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Clarify defaults for 'info' and 'aad' fields in COSE-HPKE.",
       "createdAt": "2025-12-02T15:50:54Z",
-      "updatedAt": "2025-12-02T15:54:16Z",
+      "updatedAt": "2025-12-06T15:38:38Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "8e685334d97a993a8de74c829f746c9a6f9f2a1c",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "hannestschofenig-patch-9",
-      "headRefOid": "93f3c90caf8f7cf1ec2e11fb060798fb148a1001",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "f9f7e57d57f58e6dc20e6b0b25a3ae79dda6e2bf",
+      "closedAt": "2025-12-06T15:38:38Z",
+      "mergedAt": "2025-12-06T15:38:38Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "90362652455930905f861ae064012c0e29b449ab"
+      },
+      "comments": [
+        {
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Looking at history:\r\n\r\n- draft-14 seemingly did this (used Enc_Structure on layer 0).\r\n- Then draft-15 changed it to Recipient_Structure. Except that next_layer_alg is meaningless on layer 0 (NULL would be a sane value, but grammar does not allow that).\r\n- Then draft-16 dropped the structure entirely. Which removes header protection and application aad, both of which should be offered by any algorithm available on layer 0.",
+          "createdAt": "2025-12-05T20:43:42Z",
+          "updatedAt": "2025-12-05T20:43:42Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "So it sounds like you're in favor of this change, Ilari?  Could you please explicitly say that you approve or request specific changes and say why?  Thanks.",
+          "createdAt": "2025-12-05T21:13:39Z",
+          "updatedAt": "2025-12-05T21:13:39Z"
+        },
+        {
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Looks good and fixes an regression. I approve.",
+          "createdAt": "2025-12-06T12:27:13Z",
+          "updatedAt": "2025-12-06T12:27:13Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOGr5frc7SdRtT",
@@ -6638,6 +6690,45 @@
           "body": "",
           "createdAt": "2025-12-02T15:54:16Z",
           "updatedAt": "2025-12-02T15:54:16Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7TU6OC",
+          "commit": {
+            "abbreviatedOid": "f9f7e57"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-12-05T16:27:16Z",
+          "updatedAt": "2025-12-05T16:27:16Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7TVG_s",
+          "commit": {
+            "abbreviatedOid": "f9f7e57"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-12-05T16:39:19Z",
+          "updatedAt": "2025-12-05T16:39:19Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7Tc8Mp",
+          "commit": {
+            "abbreviatedOid": "f9f7e57"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-12-06T13:09:24Z",
+          "updatedAt": "2025-12-06T13:09:24Z",
           "comments": []
         }
       ]
