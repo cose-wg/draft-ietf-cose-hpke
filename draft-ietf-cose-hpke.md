@@ -576,10 +576,10 @@ Examples of private and public KEM key representation are shown below.
     -1: 1,
     / x /
     -2: h'65eda5a12577c2bae829437fe338701a10aaa375
-	      e1bb5b5de108de439c08551d',
+          e1bb5b5de108de439c08551d',
     / y /
     -3: h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af
-	      7e0ca7ca7e9eecd0084d19c'
+          7e0ca7ca7e9eecd0084d19c'
 }
 ~~~
 {: #hpke-example-key-1 title="Key Representation Example for HPKE-0"}
@@ -601,13 +601,13 @@ Examples of private and public KEM key representation are shown below.
     -1: 1,
     / x /
     -2: h'bac5b11cad8f99f9c72b05cf4b9e26d244dc189f7
-	      45228255a219a86d6a09eff',
+          45228255a219a86d6a09eff',
     / y /
     -3: h'20138bf82dc1b6d562be0fa54ab7804a3a64b6d72
-	      ccfed6b6fb6ed28bbfc117e',
+          ccfed6b6fb6ed28bbfc117e',
     / d /
     -4: h'57c92077664146e876760c9520d054aa93c3afb04
-	      e306705db6090308507b4d3',
+          e306705db6090308507b4d3',
 }
 ~~~
 {: #hpke-example-key-2 title="Key Representation Example for HPKE-0"}
@@ -627,7 +627,7 @@ Examples of private and public KEM key representation are shown below.
     -1: 4,
     / x /
     -2: h'cb7c09ab7b973c77a808ee05b9bbd373b55c06eaa
-	      9bd4ad2bd4e9931b1c34c22',
+          9bd4ad2bd4e9931b1c34c22',
 }
 ~~~
 {: #hpke-example-key-3 title="Key Representation Example for HPKE-4"}
