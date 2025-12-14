@@ -24,8 +24,8 @@ author:
   ins: O. Steele
   name: Orie Steele
   role: editor
-  organization: Transmute
-  email: orie@transmute.industries
+  organization: Tradeverifyd
+  email: orie@or13.io
   country: United States
 -
   ins: D. Ajitomi
@@ -38,6 +38,13 @@ author:
   name: Laurence Lundblade
   organization: Security Theory LLC
   email: lgl@securitytheory.com
+  country: United States
+ -
+  ins: M. Jones
+  name: Michael B. Jones
+  organization: Self-Issued Consulting
+  email: michael_b_jones@hotmail.com
+  uri: https://self-issued.info/
   country: United States
 
 normative:
@@ -764,11 +771,10 @@ contributions to the draft as co-authors of initial versions.
 # Acknowledgements
 
 We would like to thank
-Michael B. Jones,
 John Mattsson,
 Mike Prorock,
 Michael Richardson,
 Thomas Fossati,
 and
 Göran Selander
-for their review feedback.
+for their contributions to the specification.
