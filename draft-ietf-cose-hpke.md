@@ -39,7 +39,7 @@ author:
   organization: Security Theory LLC
   email: lgl@securitytheory.com
   country: United States
- -
+-
   ins: M. Jones
   name: Michael B. Jones
   organization: Self-Issued Consulting
