@@ -50,14 +50,15 @@ author:
 normative:
   RFC2119:
   RFC8174:
+  RFC8949:
   RFC9180:
   RFC9052:
   RFC9053:
-  RFC8949:
 
 informative:
-  RFC8937:
   RFC5652:
+  RFC8937:
+  RFC9864:
   I-D.irtf-cfrg-dnhpke:
   I-D.ietf-lamps-cms-cek-hkdf-sha256:
   HPKE-IANA:
@@ -116,7 +117,7 @@ This specification uses the following abbreviations and terms:
 
 ## Overview
 
-This specification supports two modes of HPKE in COSE, namely
+This specification supports two modes of using HPKE in COSE, namely:
 
  *  HPKE Integrated Encryption mode, where HPKE is used to encrypt
 the plaintext. This mode can only be used with a single recipient.
@@ -126,6 +127,10 @@ the plaintext. This mode can only be used with a single recipient.
 content encryption key (CEK) and the CEK is subsequently used to
 encrypt the plaintext. This mode supports multiple recipients.
 {{two-layer}} provides the details.
+
+Distinct algorithm identifiers are defined and registered
+that are specific to each COSE HPKE mode
+so that they are fully specified, as required by {{RFC9864}}.
 
 In both cases, a new COSE header parameter called 'ek' is used
 to convey the content of the enc structure defined in the HPKE
@@ -328,7 +333,7 @@ A ciphersuite is a group of algorithms, often sharing component algorithms
 such as hash functions, targeting a security level.
 A COSE-HPKE algorithm is composed of the following choices:
 
-- HPKE Mode
+- COSE HPKE Mode
 - KEM Algorithm
 - KDF Algorithm
 - AEAD Algorithm
@@ -345,30 +350,48 @@ table summarizes the relationship between the ciphersuites registered in this
 document and the values registered in the HPKE IANA registry {{HPKE-IANA}}.
 
 ~~~
-+--------------------------------------------------+------------------+
-| COSE-HPKE                                        |      HPKE        |
-| Ciphersuite Label                                | KEM | KDF | AEAD |
-+--------------------------------------------------+-----+-----+------+
-| HPKE-0                                           |0x10 | 0x1 | 0x1  |
-| HPKE-1                                           |0x11 | 0x2 | 0x2  |
-| HPKE-2                                           |0x12 | 0x3 | 0x2  |
-| HPKE-3                                           |0x20 | 0x1 | 0x1  |
-| HPKE-4                                           |0x20 | 0x1 | 0x3  |
-| HPKE-5                                           |0x21 | 0x3 | 0x2  |
-| HPKE-6                                           |0x21 | 0x3 | 0x3  |
-+--------------------------------------------------+-----+-----+------+
++-------------------+-----------------------+-------------------+
+| COSE-HPKE         | COSE HPKE Mode        |        HPKE       |
+| Ciphersuite Label |                       | KEM  | KDF | AEAD |
++-------------------+-----------------------+------+-----+------+
+| HPKE-0            | Integrated Encryption | 0x10 | 0x1 | 0x1  |
+| HPKE-1            | Integrated Encryption | 0x11 | 0x2 | 0x2  |
+| HPKE-2            | Integrated Encryption | 0x12 | 0x3 | 0x2  |
+| HPKE-3            | Integrated Encryption | 0x20 | 0x1 | 0x1  |
+| HPKE-4            | Integrated Encryption | 0x20 | 0x1 | 0x3  |
+| HPKE-5            | Integrated Encryption | 0x21 | 0x3 | 0x2  |
+| HPKE-6            | Integrated Encryption | 0x21 | 0x3 | 0x3  |
+| HPKE-7            | Integrated Encryption | 0x10 | 0x1 | 0x2  |
+| HPKE-0-KE         | Key Encryption        | 0x10 | 0x1 | 0x1  |
+| HPKE-1-KE         | Key Encryption        | 0x11 | 0x2 | 0x2  |
+| HPKE-2-KE         | Key Encryption        | 0x12 | 0x3 | 0x2  |
+| HPKE-3-KE         | Key Encryption        | 0x20 | 0x1 | 0x1  |
+| HPKE-4-KE         | Key Encryption        | 0x20 | 0x1 | 0x3  |
+| HPKE-5-KE         | Key Encryption        | 0x21 | 0x3 | 0x2  |
+| HPKE-6-KE         | Key Encryption        | 0x21 | 0x3 | 0x3  |
+| HPKE-7-KE         | Key Encryption        | 0x10 | 0x1 | 0x2  |
++-------------------+-----------------------+------+-----+------+
 ~~~
 
 The following list maps the ciphersuite labels to their textual
 description.
 
-- HPKE-0: DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF and AES-128-GCM AEAD.
-- HPKE-1: DHKEM(P-384, HKDF-SHA384) KEM, HKDF-SHA384 KDF, and AES-256-GCM AEAD.
-- HPKE-2: DHKEM(P-521, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
-- HPKE-3: DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.
-- HPKE-4: DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and ChaCha20Poly1305 AEAD.
-- HPKE-5: DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
-- HPKE-6: DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and ChaCha20Poly1305 AEAD.
+- HPKE-0: Integrated Encryption with DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF and AES-128-GCM AEAD.
+- HPKE-1: Integrated Encryption with DHKEM(P-384, HKDF-SHA384) KEM, HKDF-SHA384 KDF, and AES-256-GCM AEAD.
+- HPKE-2: Integrated Encryption with DHKEM(P-521, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
+- HPKE-3: Integrated Encryption with DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.
+- HPKE-4: Integrated Encryption with DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and ChaCha20Poly1305 AEAD.
+- HPKE-5: Integrated Encryption with DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
+- HPKE-6: Integrated Encryption with DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and ChaCha20Poly1305 AEAD.
+- HPKE-7: Integrated Encryption with DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF and AES-256-GCM AEAD.
+- HPKE-0: Key Encryption with DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF and AES-128-GCM AEAD.
+- HPKE-1: Key Encryption with DHKEM(P-384, HKDF-SHA384) KEM, HKDF-SHA384 KDF, and AES-256-GCM AEAD.
+- HPKE-2: Key Encryption with DHKEM(P-521, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
+- HPKE-3: Key Encryption with DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.
+- HPKE-4: Key Encryption with DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and ChaCha20Poly1305 AEAD.
+- HPKE-5: Key Encryption with DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
+- HPKE-6: Key Encryption with DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and ChaCha20Poly1305 AEAD.
+- HPKE-7: Key Encryption with DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF and AES-256-GCM AEAD.
 
 As the list indicates, the ciphersuite labels have been abbreviated at least
 to some extent to strike a balance between readability and length.
@@ -392,6 +415,8 @@ KEM, and components should not be mixed between global and national standards.
 The COSE-HPKE algorithm uniquely determines the KEM for which a COSE_Key is used.
 The following mapping table shows the valid combinations
 of the KEM used, COSE_Key type, and its curve/key subtype.
+This holds for COSE algorithms using either COSE HPKE mode
+(Integrated Encryption and Key Encryption).
 
 ~~~
 +---------------------+--------------+
@@ -421,7 +446,7 @@ that can be used to check the interoperability of COSE-HPKE implementations:
 - skR: A recipient private key.
 - skE: An ephemeral sender private key paired with the encapsulated key.
 
-## HPKE Integrated Encryption Mode {#one-layer-example}
+## COSE HPKE Integrated Encryption Mode {#one-layer-example}
 
 This example assumes that a sender wants to communicate an
 encrypted payload to a single recipient in the most efficient way.
@@ -458,7 +483,7 @@ This example uses the following:
 ~~~
 {: #hpke-example-one title="COSE_Encrypt0 Example for HPKE"}
 
-## HPKE Key Encryption Mode {#two-layer-example}
+## COSE HPKE Key Encryption Mode {#two-layer-example}
 
 In this example we assume that a sender wants to transmit a
 payload to two recipients using the HPKE Key Encryption mode.
@@ -476,7 +501,7 @@ This example uses the following input parameters:
 - Content encryption algorithm: AES-128-GCM
 - plaintext: "This is the payload."
 - kid:"alice"
-- alg: HPKE-0 - DHKEM(P-256, HKDF-SHA256), KDF: HKDF-SHA256, AEAD: AES-128-GCM
+- alg: HPKE-0-KE (assumed 46) - Key Encryption, DHKEM(P-256, HKDF-SHA256), KDF: HKDF-SHA256, AEAD: AES-128-GCM
 - external_aad: "some externally provided aad"
 
 Alice uses the following NIST P-256 ECC keys.
@@ -562,7 +587,7 @@ The output of the message is as follows:
 
 Examples of private and public KEM key representation are shown below.
 
-### KEM Public Key for HPKE-0
+### Public Key for HPKE-0
 
 ~~~
 {
@@ -582,10 +607,10 @@ Examples of private and public KEM key representation are shown below.
           7e0ca7ca7e9eecd0084d19c'
 }
 ~~~
-{: #hpke-example-key-1 title="Key Representation Example for HPKE-0"}
+{: #hpke-example-key-1 title="Public Key Representation Example for HPKE-0"}
 
 
-### KEM Private Key for HPKE-0
+### Private Key for HPKE-0
 
 ~~~
 {
@@ -610,7 +635,7 @@ Examples of private and public KEM key representation are shown below.
           e306705db6090308507b4d3',
 }
 ~~~
-{: #hpke-example-key-2 title="Key Representation Example for HPKE-0"}
+{: #hpke-example-key-2 title="Private Key Representation Example for HPKE-0"}
 
 
 ### KEM Public Key for HPKE-4
@@ -630,7 +655,7 @@ Examples of private and public KEM key representation are shown below.
           9bd4ad2bd4e9931b1c34c22',
 }
 ~~~
-{: #hpke-example-key-3 title="Key Representation Example for HPKE-4"}
+{: #hpke-example-key-3 title="Public Key Representation Example for HPKE-4"}
 
 # Security Considerations {#sec-cons}
 
@@ -667,7 +692,7 @@ the 'COSE Header Parameters' registries.
 
 -  Name: HPKE-0
 -  Value: TBD1 (Assumed: 35)
--  Description: Cipher suite for COSE-HPKE in Base Mode that uses the DHKEM(P-256, HKDF-SHA256) KEM, the HKDF-SHA256 KDF and the AES-128-GCM AEAD.
+-  Description: COSE HPKE Integrated Encryption using DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.
 -  Capabilities: [kty]
 -  Change Controller: IESG
 -  Reference:  [[TBD: This RFC]]
@@ -677,7 +702,7 @@ the 'COSE Header Parameters' registries.
 
 -  Name: HPKE-1
 -  Value: TBD3 (Assumed: 37)
--  Description: Cipher suite for COSE-HPKE in Base Mode that uses the DHKEM(P-384, HKDF-SHA384) KEM, the HKDF-SHA384 KDF, and the AES-256-GCM AEAD.
+-  Description: COSE HPKE Integrated Encryption using DHKEM(P-384, HKDF-SHA384) KEM, HKDF-SHA384 KDF, and AES-256-GCM AEAD.
 -  Capabilities: [kty]
 -  Change Controller: IESG
 -  Reference:  [[TBD: This RFC]]
@@ -687,7 +712,7 @@ the 'COSE Header Parameters' registries.
 
 -  Name: HPKE-2
 -  Value: TBD5 (Assumed: 39)
--  Description: Cipher suite for COSE-HPKE in Base Mode that uses the DHKEM(P-521, HKDF-SHA512) KEM, the HKDF-SHA512 KDF, and the AES-256-GCM AEAD.
+-  Description: COSE HPKE Integrated Encryption using DHKEM(P-521, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
 -  Capabilities: [kty]
 -  Change Controller: IESG
 -  Reference:  [[TBD: This RFC]]
@@ -697,7 +722,7 @@ the 'COSE Header Parameters' registries.
 
 -  Name: HPKE-3
 -  Value: TBD7 (Assumed: 41)
--  Description: Cipher suite for COSE-HPKE in Base Mode that uses the DHKEM(X25519, HKDF-SHA256) KEM, the HKDF-SHA256 KDF, and the AES-128-GCM AEAD.
+-  Description: COSE HPKE Integrated Encryption using DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.
 -  Capabilities: [kty]
 -  Change Controller: IESG
 -  Reference:  [[TBD: This RFC]]
@@ -707,7 +732,7 @@ the 'COSE Header Parameters' registries.
 
 -  Name: HPKE-4
 -  Value: TBD8 (Assumed: 42)
--  Description: Cipher suite for COSE-HPKE in Base Mode that uses the DHKEM(X25519, HKDF-SHA256) KEM, the HKDF-SHA256 KDF, and the ChaCha20Poly1305 AEAD.
+-  Description: COSE HPKE Integrated Encryption using DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and ChaCha20Poly1305 AEAD.
 -  Capabilities: [kty]
 -  Change Controller: IESG
 -  Reference:  [[TBD: This RFC]]
@@ -717,7 +742,7 @@ the 'COSE Header Parameters' registries.
 
 -  Name: HPKE-5
 -  Value: TBD9 (Assumed: 43)
--  Description: Cipher suite for COSE-HPKE in Base Mode that uses the DHKEM(X448, HKDF-SHA512) KEM, the HKDF-SHA512 KDF, and the AES-256-GCM AEAD.
+-  Description: COSE HPKE Integrated Encryption using DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
 -  Capabilities: [kty]
 -  Change Controller: IESG
 -  Reference:  [[TBD: This RFC]]
@@ -727,7 +752,97 @@ the 'COSE Header Parameters' registries.
 
 -  Name: HPKE-6
 -  Value: TBD10 (Assumed: 44)
--  Description: Cipher suite for COSE-HPKE in Base Mode that uses the DHKEM(X448, HKDF-SHA512) KEM, the HKDF-SHA512 KDF, and the ChaCha20Poly1305 AEAD.
+-  Description: COSE HPKE Integrated Encryption using DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and ChaCha20Poly1305 AEAD.
+-  Capabilities: [kty]
+-  Change Controller: IESG
+-  Reference:  [[TBD: This RFC]]
+-  Recommended: Yes
+
+### HPKE-7
+
+-  Name: HPKE-7
+-  Value: TBD13 (Assumed: 45)
+-  Description: COSE HPKE Integrated Encryption using DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-256-GCM AEAD.
+-  Capabilities: [kty]
+-  Change Controller: IESG
+-  Reference:  [[TBD: This RFC]]
+-  Recommended: Yes
+
+### HPKE-0-KE
+
+-  Name: HPKE-0-KE
+-  Value: TBD14 (Assumed: 46)
+-  Description: COSE HPKE Key Encryption using DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.
+-  Capabilities: [kty]
+-  Change Controller: IESG
+-  Reference:  [[TBD: This RFC]]
+-  Recommended: Yes
+
+### HPKE-1-KE
+
+-  Name: HPKE-1-KE
+-  Value: TBD15 (Assumed: 47)
+-  Description: COSE HPKE Key Encryption using DHKEM(P-384, HKDF-SHA384) KEM, HKDF-SHA384 KDF, and AES-256-GCM AEAD.
+-  Capabilities: [kty]
+-  Change Controller: IESG
+-  Reference:  [[TBD: This RFC]]
+-  Recommended: Yes
+
+### HPKE-2-KE
+
+-  Name: HPKE-2-KE
+-  Value: TBD16 (Assumed: 48)
+-  Description: COSE HPKE Key Encryption using DHKEM(P-521, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
+-  Capabilities: [kty]
+-  Change Controller: IESG
+-  Reference:  [[TBD: This RFC]]
+-  Recommended: Yes
+
+### HPKE-3-KE
+
+-  Name: HPKE-3-KE
+-  Value: TBD17 (Assumed: 49)
+-  Description: COSE HPKE Key Encryption using DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.
+-  Capabilities: [kty]
+-  Change Controller: IESG
+-  Reference:  [[TBD: This RFC]]
+-  Recommended: Yes
+
+### HPKE-4-KE
+
+-  Name: HPKE-4-KE
+-  Value: TBD18 (Assumed: 50)
+-  Description: COSE HPKE Key Encryption using DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and ChaCha20Poly1305 AEAD.
+-  Capabilities: [kty]
+-  Change Controller: IESG
+-  Reference:  [[TBD: This RFC]]
+-  Recommended: Yes
+
+### HPKE-5-KE
+
+-  Name: HPKE-5-KE
+-  Value: TBD19 (Assumed: 51)
+-  Description: COSE HPKE Key Encryption using DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.
+-  Capabilities: [kty]
+-  Change Controller: IESG
+-  Reference:  [[TBD: This RFC]]
+-  Recommended: Yes
+
+### HPKE-6-KE
+
+-  Name: HPKE-6-KE
+-  Value: TBD20 (Assumed: 52)
+-  Description: COSE HPKE Key Encryption using DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and ChaCha20Poly1305 AEAD.
+-  Capabilities: [kty]
+-  Change Controller: IESG
+-  Reference:  [[TBD: This RFC]]
+-  Recommended: Yes
+
+### HPKE-7-KE
+
+-  Name: HPKE-7-KE
+-  Value: TBD21 (Assumed: 53)
+-  Description: COSE HPKE Key Encryption using DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-256-GCM AEAD.
 -  Capabilities: [kty]
 -  Change Controller: IESG
 -  Reference:  [[TBD: This RFC]]
