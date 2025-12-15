@@ -9,6 +9,7 @@
 <meta content="Orie Steele" name="author">
 <meta content="Daisuke Ajitomi" name="author">
 <meta content="Laurence Lundblade" name="author">
+<meta content="Michael B. Jones" name="author">
 <meta content="
        This specification defines hybrid public-key encryption (HPKE) for use with
 CBOR Object Signing and Encryption (COSE). HPKE offers a variant of
@@ -1058,7 +1059,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tschofenig, et al.</td>
-<td class="center">Expires 9 June 2026</td>
+<td class="center">Expires 18 June 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1071,12 +1072,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cose-hpke-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-12-06" class="published">6 December 2025</time>
+<time datetime="2025-12-15" class="published">15 December 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-06-09">9 June 2026</time></dd>
+<dd class="expires"><time datetime="2026-06-18">18 June 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1086,7 +1087,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div class="author">
       <div class="author-name">O. Steele, <span class="editor">Ed.</span>
 </div>
-<div class="org">Transmute</div>
+<div class="org">Tradeverifyd</div>
 </div>
 <div class="author">
       <div class="author-name">D. Ajitomi</div>
@@ -1095,6 +1096,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div class="author">
       <div class="author-name">L. Lundblade</div>
 <div class="org">Security Theory LLC</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Jones</div>
+<div class="org">Self-Issued Consulting</div>
 </div>
 </dd>
 </dl>
@@ -1142,7 +1147,7 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 9 June 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 18 June 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2066,10 +2071,10 @@ B037E6E61F44D1E946C15820B11361397A19E9C155C3E0E8117B5E88155600E550DD\
     -1: 1,
     / x /
     -2: h'65eda5a12577c2bae829437fe338701a10aaa375
-              e1bb5b5de108de439c08551d',
+          e1bb5b5de108de439c08551d',
     / y /
     -3: h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af
-              7e0ca7ca7e9eecd0084d19c'
+          7e0ca7ca7e9eecd0084d19c'
 }
 </pre>
 </div>
@@ -2101,13 +2106,13 @@ B037E6E61F44D1E946C15820B11361397A19E9C155C3E0E8117B5E88155600E550DD\
     -1: 1,
     / x /
     -2: h'bac5b11cad8f99f9c72b05cf4b9e26d244dc189f7
-              45228255a219a86d6a09eff',
+          45228255a219a86d6a09eff',
     / y /
     -3: h'20138bf82dc1b6d562be0fa54ab7804a3a64b6d72
-              ccfed6b6fb6ed28bbfc117e',
+          ccfed6b6fb6ed28bbfc117e',
     / d /
     -4: h'57c92077664146e876760c9520d054aa93c3afb04
-              e306705db6090308507b4d3',
+          e306705db6090308507b4d3',
 }
 </pre>
 </div>
@@ -2137,7 +2142,7 @@ B037E6E61F44D1E946C15820B11361397A19E9C155C3E0E8117B5E88155600E550DD\
     -1: 4,
     / x /
     -2: h'cb7c09ab7b973c77a808ee05b9bbd373b55c06eaa
-              9bd4ad2bd4e9931b1c34c22',
+          9bd4ad2bd4e9931b1c34c22',
 }
 </pre>
 </div>
@@ -2558,14 +2563,13 @@ contributions to the draft as co-authors of initial versions.<a href="#appendix-
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
       </h2>
 <p id="appendix-B-1">We would like to thank
-Michael B. Jones,
 John Mattsson,
 Mike Prorock,
 Michael Richardson,
 Thomas Fossati,
 and
 Göran Selander
-for their review feedback.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+for their contributions to the specification.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
@@ -2584,11 +2588,11 @@ for their review feedback.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 </address>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Orie Steele (<span class="role">editor</span>)</span></div>
-<div dir="auto" class="left"><span class="org">Transmute</span></div>
+<div dir="auto" class="left"><span class="org">Tradeverifyd</span></div>
 <div dir="auto" class="left"><span class="country-name">United States</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:orie@transmute.industries" class="email">orie@transmute.industries</a>
+<a href="mailto:orie@or13.io" class="email">orie@or13.io</a>
 </div>
 </address>
 <address class="vcard">
@@ -2607,6 +2611,19 @@ for their review feedback.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:lgl@securitytheory.com" class="email">lgl@securitytheory.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Michael B. Jones</span></div>
+<div dir="auto" class="left"><span class="org">Self-Issued Consulting</span></div>
+<div dir="auto" class="left"><span class="country-name">United States</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:michael_b_jones@hotmail.com" class="email">michael_b_jones@hotmail.com</a>
+</div>
+<div class="url">
+<span>URI:</span>
+<a href="https://self-issued.info/" class="url">https://self-issued.info/</a>
 </div>
 </address>
 </section>
