@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-07T02:02:35.508192+00:00",
+  "timestamp": "2025-12-16T01:56:59.968113+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1504,15 +1504,15 @@
       "id": "I_kwDOGr5frc7VYSWF",
       "title": "Define HPKE-7",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/94",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "selfissued",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Define the HPKE-7 algorithm, corresponding to https://www.ietf.org/archive/id/draft-ietf-jose-hpke-encrypt-14.html#name-hpke-7 in the JOSE HPKE specification.",
       "createdAt": "2025-11-02T20:26:20Z",
-      "updatedAt": "2025-11-02T20:26:20Z",
-      "closedAt": null,
+      "updatedAt": "2025-12-15T08:38:20Z",
+      "closedAt": "2025-12-15T08:38:20Z",
       "comments": []
     },
     {
@@ -1520,15 +1520,15 @@
       "id": "I_kwDOGr5frc7aeg56",
       "title": "Use fully-specified algorithms",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/95",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "selfissued",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "JOSE HPKE is in the process of using separate algorithms for Integrated Encryption versus Key Encryption.  See https://github.com/ietf-wg-jose/draft-ietf-jose-hpke-encrypt/pull/84 and the rendered version at https://self-issued.info/tmp/draft-ietf-jose-hpke-encrypt.html.  You'll see that there are now HPKE-[0-7] algorithms for Integrated Encryption and parallel HPKE-[0-7]-KE algorithms for Key Encryption.\n\nIt seems to me that COSE should do the same.",
       "createdAt": "2025-11-26T02:36:12Z",
-      "updatedAt": "2025-12-05T20:38:11Z",
-      "closedAt": null,
+      "updatedAt": "2025-12-15T08:38:19Z",
+      "closedAt": "2025-12-15T08:38:19Z",
       "comments": [
         {
           "author": "ilaril",
@@ -6729,6 +6729,98 @@
           "body": "",
           "createdAt": "2025-12-06T13:09:24Z",
           "updatedAt": "2025-12-06T13:09:24Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 97,
+      "id": "PR_kwDOGr5frc64zXhB",
+      "title": "Use fully-specified algorithms and add HPKE-7 and HPKE-7-KE",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/97",
+      "state": "MERGED",
+      "author": "selfissued",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This aligns the COSE HPKE draft with the pertinent decisions incorporated in https://www.ietf.org/archive/id/draft-ietf-jose-hpke-encrypt-15.html .\r\n\r\nFixes #95 \r\nFixes #94 ",
+      "createdAt": "2025-12-14T22:43:09Z",
+      "updatedAt": "2025-12-15T10:34:46Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "90362652455930905f861ae064012c0e29b449ab",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "mbj-fully-specified-and-HPKE-7",
+      "headRefOid": "fdf9b891c9e033e75b650dfda6a7454cba02d658",
+      "closedAt": "2025-12-15T08:38:18Z",
+      "mergedAt": "2025-12-15T08:38:18Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "ac35132368c883593484870f540708c9a85a4512"
+      },
+      "comments": [
+        {
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "How is the receiver supposed to handle `HPKE-*` appearing in COSE_Recipient, or `HPKE-*-KE` appearing in COSE_Encrypt0?\r\n\r\n(The implementation I am working on treats the duplicate algorithms as perfect aliases.)",
+          "createdAt": "2025-12-15T10:34:46Z",
+          "updatedAt": "2025-12-15T10:34:46Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7VNSmV",
+          "commit": {
+            "abbreviatedOid": "fdf9b89"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for the edits. They all look good to me.",
+          "createdAt": "2025-12-15T08:38:12Z",
+          "updatedAt": "2025-12-15T08:38:12Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 98,
+      "id": "PR_kwDOGr5frc64zaSo",
+      "title": "Update Orie's contact info and add Mike as an author",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/98",
+      "state": "MERGED",
+      "author": "selfissued",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Adding myself as an author after discussion with multiple other authors, since I've been acting as one for some time now.",
+      "createdAt": "2025-12-14T22:59:29Z",
+      "updatedAt": "2025-12-15T08:36:07Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "90362652455930905f861ae064012c0e29b449ab",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "mbj-Orie-and-Mike",
+      "headRefOid": "75032640b217b12a72cd6300a907424cb1dca26f",
+      "closedAt": "2025-12-15T08:36:04Z",
+      "mergedAt": "2025-12-15T08:36:03Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "061de2e68a59a151e797adb9fef072cffbf6ff99"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7VNQ6d",
+          "commit": {
+            "abbreviatedOid": "7503264"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for all your contributions, Mike!",
+          "createdAt": "2025-12-15T08:35:56Z",
+          "updatedAt": "2025-12-15T08:35:56Z",
           "comments": []
         }
       ]
