@@ -132,15 +132,10 @@ Distinct algorithm identifiers are defined and registered
 that are specific to each COSE HPKE mode
 so that they are fully specified, as required by {{RFC9864}}.
 
-In both cases, a new COSE header parameter called 'ek' is used
-to convey the content of the enc structure defined in the HPKE
-specification. The enc value represents the serialized encapsulated
-public key.
-
-When used with HPKE, the 'ek' header parameter MUST be present in
-the unprotected header and MUST contain the encapsulated key,
-which is the output of the HPKE KEM. The value of 'ek' MUST be a
-bstr.
+In both cases, the unprotected header MUST contain a new COSE header parameter named 'ek'.
+It typically contains the encapsulated KEM shared secret.
+The value of this parameter MUST be the 'enc' value output by the HPKE Seal() operation, as defined in {{Section 6.1 of RFC9180}}.
+The 'ek' header parameter MUST be encoded as a CBOR byte string.
 
 HPKE defines several authentication modes, as described in Table 1 of {{RFC9180}}.
 In COSE HPKE, only 'mode_base' and 'mode_psk' are supported.
