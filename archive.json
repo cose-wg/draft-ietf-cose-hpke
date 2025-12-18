@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-16T01:56:59.968113+00:00",
+  "timestamp": "2025-12-18T01:53:02.767065+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -822,7 +822,7 @@
       ],
       "body": "@hannestschofenig @selfissued @OR13 and other folks,\r\n\r\nI think Orie also mentioned this in another issur/PR, but how about providing test vectors in the COSE-HPKE spec?\r\n\r\nSince the COSE specs are referred by many IETF WGs such as SUTE, TEEP, RATS, SCITT, etc., I think it is better for the COSE WG to provide the official test vectors. \r\n\r\nHere are my suggestions:\r\n- Create a test-vectors repository under the cose-wg group on github (cose-wg/test-vectors).\r\n- Create comprehensive test-vectors for COSE-HPKE spec in this repository\r\n- Pick out a few typical ones from the repository's test-vectors and list them in the appendix in the COSE-HPKE spec with a link to the repository.\r\n\r\n[HPKE spec (RFC9180)](https://www.rfc-editor.org/rfc/rfc9180.html) also provides test vectors in the same manner.\r\n\r\nWhat do you think?",
       "createdAt": "2023-10-09T13:44:25Z",
-      "updatedAt": "2025-07-02T18:42:58Z",
+      "updatedAt": "2025-12-16T16:48:43Z",
       "closedAt": null,
       "comments": [
         {
@@ -831,6 +831,13 @@
           "body": "I think we should do a PR to :\r\n\r\n- https://github.com/cose-wg/Examples/blob/master/ecdsa-examples/ecdsa-01.json\r\n\r\nunder a new directory called `hpke-examples`\r\n\r\nI'd recommend generating the examples from a repo that maintains an implementation, so we can regenerate them again later if needed.\r\n\r\nHere is a similar project that uses YAML to maintain examples:\r\n\r\nhttps://github.com/openwallet-foundation-labs/sd-jwt-python\r\n\r\nAn example spec file, that is used to generate examples:\r\n\r\n- https://github.com/openwallet-foundation-labs/sd-jwt-python/blob/main/examples/simple_json_serialization/specification.yml\r\n\r\n\r\n",
           "createdAt": "2023-10-09T16:38:21Z",
           "updatedAt": "2023-10-09T16:40:52Z"
+        },
+        {
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "What format should those examples be in? The format used by that examples repository looks to have some issues:\n\n* It is not trivial to locate relevant examples (tags 16 and 96).\n* The keys seem to be represented as JWKs, which might not be possible for some keys (or loses information, e.g., alg).\n* It contains debug fields that are meaningless or not exported in non-debug implementations.\n\nFor dumping examples from my implementation, I quickly cooked a format that is a CBOR dictionary with the following keys:\n\n* plaintext (bytes): The plaintext the message should decrypt to (for debugging, successful decryption should never give a wrong plaintext).\n* encrypted (COSE_Messages): The COSE encrypted message.\n* keys (array of COSE_Key): The private key or keys the message should decrypt with.\n* application_aad (bytes): The application_aad at layer 0 (Other application_aad and supplementary data fields are always empty).\n\nI dumped 11 examples (8 one-layer and 3 two-layer split by symmetric cipher) covering all the 16 algorithms from -19.",
+          "createdAt": "2025-12-16T16:48:43Z",
+          "updatedAt": "2025-12-16T16:48:43Z"
         }
       ]
     },
@@ -6745,7 +6752,7 @@
       "labels": [],
       "body": "This aligns the COSE HPKE draft with the pertinent decisions incorporated in https://www.ietf.org/archive/id/draft-ietf-jose-hpke-encrypt-15.html .\r\n\r\nFixes #95 \r\nFixes #94 ",
       "createdAt": "2025-12-14T22:43:09Z",
-      "updatedAt": "2025-12-15T10:34:46Z",
+      "updatedAt": "2025-12-17T22:36:54Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "90362652455930905f861ae064012c0e29b449ab",
@@ -6765,6 +6772,20 @@
           "body": "How is the receiver supposed to handle `HPKE-*` appearing in COSE_Recipient, or `HPKE-*-KE` appearing in COSE_Encrypt0?\r\n\r\n(The implementation I am working on treats the duplicate algorithms as perfect aliases.)",
           "createdAt": "2025-12-15T10:34:46Z",
           "updatedAt": "2025-12-15T10:34:46Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> How is the receiver supposed to handle `HPKE-*` appearing in COSE_Recipient, or `HPKE-*-KE` appearing in COSE_Encrypt0?\r\n> \r\n> (The implementation I am working on treats the duplicate algorithms as perfect aliases.)\r\n\r\nI have the same question. I'm not sure why it matters for fully specified to separate these.\r\n",
+          "createdAt": "2025-12-17T21:18:04Z",
+          "updatedAt": "2025-12-17T21:18:04Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> How is the receiver supposed to handle HPKE-* appearing in COSE_Recipient, or HPKE-*-KE appearing in COSE_Encrypt0?\r\n\r\nIt is an error and the input MUST be rejected.  We need to add that to the spec.\r\n\r\n> I'm not sure why it matters for fully specified to separate these.\r\n\r\nThe need to be separated because the algorithms do different things.  Integrated Encryption puts the ciphertext in the COSE_Encrypt0 structure ciphertext field.  Key Encryption puts the ciphertext in the COSE_Recipient ciphertext field within the recipients field of a COSE_Encrypt structure.",
+          "createdAt": "2025-12-17T22:36:54Z",
+          "updatedAt": "2025-12-17T22:36:54Z"
         }
       ],
       "reviews": [
@@ -6822,6 +6843,73 @@
           "createdAt": "2025-12-15T08:35:56Z",
           "updatedAt": "2025-12-15T08:35:56Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 99,
+      "id": "PR_kwDOGr5frc65c_ln",
+      "title": "Improve wording for 'ek' param",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/99",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-12-17T20:56:31Z",
+      "updatedAt": "2025-12-17T22:22:38Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "50afcb203000032e3618a52e359841f2e355226b",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "ek-clarify",
+      "headRefOid": "58bb35f7ca7bdfad6f61fc9c375e4f75ad5918c2",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7V-dlA",
+          "commit": {
+            "abbreviatedOid": "58bb35f"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-17T22:22:11Z",
+          "updatedAt": "2025-12-17T22:22:11Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Why are you saying that this must be an unprotected header parameter?  Is there a reason that it can't be in a protected header parameter?",
+              "createdAt": "2025-12-17T22:22:11Z",
+              "updatedAt": "2025-12-17T22:22:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7V-d0D",
+          "commit": {
+            "abbreviatedOid": "58bb35f"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-17T22:22:38Z",
+          "updatedAt": "2025-12-17T22:22:38Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "```suggestion\nIt contains the encapsulated KEM shared secret.\n```",
+              "createdAt": "2025-12-17T22:22:38Z",
+              "updatedAt": "2025-12-17T22:22:38Z"
+            }
+          ]
         }
       ]
     }
