@@ -132,7 +132,7 @@ Distinct algorithm identifiers are defined and registered
 that are specific to each COSE HPKE mode
 so that they are fully specified, as required by {{RFC9864}}.
 
-In both cases, the unprotected header MUST contain a new COSE header parameter named 'ek'.
+In both cases, the new COSE header parameter 'ek' MUST be present.
 It contains the encapsulated KEM shared secret.
 The value of this parameter MUST be the 'enc' value output by the HPKE Seal() operation, as defined in {{Section 6.1 of RFC9180}}.
 The 'ek' header parameter MUST be encoded as a CBOR byte string.
