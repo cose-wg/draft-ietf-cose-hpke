@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 18 June 2026                                       Tradeverifyd
+Expires: 23 June 2026                                       Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                        15 December 2025
+                                                        20 December 2025
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 June 2026.
+   This Internet-Draft will expire on 23 June 2026.
 
 Copyright Notice
 
@@ -194,14 +194,11 @@ Table of Contents
    specific to each COSE HPKE mode so that they are fully specified, as
    required by [RFC9864].
 
-   In both cases, a new COSE header parameter called 'ek' is used to
-   convey the content of the enc structure defined in the HPKE
-   specification.  The enc value represents the serialized encapsulated
-   public key.
-
-   When used with HPKE, the 'ek' header parameter MUST be present in the
-   unprotected header and MUST contain the encapsulated key, which is
-   the output of the HPKE KEM.  The value of 'ek' MUST be a bstr.
+   In both cases, the new COSE header parameter 'ek' MUST be present.
+   It contains the encapsulated KEM shared secret.  The value of this
+   parameter MUST be the 'enc' value output by the HPKE Seal()
+   operation, as defined in Section 6.1 of [RFC9180].  The 'ek' header
+   parameter MUST be encoded as a CBOR byte string.
 
    HPKE defines several authentication modes, as described in Table 1 of
    [RFC9180].  In COSE HPKE, only 'mode_base' and 'mode_psk' are
