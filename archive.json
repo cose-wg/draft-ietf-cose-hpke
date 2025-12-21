@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-18T01:53:02.767065+00:00",
+  "timestamp": "2025-12-21T02:02:47.318642+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -6752,7 +6752,7 @@
       "labels": [],
       "body": "This aligns the COSE HPKE draft with the pertinent decisions incorporated in https://www.ietf.org/archive/id/draft-ietf-jose-hpke-encrypt-15.html .\r\n\r\nFixes #95 \r\nFixes #94 ",
       "createdAt": "2025-12-14T22:43:09Z",
-      "updatedAt": "2025-12-17T22:36:54Z",
+      "updatedAt": "2025-12-20T19:43:37Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "90362652455930905f861ae064012c0e29b449ab",
@@ -6786,6 +6786,27 @@
           "body": "> How is the receiver supposed to handle HPKE-* appearing in COSE_Recipient, or HPKE-*-KE appearing in COSE_Encrypt0?\r\n\r\nIt is an error and the input MUST be rejected.  We need to add that to the spec.\r\n\r\n> I'm not sure why it matters for fully specified to separate these.\r\n\r\nThe need to be separated because the algorithms do different things.  Integrated Encryption puts the ciphertext in the COSE_Encrypt0 structure ciphertext field.  Key Encryption puts the ciphertext in the COSE_Recipient ciphertext field within the recipients field of a COSE_Encrypt structure.",
           "createdAt": "2025-12-17T22:36:54Z",
           "updatedAt": "2025-12-17T22:36:54Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> > How is the receiver supposed to handle HPKE-* appearing in COSE_Recipient, or HPKE-*-KE appearing in COSE_Encrypt0?\r\n> \r\n> It is an error and the input MUST be rejected. We need to add that to the spec.\r\n> \r\n> > I'm not sure why it matters for fully specified to separate these.\r\n> \r\n> The need to be separated because the algorithms do different things. Integrated Encryption puts the ciphertext in the COSE_Encrypt0 structure ciphertext field. Key Encryption puts the ciphertext in the COSE_Recipient ciphertext field within the recipients field of a COSE_Encrypt structure.\r\n\r\nNo other algorithms in COSE are arranged like this, but maybe that's because none of them can be used for both bulk content encryption and CEK establishment like HPKE?",
+          "createdAt": "2025-12-18T02:46:04Z",
+          "updatedAt": "2025-12-18T02:46:04Z"
+        },
+        {
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> > The need to be separated because the algorithms do different things. Integrated Encryption puts the ciphertext in the COSE_Encrypt0 structure ciphertext field. Key Encryption puts the ciphertext in the COSE_Recipient ciphertext field within the recipients field of a COSE_Encrypt structure.\r\n> \r\n> No other algorithms in COSE are arranged like this, but maybe that's because none of them can be used for both bulk content encryption and CEK establishment like HPKE?\r\n\r\nAll AEAD algorithms (which there are at least 12) can be used exactly that way. RFC 9052 section 5.3 would make no sense otherwise. And the implementation I wrote actually does that if adding a direct recipient (that is the only safe thing to do when bulk encryption is chacha20).\r\n\r\nThen RFC 9052 specifies that AE algorithms would also work that way, but allowing using those for bulk content encryption may lead to attacks (so implementations should reject messages using AE in bulk encryption position). All current AE algorithms are very slow anyway.",
+          "createdAt": "2025-12-18T07:36:56Z",
+          "updatedAt": "2025-12-18T07:44:49Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "For Integrated Encryption, these are the HPKE info and aad values used:\r\n\r\n- info: Defaults to the empty string; externally provided information MAY be used instead.\r\n- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be \"Encrypt0\".\r\n\r\nFor Key Encryption, these are the HPKE info and aad values used:\r\n\r\n- info: Deterministic encoding of the Recipient_structure.\r\n- aad: Defaults to the empty string; externally provided information MAY be used instead.\r\n\r\n@ilaril, since the computations performed by Integrated Encryption and Key Encryption are different, they therefore need to have different algorithm identifiers.\r\n",
+          "createdAt": "2025-12-20T19:43:37Z",
+          "updatedAt": "2025-12-20T19:43:37Z"
         }
       ],
       "reviews": [
@@ -6851,24 +6872,26 @@
       "id": "PR_kwDOGr5frc65c_ln",
       "title": "Improve wording for 'ek' param",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/99",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-12-17T20:56:31Z",
-      "updatedAt": "2025-12-17T22:22:38Z",
+      "updatedAt": "2025-12-20T19:34:40Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "50afcb203000032e3618a52e359841f2e355226b",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "ek-clarify",
-      "headRefOid": "58bb35f7ca7bdfad6f61fc9c375e4f75ad5918c2",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "bd00b3b386cb220db490c3f13363e4e88985e98a",
+      "closedAt": "2025-12-20T19:34:40Z",
+      "mergedAt": "2025-12-20T19:34:40Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "da03bec7d2a4f20c94db5d035d3ab3b5edecc6a8"
+      },
       "comments": [],
       "reviews": [
         {
@@ -6910,6 +6933,159 @@
               "updatedAt": "2025-12-17T22:22:38Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7WAehM",
+          "commit": {
+            "abbreviatedOid": "115fd46"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-18T02:37:27Z",
+          "updatedAt": "2025-12-18T02:37:27Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "I can't think of a reason, other than it doesn't need to be protected.\r\n\r\nI copied from the previous text which said it must be unprotected.\r\n\r\nMaybe Hannes has an opinion.",
+              "createdAt": "2025-12-18T02:37:27Z",
+              "updatedAt": "2025-12-18T02:37:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7WBAen",
+          "commit": {
+            "abbreviatedOid": "115fd46"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-18T03:25:51Z",
+          "updatedAt": "2025-12-18T03:25:51Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "```suggestion\nIn both cases, the new COSE header parameter 'ek' MUST be present.\n```\n\nAt least when using Integrated Encryption, this can be a protected header parameter.",
+              "createdAt": "2025-12-18T03:25:51Z",
+              "updatedAt": "2025-12-18T03:25:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7WBNWd",
+          "commit": {
+            "abbreviatedOid": "115fd46"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-18T03:57:01Z",
+          "updatedAt": "2025-12-18T03:57:02Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Mike, I can go either way on this, but it may simplify implementation a little if you know it is always unprotected.\r\n\r\nInterested in other opinions.",
+              "createdAt": "2025-12-18T03:57:01Z",
+              "updatedAt": "2025-12-18T03:57:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7WDi1G",
+          "commit": {
+            "abbreviatedOid": "115fd46"
+          },
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-18T07:49:22Z",
+          "updatedAt": "2025-12-18T07:49:22Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "It is not possible to protect 'ek' if using single-shot HPKE encryption.",
+              "createdAt": "2025-12-18T07:49:22Z",
+              "updatedAt": "2025-12-18T07:49:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7WDn2D",
+          "commit": {
+            "abbreviatedOid": "115fd46"
+          },
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-18T07:56:03Z",
+          "updatedAt": "2025-12-18T07:56:03Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Nope, there is no difference between bulk and CEK encryption in COSE.\r\n\r\n(The implementation I wrote does always writes it out unprotected, as writing protected algorithm parameters is not supported at all. It ignores protection status of any algorithm header when as receiver.)\r\n",
+              "createdAt": "2025-12-18T07:56:03Z",
+              "updatedAt": "2025-12-18T08:01:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7WRp5e",
+          "commit": {
+            "abbreviatedOid": "115fd46"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-18T20:38:27Z",
+          "updatedAt": "2025-12-18T20:38:27Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "I looked at my t_cose implementation and at other unprotected parameters like kid and content type. They all work with fine with either protected and unprotected, so I agree with you now, Mike.\r\n\r\nThis is a change in semantics from previous drafts, but I think it's what we should do.\r\n\r\nI'll wait a while for other comments before accepting your change.",
+              "createdAt": "2025-12-18T20:38:27Z",
+              "updatedAt": "2025-12-18T20:38:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7WR-l-",
+          "commit": {
+            "abbreviatedOid": "115fd46"
+          },
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-12-18T21:03:11Z",
+          "updatedAt": "2025-12-18T21:03:11Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "It is okay to _allow_ 'ek' to be protected (as this change does), but not okay to _require_ it (since it is nontrivial for sender). So yeah, seems fine.\r\n\r\nAnd as said, the implementation I wrote can handle 'ek' in protected bucket just fine. Any allowed parameter can be protected if the algorithm allows protected parameters at all.",
+              "createdAt": "2025-12-18T21:03:11Z",
+              "updatedAt": "2025-12-18T21:03:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7Wpobi",
+          "commit": {
+            "abbreviatedOid": "bd00b3b"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "There appears to be consensus for this wording improvement.",
+          "createdAt": "2025-12-20T19:34:30Z",
+          "updatedAt": "2025-12-20T19:34:30Z",
+          "comments": []
         }
       ]
     }
