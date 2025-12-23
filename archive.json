@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-21T02:02:47.318642+00:00",
+  "timestamp": "2025-12-23T01:57:29.192348+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -6752,7 +6752,7 @@
       "labels": [],
       "body": "This aligns the COSE HPKE draft with the pertinent decisions incorporated in https://www.ietf.org/archive/id/draft-ietf-jose-hpke-encrypt-15.html .\r\n\r\nFixes #95 \r\nFixes #94 ",
       "createdAt": "2025-12-14T22:43:09Z",
-      "updatedAt": "2025-12-20T19:43:37Z",
+      "updatedAt": "2025-12-21T09:26:44Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "90362652455930905f861ae064012c0e29b449ab",
@@ -6807,6 +6807,13 @@
           "body": "For Integrated Encryption, these are the HPKE info and aad values used:\r\n\r\n- info: Defaults to the empty string; externally provided information MAY be used instead.\r\n- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be \"Encrypt0\".\r\n\r\nFor Key Encryption, these are the HPKE info and aad values used:\r\n\r\n- info: Deterministic encoding of the Recipient_structure.\r\n- aad: Defaults to the empty string; externally provided information MAY be used instead.\r\n\r\n@ilaril, since the computations performed by Integrated Encryption and Key Encryption are different, they therefore need to have different algorithm identifiers.\r\n",
           "createdAt": "2025-12-20T19:43:37Z",
           "updatedAt": "2025-12-20T19:43:37Z"
+        },
+        {
+          "author": "ilaril",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Recipient_structure contains protected parameters, and there is aad, so it should go to aad, not info.\r\n\r\nHowever, I think per-recipient protected parameters are a Bad Idea. Those are a security footgun and annoying to implement. \r\n\r\nCOSE and JOSE are just different and call for different approaches to things, so blindly \"aligning\" things is a Bad Idea. COSE and JOSE are not even in the same class: JOSE seems to aim to be a protocol, and COSE seems to aim to be a framework.",
+          "createdAt": "2025-12-21T09:20:10Z",
+          "updatedAt": "2025-12-21T09:26:44Z"
         }
       ],
       "reviews": [
