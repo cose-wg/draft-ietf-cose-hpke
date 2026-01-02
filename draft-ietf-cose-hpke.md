@@ -429,17 +429,9 @@ This holds for COSE algorithms using either of the COSE HPKE modes
 
 # Examples
 
-This section provides a set of examples that show all COSE message types
-(COSE_Encrypt0 and COSE_Encrypt) to which the COSE-HPKE can be
-applied, and also provides some examples of key representation for HPKE KEM.
-
-Each example of the COSE message includes the following information
-that can be used to check the interoperability of COSE-HPKE implementations:
-
-- plaintext: Original data of the encrypted payload.
-- external_aad: Externally supplied AAD.
-- skR: A recipient private key.
-- skE: An ephemeral sender private key paired with the encapsulated key.
+This section provides a set of examples that show the HPKE Integrated Encryption
+Mode and the HPKE Key Encryption Mode, and illustrates the use of key representations
+for HPKE KEM.
 
 ## COSE HPKE Integrated Encryption Mode {#one-layer-example}
 
@@ -459,6 +451,7 @@ This example uses the following:
 - Recipient kid: "bob"
 
 The ciphertext (hex) transmitted to "bob" is:
+
 ~~~
 d08344a1011823a1235841042fee971fa778fac9c095f835bdf4033d2ae8
 d1b8e8dde4b1f6739a05df8bb338a9bccd52aea211b12d13496d1d5aad5f
@@ -468,6 +461,7 @@ d1b8e8dde4b1f6739a05df8bb338a9bccd52aea211b12d13496d1d5aad5f
 {: #hpke-example-ciphertext title="Hex-Encoding of COSE_Encrypt0"}
 
 COSE_Encrypt0 pretty-printed:
+
 ~~~
 {
   "protected": {
