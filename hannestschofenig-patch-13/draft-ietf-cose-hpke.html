@@ -1,0 +1,2984 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and Encryption (COSE)</title>
+<meta content="Hannes Tschofenig" name="author">
+<meta content="Orie Steele" name="author">
+<meta content="Daisuke Ajitomi" name="author">
+<meta content="Laurence Lundblade" name="author">
+<meta content="Michael B. Jones" name="author">
+<meta content="
+       This specification defines hybrid public-key encryption (HPKE) for use with
+CBOR Object Signing and Encryption (COSE). HPKE offers a variant of
+public-key encryption of arbitrary-sized plaintexts for a recipient public key. 
+       HPKE is a general encryption framework utilizing an asymmetric key encapsulation
+mechanism (KEM), a key derivation function (KDF), and an Authenticated Encryption
+with Associated Data (AEAD) algorithm. 
+       This document defines the use of HPKE with COSE. Authentication for HPKE in COSE is
+provided by COSE-native security mechanisms or by the pre-shared key authenticated
+variant of HPKE. 
+    " name="description">
+<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="Internet-Draft" name="keyword">
+<meta content="draft-ietf-cose-hpke-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.31.0
+    Python 3.12.12
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.1.0
+    Jinja2 3.1.6
+    lxml 6.0.2
+    platformdirs 4.5.1
+    pycountry 24.6.1
+    PyYAML 6.0.3
+    requests 2.32.5
+    wcwidth 0.2.14
+-->
+<link href="draft-ietf-cose-hpke.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  --font-title: "Sofia Sans Semi Condensed", sans-serif;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+section {
+  clear: both;
+}
+.section-number {
+  padding-right: 0.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 680;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+  & :is(ol, ul) {
+    margin-left: 1em;
+  }
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+  & li {
+    margin-top: 0.5em;
+  }
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  margin: 0 0 0 2em;
+  & li {
+    margin: 0;
+    & :first-child { margin-top: 0; }
+    & :last-child { margin-bottom: 0; }
+  }
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+  &.olPercent {
+    --indent: 5ch;
+    & > dt {
+      min-width: calc(var(--indent) - 2ch);
+    }
+  }
+  &.olPercent > dt {
+    float: none;
+  }
+
+  dl > dd > & {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
+}
+dl:not(.dlNewline) > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+  & > :is(:first-child, .break:first-child + *) {
+    margin-top: 0;
+  }
+  & > :is(:last-child) {
+    margin-bottom: 0;
+  }
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+  caption-side: bottom;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+  &[href] {
+    color: var(--pilcrow-weak);
+    &:hover { text-decoration: none; }
+  }
+}
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+  & dt {
+    width: var(--identifier-width);
+    min-width: var(--identifier-width);
+    clear: left;
+    float: left;
+    text-align: right;
+    margin-right: 1ch;
+  }
+  & dd {
+    margin: 0;
+    margin-left: calc(1em + var(--identifier-width)) !important;
+    min-width: 5em;
+  }
+  & .authors {
+    & .author {
+      display: inline-block;
+      margin-right: 1.5em;
+    }
+    & .org {
+      font-style: italic;
+    }
+  }
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+
+  & nav {
+    & ul {
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    & li {
+      line-height: 1.3em;
+      margin: 2px 0;
+      padding-left: 1.2em;
+      text-indent: -1.2em;
+    }
+  }
+  & a.xref {
+    white-space: normal;
+  }
+}
+
+.references {
+  & > dt {
+    text-align: right;
+    font-weight: bold;
+    min-width: 10ch;
+    margin-right: 1.5ch;
+    &:target::before {
+      content: "⇒";
+      margin: 0 10px 0 -25px;
+    }
+  }
+  & > dd {
+    margin-left: 12ch !important;
+    overflow: visible;
+    & .refInstance {
+      margin-bottom: 0.8em;
+    }
+    & .ascii {
+      margin-bottom: 0.25em;
+    }
+  }
+}
+
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  max-width: 20em;
+  margin: 1em auto 1em 0;
+
+  & .nameRole {
+    font-weight: 700;
+    margin-left: 0;
+  }
+  & .label {
+    margin: 0.5em 0;
+  }
+  & .type {
+    display: none;
+  }
+  & .alternative-contact {
+    margin: 0.5em 0 0.25em 0;
+  }
+  & .non-ascii {
+    margin: 0 0 0 2em;
+  }
+  & div.left {
+    text-align: left;
+  }
+  & div.right {
+    text-align: right;
+  }
+}
+
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+/* Comments */
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+
+@media screen {
+  #toc nav {
+    font-family: var(--font-title);
+    font-weight: 360;
+    & > ul { margin-bottom: 2em; }
+    & ul {
+      margin: 0 0 0 4px;
+      & :is(p, li) {
+        margin: 2px 0;
+      }
+    }
+  }
+  #toc a.toplink {
+    float: right;
+  }
+}
+@media not screen {
+  #toc a.toplink {
+    display: none;
+  }
+}
+
+
+/* TOC layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    &::before { /* css hamburger */
+      float: right;
+      position: relative;
+      width: 1em;
+      height: 1px;
+      left: -164px;
+      margin: 8px 0 0 0;
+      background: white none repeat scroll 0 0;
+      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+      content: "";
+    }
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active {
+    opacity: 1;
+    & nav { display: block; }
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:is(:link, :focus, :hover),
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin: 2px 0.5em 0;
+  }
+}
+
+/* TOC layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+  #toc a.toplink {
+    margin: 8px 0.5em 0;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">COSE HPKE</td>
+<td class="right">January 2026</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Tschofenig, et al.</td>
+<td class="center">Expires 6 July 2026</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">COSE</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-ietf-cose-hpke-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2026-01-02" class="published">2 January 2026</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2026-07-06">6 July 2026</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">H. Tschofenig</div>
+<div class="org">H-BRS</div>
+</div>
+<div class="author">
+      <div class="author-name">O. Steele, <span class="editor">Ed.</span>
+</div>
+<div class="org">Tradeverifyd</div>
+</div>
+<div class="author">
+      <div class="author-name">D. Ajitomi</div>
+<div class="org">bibital</div>
+</div>
+<div class="author">
+      <div class="author-name">L. Lundblade</div>
+<div class="org">Security Theory LLC</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Jones</div>
+<div class="org">Self-Issued Consulting</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and Encryption (COSE)</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This specification defines hybrid public-key encryption (HPKE) for use with
+CBOR Object Signing and Encryption (COSE). HPKE offers a variant of
+public-key encryption of arbitrary-sized plaintexts for a recipient public key.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">HPKE is a general encryption framework utilizing an asymmetric key encapsulation
+mechanism (KEM), a key derivation function (KDF), and an Authenticated Encryption
+with Associated Data (AEAD) algorithm.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document defines the use of HPKE with COSE. Authentication for HPKE in COSE is
+provided by COSE-native security mechanisms or by the pre-shared key authenticated
+variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-discussion-venues">
+<a href="#name-discussion-venues" class="section-name selfRef">Discussion Venues</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">Discussion of this document takes place on the
+    CBOR Object Signing and Encryption Working Group mailing list (cose@ietf.org),
+    which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/cose/">https://mailarchive.ietf.org/arch/browse/cose/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">Source for this draft and an issue tracker can be found at
+    <span><a href="https://github.com/cose-wg/draft-ietf-cose-hpke">https://github.com/cose-wg/draft-ietf-cose-hpke</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 6 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2026 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-3">
+            This document may contain material from IETF Documents or IETF
+            Contributions published or made publicly available before November
+            10, 2008. The person(s) controlling the copyright in some of this
+            material may not have granted the IETF Trust the right to allow
+            modifications of such material outside the IETF Standards Process.
+            Without obtaining an adequate license from the person(s)
+            controlling the copyright in such materials, this document may not
+            be modified outside the IETF Standards Process, and derivative
+            works of it may not be created outside the IETF Standards Process,
+            except to format it for publication as an RFC or to translate it
+            into languages other than English.<a href="#section-boilerplate.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-terminology" class="internal xref">Conventions and Terminology</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-hpke-for-cose" class="internal xref">HPKE for COSE</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-hpke-integrated-encryption-" class="internal xref">HPKE Integrated Encryption Mode</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-hpke-key-encryption-mode" class="internal xref">HPKE Key Encryption Mode</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
+                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-recipient_structure" class="internal xref">Recipient_structure</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.2">
+                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-cose-hpke-recipient-constru" class="internal xref">COSE-HPKE Recipient Construction</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-key-representation" class="internal xref">Key Representation</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-ciphersuite-registration" class="internal xref">Ciphersuite Registration</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-cose_keys-for-cose-hpke-cip" class="internal xref">COSE_Keys for COSE-HPKE Ciphersuites</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-cose-hpke-integrated-encryp" class="internal xref">COSE HPKE Integrated Encryption Mode</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-cose-hpke-key-encryption-mo" class="internal xref">COSE HPKE Key Encryption Mode</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.1">
+                    <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-cose_encrypt" class="internal xref">COSE_Encrypt</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-key-representation-2" class="internal xref">Key Representation</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.1">
+                    <p id="section-toc.1-1.5.2.3.2.1.1"><a href="#section-5.3.1" class="auto internal xref">5.3.1</a>.  <a href="#name-public-key-for-hpke-0" class="internal xref">Public Key for HPKE-0</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.2">
+                    <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="auto internal xref">5.3.2</a>.  <a href="#name-private-key-for-hpke-0" class="internal xref">Private Key for HPKE-0</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.3">
+                    <p id="section-toc.1-1.5.2.3.2.3.1"><a href="#section-5.3.3" class="auto internal xref">5.3.3</a>.  <a href="#name-kem-public-key-for-hpke-4" class="internal xref">KEM Public Key for HPKE-4</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-cose-algorithms-registry" class="internal xref">COSE Algorithms Registry</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
+                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-hpke-0" class="internal xref">HPKE-0</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.2">
+                    <p id="section-toc.1-1.7.2.1.2.2.1"><a href="#section-7.1.2" class="auto internal xref">7.1.2</a>.  <a href="#name-hpke-1" class="internal xref">HPKE-1</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.3">
+                    <p id="section-toc.1-1.7.2.1.2.3.1"><a href="#section-7.1.3" class="auto internal xref">7.1.3</a>.  <a href="#name-hpke-2" class="internal xref">HPKE-2</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.4">
+                    <p id="section-toc.1-1.7.2.1.2.4.1"><a href="#section-7.1.4" class="auto internal xref">7.1.4</a>.  <a href="#name-hpke-3" class="internal xref">HPKE-3</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.5">
+                    <p id="section-toc.1-1.7.2.1.2.5.1"><a href="#section-7.1.5" class="auto internal xref">7.1.5</a>.  <a href="#name-hpke-4" class="internal xref">HPKE-4</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.6">
+                    <p id="section-toc.1-1.7.2.1.2.6.1"><a href="#section-7.1.6" class="auto internal xref">7.1.6</a>.  <a href="#name-hpke-5" class="internal xref">HPKE-5</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.7">
+                    <p id="section-toc.1-1.7.2.1.2.7.1"><a href="#section-7.1.7" class="auto internal xref">7.1.7</a>.  <a href="#name-hpke-6" class="internal xref">HPKE-6</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.8">
+                    <p id="section-toc.1-1.7.2.1.2.8.1"><a href="#section-7.1.8" class="auto internal xref">7.1.8</a>.  <a href="#name-hpke-7" class="internal xref">HPKE-7</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.9">
+                    <p id="section-toc.1-1.7.2.1.2.9.1"><a href="#section-7.1.9" class="auto internal xref">7.1.9</a>.  <a href="#name-hpke-0-ke" class="internal xref">HPKE-0-KE</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.10">
+                    <p id="section-toc.1-1.7.2.1.2.10.1"><a href="#section-7.1.10" class="auto internal xref">7.1.10</a>. <a href="#name-hpke-1-ke" class="internal xref">HPKE-1-KE</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.11">
+                    <p id="section-toc.1-1.7.2.1.2.11.1"><a href="#section-7.1.11" class="auto internal xref">7.1.11</a>. <a href="#name-hpke-2-ke" class="internal xref">HPKE-2-KE</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.12">
+                    <p id="section-toc.1-1.7.2.1.2.12.1"><a href="#section-7.1.12" class="auto internal xref">7.1.12</a>. <a href="#name-hpke-3-ke" class="internal xref">HPKE-3-KE</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.13">
+                    <p id="section-toc.1-1.7.2.1.2.13.1"><a href="#section-7.1.13" class="auto internal xref">7.1.13</a>. <a href="#name-hpke-4-ke" class="internal xref">HPKE-4-KE</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.14">
+                    <p id="section-toc.1-1.7.2.1.2.14.1"><a href="#section-7.1.14" class="auto internal xref">7.1.14</a>. <a href="#name-hpke-5-ke" class="internal xref">HPKE-5-KE</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.15">
+                    <p id="section-toc.1-1.7.2.1.2.15.1"><a href="#section-7.1.15" class="auto internal xref">7.1.15</a>. <a href="#name-hpke-6-ke" class="internal xref">HPKE-6-KE</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.16">
+                    <p id="section-toc.1-1.7.2.1.2.16.1"><a href="#section-7.1.16" class="auto internal xref">7.1.16</a>. <a href="#name-hpke-7-ke" class="internal xref">HPKE-7-KE</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-cose-header-parameters" class="internal xref">COSE Header Parameters</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.1">
+                    <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="auto internal xref">7.2.1</a>.  <a href="#name-ek-header-parameter" class="internal xref">ek Header Parameter</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.2">
+                    <p id="section-toc.1-1.7.2.2.2.2.1"><a href="#section-7.2.2" class="auto internal xref">7.2.2</a>.  <a href="#name-psk_id-header-parameter" class="internal xref">psk_id Header Parameter</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">Hybrid public-key encryption (HPKE) <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> is a scheme that
+provides public key encryption of arbitrary-sized plaintexts given a
+recipient's public key.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">This document defines the use of HPKE with COSE (<span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>, <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span>)
+with the single-shot APIs defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-6" class="relref">Section 6</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>. Multiple
+invocations of Open() / Seal() on the same context, as discussed in
+<span><a href="https://rfc-editor.org/rfc/rfc9180#section-9.7.1" class="relref">Section 9.7.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> are not supported.<a href="#section-1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="conventions-and-terminology">
+<section id="section-2">
+      <h2 id="name-conventions-and-terminology">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-terminology" class="section-name selfRef">Conventions and Terminology</a>
+      </h2>
+<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span>
+when, and only when, they appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">This specification uses the following abbreviations and terms:<a href="#section-2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-3.1">
+          <p id="section-2-3.1.1">Content-encryption key (CEK), a term defined in CMS <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span>.<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.2">
+          <p id="section-2-3.2.1">Hybrid Public Key Encryption (HPKE) is defined in <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.3">
+          <p id="section-2-3.3.1">pkR is the public key of the recipient, as defined in <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.4">
+          <p id="section-2-3.4.1">skR is the private key of the recipient, as defined in <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.5">
+          <p id="section-2-3.5.1">Key Encapsulation Mechanism (KEM), see <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.6">
+          <p id="section-2-3.6.1">Key Derivation Function (KDF), see <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.7">
+          <p id="section-2-3.7.1">Authenticated Encryption with Associated Data (AEAD), see <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.8">
+          <p id="section-2-3.8.1">Additional Authenticated Data (AAD), see <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.8.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="hpke-for-cose">
+<section id="section-3">
+      <h2 id="name-hpke-for-cose">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-hpke-for-cose" class="section-name selfRef">HPKE for COSE</a>
+      </h2>
+<div id="overview">
+<section id="section-3.1">
+        <h3 id="name-overview">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-overview" class="section-name selfRef">Overview</a>
+        </h3>
+<p id="section-3.1-1">This specification supports two modes of using HPKE in COSE, namely:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-2.1">
+            <p id="section-3.1-2.1.1">HPKE Integrated Encryption mode, where HPKE is used to encrypt
+the plaintext. This mode can only be used with a single recipient.
+<a href="#one-layer" class="auto internal xref">Section 3.2</a> provides the details.<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.2">
+            <p id="section-3.1-2.2.1">HPKE Key Encryption mode, where HPKE is used to encrypt a
+content encryption key (CEK) and the CEK is subsequently used to
+encrypt the plaintext. This mode supports multiple recipients.
+<a href="#two-layer" class="auto internal xref">Section 3.3</a> provides the details.<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.1-3">Distinct algorithm identifiers are defined and registered
+that are specific to each COSE HPKE mode
+so that they are fully specified, as required by <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span>.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">In both cases, the new COSE header parameter 'ek' MUST be present.
+It contains the encapsulated KEM shared secret.
+The value of this parameter MUST be the 'enc' value output by the HPKE Seal() operation, as defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.
+The 'ek' header parameter MUST be encoded as a CBOR byte string.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">HPKE defines several authentication modes, as described in Table 1 of <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.
+In COSE HPKE, only 'mode_base' and 'mode_psk' are supported.
+The mode is 'mode_psk' if the 'psk_id' header parameter is present; otherwise, the mode defaults to 'mode_base'.
+'mode_base' is described in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.1" class="relref">Section 5.1.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>, which only enables encryption
+to the holder of a given KEM private key. 'mode_psk' is described in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>,
+which authenticates using a pre-shared key.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="one-layer">
+<section id="section-3.2">
+        <h3 id="name-hpke-integrated-encryption-">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-hpke-integrated-encryption-" class="section-name selfRef">HPKE Integrated Encryption Mode</a>
+        </h3>
+<p id="section-3.2-1">This mode applies if the COSE_Encrypt0 structure uses a COSE-HPKE algorithm
+and has no recipient structure(s).<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it MUST be included
+in the protected header and MUST be a COSE-HPKE algorithm.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">Although the use of the 'kid' parameter in COSE_Encrypt0 is
+discouraged by RFC 9052, this document RECOMMENDS the use of the 'kid' parameter
+(or other parameters) to explicitly identify the static recipient public key
+used by the sender. If the COSE_Encrypt0 structure includes a 'kid' parameter, the
+recipient MAY use it to select the corresponding private key.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-5.1">
+            <p id="section-3.2-5.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-5.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-5.2">
+            <p id="section-3.2-5.2.1">pkR: The recipient public key, converted into an HPKE public key.<a href="#section-3.2-5.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-5.3">
+            <p id="section-3.2-5.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-5.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-5.4">
+            <p id="section-3.2-5.4.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-5.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-5.5">
+            <p id="section-3.2-5.5.1">aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
+For the Integrated Encryption mode the context string will be "Encrypt0".<a href="#section-3.2-5.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-5.6">
+            <p id="section-3.2-5.6.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-5.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-5.7">
+            <p id="section-3.2-5.7.1">pt: The raw message plaintext.<a href="#section-3.2-5.7.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.2-6">The outputs are used as follows:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-7.1">
+            <p id="section-3.2-7.1.1">enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.<a href="#section-3.2-7.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-7.2">
+            <p id="section-3.2-7.2.1">ct: MUST be used as layer ciphertext. If not using detached content, this is directly placed as
+ciphertext in COSE_Encrypt0 structure. Otherwise, it is transported separately and the ciphertext field is nil.
+See <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5" class="relref">Section 5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> for a description of detached payloads.<a href="#section-3.2-7.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.2-8">If 'mode_psk' has been selected, then the 'psk_id' parameter MUST be present.
+If 'mode_base' has been chosen, then the 'psk_id' parameter MUST NOT be present.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
+<p id="section-3.2-9">When decrypting, the inputs to the HPKE Open operation are set as follows:<a href="#section-3.2-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-10.1">
+            <p id="section-3.2-10.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-10.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-10.2">
+            <p id="section-3.2-10.2.1">skR: The recipient private key, converted into an HPKE private key.<a href="#section-3.2-10.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-10.3">
+            <p id="section-3.2-10.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-10.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-10.4">
+            <p id="section-3.2-10.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-10.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-10.5">
+            <p id="section-3.2-10.5.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-10.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-10.6">
+            <p id="section-3.2-10.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-10.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-10.7">
+            <p id="section-3.2-10.7.1">enc: The contents of the layer 'ek' parameter.<a href="#section-3.2-10.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-10.8">
+            <p id="section-3.2-10.8.1">ct: The contents of the layer ciphertext.<a href="#section-3.2-10.8.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.2-11">The plaintext output is the raw message plaintext.<a href="#section-3.2-11" class="pilcrow">¶</a></p>
+<p id="section-3.2-12">The COSE_Encrypt0 MAY be tagged or untagged.<a href="#section-3.2-12" class="pilcrow">¶</a></p>
+<p id="section-3.2-13">An example is shown in <a href="#one-layer-example" class="auto internal xref">Section 5.1</a>.<a href="#section-3.2-13" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="two-layer">
+<section id="section-3.3">
+        <h3 id="name-hpke-key-encryption-mode">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-hpke-key-encryption-mode" class="section-name selfRef">HPKE Key Encryption Mode</a>
+        </h3>
+<p id="section-3.3-1">This mode is selected if the COSE_recipient structure uses a COSE-HPKE algorithm.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">In this approach the following layers are involved:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3-3.1">
+            <p id="section-3.3-3.1.1">Layer 0 (corresponding to the COSE_Encrypt structure) contains the content (plaintext)
+encrypted with the CEK. This ciphertext may be detached, and if not detached, then
+it is included in the COSE_Encrypt structure.<a href="#section-3.3-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.3-3.2">
+            <p id="section-3.3-3.2.1">Layer 1 (corresponding to a recipient structure) contains parameters needed for
+HPKE to generate a shared secret used to encrypt the CEK. This layer conveys the
+encrypted CEK in the COSE_recipient structure using a COSE-HPKE algorithm.
+The unprotected header MAY contain the kid parameter to identify the static recipient
+public key that the sender has been using with HPKE.<a href="#section-3.3-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.3-4">This two-layer structure is used to encrypt content that can also be shared with
+multiple parties at the expense of a single additional encryption operation.
+As stated above, the specification uses a CEK to encrypt the content at layer 0.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<div id="recipientstructure">
+<section id="section-3.3.1">
+          <h4 id="name-recipient_structure">
+<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-recipient_structure" class="section-name selfRef">Recipient_structure</a>
+          </h4>
+<p id="section-3.3.1-1">This section defines the Recipient_structure, which is used in place of COSE_KDF_Context
+for COSE-HPKE recipients. It MUST be used for COSE-HPKE recipients, as it provides
+integrity protection for recipient-protected header parameters.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-2">The Recipient_structure is modeled after the Enc_structure defined in <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>,
+but is specific to COSE_recipient structures and MUST NOT be used with COSE_Encrypt.<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-3">Furthermore, the use of COSE_KDF_Context is prohibited in COSE-HPKE; it MUST NOT be
+used.<a href="#section-3.3.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3.1-4">
+<pre>
+Recipient_structure = [
+    context: "HPKE Recipient",
+    next_layer_alg: int/tstr,
+    recipient_protected_header: empty_or_serialize_map,
+    recipient_extra_info: bstr
+]
+</pre><a href="#section-3.3.1-4" class="pilcrow">¶</a>
+</div>
+<ul class="normal">
+<li class="normal" id="section-3.3.1-5.1">
+              <p id="section-3.3.1-5.1.1">"next_layer_alg" is the algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
+It is the algorithm that the key MUST be used with.
+This value MUST match the alg parameter in the next lower COSE layer.
+(This serves the same purpose as the alg ID in the COSE_KDF_Context.
+It also mitigates attacks where the attacker manipulates the content-encryption
+algorithm identifier. This attack has been demonstrated against CMS and the mitigation
+can be found in <span>[<a href="#I-D.ietf-lamps-cms-cek-hkdf-sha256" class="cite xref">I-D.ietf-lamps-cms-cek-hkdf-sha256</a>]</span>.<a href="#section-3.3.1-5.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.1-5.2">
+              <p id="section-3.3.1-5.2.1">"recipient_protected_header" contains the protected header parameters from the COSE_recipient
+CBOR-encoded deterministically with the "Core Deterministic Encoding Requirements",
+specified in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-3.3.1-5.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.1-5.3">
+              <p id="section-3.3.1-5.3.1">"recipient_extra_info" contains any additional context the application wishes to include in
+the key derivation via the HPKE info parameter. If none, it is a zero-length string.<a href="#section-3.3.1-5.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="cose-hpke-recipient-construction">
+<section id="section-3.3.2">
+          <h4 id="name-cose-hpke-recipient-constru">
+<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-cose-hpke-recipient-constru" class="section-name selfRef">COSE-HPKE Recipient Construction</a>
+          </h4>
+<p id="section-3.3.2-1">Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it
+MUST be in the protected header parameters and MUST be a COSE-HPKE algorithm.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-2">The protected header MAY contain the kid parameter to identify the static recipient
+public key that the sender used. Use of the 'kid' parameter is RECOMMENDED
+to explicitly identify the static recipient public key used by the sender.
+Including it in the protected header parameters ensures that it is input into the
+key derivation function of HPKE.<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-3">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.3.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3.2-4.1">
+              <p id="section-3.3.2-4.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-4.2">
+              <p id="section-3.3.2-4.2.1">pkR: The recipient public key, converted into HPKE public key.<a href="#section-3.3.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-4.3">
+              <p id="section-3.3.2-4.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-4.4">
+              <p id="section-3.3.2-4.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-4.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-4.5">
+              <p id="section-3.3.2-4.5.1">info: Deterministic encoding of the Recipient_structure.<a href="#section-3.3.2-4.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-4.6">
+              <p id="section-3.3.2-4.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-4.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-4.7">
+              <p id="section-3.3.2-4.7.1">pt: The raw key for the next layer down.<a href="#section-3.3.2-4.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-3.3.2-5">The outputs are used as follows:<a href="#section-3.3.2-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3.2-6.1">
+              <p id="section-3.3.2-6.1.1">enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.<a href="#section-3.3.2-6.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-6.2">
+              <p id="section-3.3.2-6.2.1">ct: MUST be placed raw in the ciphertext field in the COSE_recipient.<a href="#section-3.3.2-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-3.3.2-7">When decrypting, the inputs to the HPKE Open operation are set as follows:<a href="#section-3.3.2-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3.2-8.1">
+              <p id="section-3.3.2-8.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-8.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-8.2">
+              <p id="section-3.3.2-8.2.1">skR: The recipient private key, converted into HPKE private key.<a href="#section-3.3.2-8.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-8.3">
+              <p id="section-3.3.2-8.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-8.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-8.4">
+              <p id="section-3.3.2-8.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-8.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-8.5">
+              <p id="section-3.3.2-8.5.1">info: Deterministic encoding of the Recipient_structure.<a href="#section-3.3.2-8.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-8.6">
+              <p id="section-3.3.2-8.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-8.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-8.7">
+              <p id="section-3.3.2-8.7.1">ct: The contents of the layer ciphertext field.<a href="#section-3.3.2-8.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-3.3.2-9">The plaintext output is the raw key for the next layer down.<a href="#section-3.3.2-9" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-10">It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
+attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
+may still utilize recipient_aad for other purposes as needed; however, it is generally
+intended for small values such as identifiers, contextual information, or secrets. It is
+not designed for protecting large or bulk external data.<a href="#section-3.3.2-10" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-11">Any bulk external data that requires protection should be handled at layer 0 using external_aad.<a href="#section-3.3.2-11" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-12">The COSE_recipient structure is computed for each recipient.<a href="#section-3.3.2-12" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-13">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
+authenticated data structure.<a href="#section-3.3.2-13" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-14">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-14" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="key-representation">
+<section id="section-3.4">
+        <h3 id="name-key-representation">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-key-representation" class="section-name selfRef">Key Representation</a>
+        </h3>
+<p id="section-3.4-1">The COSE_Key with the existing key types can be used to represent KEM private
+or public keys. When using a COSE_Key for COSE-HPKE, the following checks are made:<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.4-2.1">
+            <p id="section-3.4-2.1.1">If the "kty" field is "AKP", then the public and private keys SHALL be the raw HPKE public and private
+keys (respectively) for the KEM used by the algorithm.<a href="#section-3.4-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.4-2.2">
+            <p id="section-3.4-2.2.1">Otherwise, the key MUST be suitable for the KEM used by the algorithm. In case the "kty" parameter
+is "EC2" or "OKP", this means the value of "crv" parameter is suitable. The valid combinations of
+KEM, "kty" and "crv" for the algorithms defined in this document are shown in <a href="#ciphersuite-kty-crv" class="auto internal xref">Figure 1</a>.<a href="#section-3.4-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.4-2.3">
+            <p id="section-3.4-2.3.1">If the "key_ops" field is present, it MUST include only "derive bits" for the private key
+and MUST be empty for the public key.<a href="#section-3.4-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.4-3">Examples of the COSE_Key for COSE-HPKE are shown in <a href="#key-representation-example" class="auto internal xref">Section 5.3</a>.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="ciphersuite-registration">
+<section id="section-4">
+      <h2 id="name-ciphersuite-registration">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-ciphersuite-registration" class="section-name selfRef">Ciphersuite Registration</a>
+      </h2>
+<p id="section-4-1">A ciphersuite is a group of algorithms, often sharing component algorithms
+such as hash functions, targeting a security level.
+A COSE-HPKE algorithm is composed of the following choices:<a href="#section-4-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-2.1">
+          <p id="section-4-2.1.1">COSE HPKE Mode<a href="#section-4-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-2.2">
+          <p id="section-4-2.2.1">KEM Algorithm<a href="#section-4-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-2.3">
+          <p id="section-4-2.3.1">KDF Algorithm<a href="#section-4-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-2.4">
+          <p id="section-4-2.4.1">AEAD Algorithm<a href="#section-4-2.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-4-3">The "KEM", "KDF", and "AEAD" values are chosen from the HPKE IANA
+registry <span>[<a href="#HPKE-IANA" class="cite xref">HPKE-IANA</a>]</span>.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">The HPKE mode is determined by the presence or absence of the
+'psk_id' parameter and is therefore not explicitly indicated in the
+ciphersuite.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">For a list of ciphersuite registrations, please see <a href="#IANA" class="auto internal xref">Section 7</a>. The following
+table summarizes the relationship between the ciphersuites registered in this
+document and the values registered in the HPKE IANA registry <span>[<a href="#HPKE-IANA" class="cite xref">HPKE-IANA</a>]</span>.<a href="#section-4-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4-6">
+<pre>
++-------------------+-----------------------+-------------------+
+| COSE-HPKE         | COSE HPKE Mode        |        HPKE       |
+| Ciphersuite Label |                       | KEM  | KDF | AEAD |
++-------------------+-----------------------+------+-----+------+
+| HPKE-0            | Integrated Encryption | 0x10 | 0x1 | 0x1  |
+| HPKE-1            | Integrated Encryption | 0x11 | 0x2 | 0x2  |
+| HPKE-2            | Integrated Encryption | 0x12 | 0x3 | 0x2  |
+| HPKE-3            | Integrated Encryption | 0x20 | 0x1 | 0x1  |
+| HPKE-4            | Integrated Encryption | 0x20 | 0x1 | 0x3  |
+| HPKE-5            | Integrated Encryption | 0x21 | 0x3 | 0x2  |
+| HPKE-6            | Integrated Encryption | 0x21 | 0x3 | 0x3  |
+| HPKE-7            | Integrated Encryption | 0x10 | 0x1 | 0x2  |
+| HPKE-0-KE         | Key Encryption        | 0x10 | 0x1 | 0x1  |
+| HPKE-1-KE         | Key Encryption        | 0x11 | 0x2 | 0x2  |
+| HPKE-2-KE         | Key Encryption        | 0x12 | 0x3 | 0x2  |
+| HPKE-3-KE         | Key Encryption        | 0x20 | 0x1 | 0x1  |
+| HPKE-4-KE         | Key Encryption        | 0x20 | 0x1 | 0x3  |
+| HPKE-5-KE         | Key Encryption        | 0x21 | 0x3 | 0x2  |
+| HPKE-6-KE         | Key Encryption        | 0x21 | 0x3 | 0x3  |
+| HPKE-7-KE         | Key Encryption        | 0x10 | 0x1 | 0x2  |
++-------------------+-----------------------+------+-----+------+
+</pre><a href="#section-4-6" class="pilcrow">¶</a>
+</div>
+<p id="section-4-7">The following list maps the ciphersuite labels to their textual
+description.<a href="#section-4-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-8.1">
+          <p id="section-4-8.1.1">HPKE-0: Integrated Encryption with DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.<a href="#section-4-8.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.2">
+          <p id="section-4-8.2.1">HPKE-1: Integrated Encryption with DHKEM(P-384, HKDF-SHA384) KEM, HKDF-SHA384 KDF, and AES-256-GCM AEAD.<a href="#section-4-8.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.3">
+          <p id="section-4-8.3.1">HPKE-2: Integrated Encryption with DHKEM(P-521, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.<a href="#section-4-8.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.4">
+          <p id="section-4-8.4.1">HPKE-3: Integrated Encryption with DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.<a href="#section-4-8.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.5">
+          <p id="section-4-8.5.1">HPKE-4: Integrated Encryption with DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and ChaCha20Poly1305 AEAD.<a href="#section-4-8.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.6">
+          <p id="section-4-8.6.1">HPKE-5: Integrated Encryption with DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.<a href="#section-4-8.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.7">
+          <p id="section-4-8.7.1">HPKE-6: Integrated Encryption with DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and ChaCha20Poly1305 AEAD.<a href="#section-4-8.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.8">
+          <p id="section-4-8.8.1">HPKE-7: Integrated Encryption with DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-256-GCM AEAD.<a href="#section-4-8.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.9">
+          <p id="section-4-8.9.1">HPKE-0: Key Encryption with DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.<a href="#section-4-8.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.10">
+          <p id="section-4-8.10.1">HPKE-1: Key Encryption with DHKEM(P-384, HKDF-SHA384) KEM, HKDF-SHA384 KDF, and AES-256-GCM AEAD.<a href="#section-4-8.10.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.11">
+          <p id="section-4-8.11.1">HPKE-2: Key Encryption with DHKEM(P-521, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.<a href="#section-4-8.11.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.12">
+          <p id="section-4-8.12.1">HPKE-3: Key Encryption with DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.<a href="#section-4-8.12.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.13">
+          <p id="section-4-8.13.1">HPKE-4: Key Encryption with DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and ChaCha20Poly1305 AEAD.<a href="#section-4-8.13.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.14">
+          <p id="section-4-8.14.1">HPKE-5: Key Encryption with DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.<a href="#section-4-8.14.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.15">
+          <p id="section-4-8.15.1">HPKE-6: Key Encryption with DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and ChaCha20Poly1305 AEAD.<a href="#section-4-8.15.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-8.16">
+          <p id="section-4-8.16.1">HPKE-7: Key Encryption with DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-256-GCM AEAD.<a href="#section-4-8.16.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-4-9">As the list indicates, the ciphersuite labels have been abbreviated at least
+to some extent to strike a balance between readability and length.<a href="#section-4-9" class="pilcrow">¶</a></p>
+<p id="section-4-10">The ciphersuite list above is a minimal starting point. Additional
+ciphersuites can be registered into the already existing registry.
+For example, once post-quantum cryptographic algorithms have been standardized
+it might be beneficial to register ciphersuites for use with COSE-HPKE.
+Additionally, ciphersuites utilizing the compact encoding of the public keys,
+as defined in <span>[<a href="#I-D.irtf-cfrg-dnhpke" class="cite xref">I-D.irtf-cfrg-dnhpke</a>]</span>, may be standardized for use in
+constrained environments.<a href="#section-4-10" class="pilcrow">¶</a></p>
+<p id="section-4-11">As a guideline for ciphersuite submissions to the IANA COSE algorithm
+registry, the designated experts must only register combinations of
+(KEM, KDF, AEAD) triple that constitute valid combinations for use with
+HPKE, the KDF used should (if possible) match one internally used by the
+KEM, and components should not be mixed between global and national standards.<a href="#section-4-11" class="pilcrow">¶</a></p>
+<div id="cosekeys-for-cose-hpke-ciphersuites">
+<section id="section-4.1">
+        <h3 id="name-cose_keys-for-cose-hpke-cip">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-cose_keys-for-cose-hpke-cip" class="section-name selfRef">COSE_Keys for COSE-HPKE Ciphersuites</a>
+        </h3>
+<p id="section-4.1-1">The COSE-HPKE algorithm uniquely determines the KEM for which a COSE_Key is used.
+The following mapping table shows the valid combinations
+of the KEM used, COSE_Key type, and its curve/key subtype.
+This holds for COSE algorithms using either of the COSE HPKE modes
+(Integrated Encryption and Key Encryption).<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<span id="name-cose_key-types-and-curves-f"></span><div id="ciphersuite-kty-crv">
+<figure id="figure-1">
+          <div class="alignLeft art-text artwork" id="section-4.1-2.1">
+<pre>
++---------------------+--------------+
+| HPKE KEM id         | COSE_Key     |
+|                     | kty | crv    |
++---------------------+-----+--------+
+| 0x0010, 0x0013      | EC2 | P-256  |
+| 0x0011, 0x0014      | EC2 | P-384  |
+| 0x0012, 0x0015      | EC2 | P-521  |
+| 0x0020              | OKP | X25519 |
+| 0x0021              | OKP | X448   |
++---------------------+-----+--------+
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-cose_key-types-and-curves-f" class="selfRef">COSE_Key Types and Curves for COSE-HPKE Ciphersuites</a>
+          </figcaption></figure>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="examples">
+<section id="section-5">
+      <h2 id="name-examples">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
+      </h2>
+<p id="section-5-1">This section provides a set of examples that show all COSE message types
+(COSE_Encrypt0 and COSE_Encrypt) to which the COSE-HPKE can be
+applied, and also provides some examples of key representation for HPKE KEM.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">Each example of the COSE message includes the following information
+that can be used to check the interoperability of COSE-HPKE implementations:<a href="#section-5-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5-3.1">
+          <p id="section-5-3.1.1">plaintext: Original data of the encrypted payload.<a href="#section-5-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-3.2">
+          <p id="section-5-3.2.1">external_aad: Externally supplied AAD.<a href="#section-5-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-3.3">
+          <p id="section-5-3.3.1">skR: A recipient private key.<a href="#section-5-3.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-3.4">
+          <p id="section-5-3.4.1">skE: An ephemeral sender private key paired with the encapsulated key.<a href="#section-5-3.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<div id="one-layer-example">
+<section id="section-5.1">
+        <h3 id="name-cose-hpke-integrated-encryp">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-cose-hpke-integrated-encryp" class="section-name selfRef">COSE HPKE Integrated Encryption Mode</a>
+        </h3>
+<p id="section-5.1-1">This example assumes that a sender wants to communicate an
+encrypted payload to a single recipient in the most efficient way.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">An example of the HPKE Integrated Encryption Mode is
+shown in <a href="#hpke-example-one" class="auto internal xref">Figure 2</a>. Line breaks and comments have been inserted
+for better readability.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">This example uses the following:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.1-4.1">
+            <p id="section-5.1-4.1.1">alg: HPKE-0<a href="#section-5.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.2">
+            <p id="section-5.1-4.2.1">plaintext: "This is the content."<a href="#section-5.1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.3">
+            <p id="section-5.1-4.3.1">external_aad: "COSE-HPKE app"<a href="#section-5.1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.4">
+            <p id="section-5.1-4.4.1">skR: h'57c92077664146e876760c9520d054aa93c3afb04e306705db6090308507b4d3'<a href="#section-5.1-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.5">
+            <p id="section-5.1-4.5.1">skE: h'42dd125eefc409c3b57366e721a40043fb5a58e346d51c133128a77237160218'<a href="#section-5.1-4.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<span id="name-cose_encrypt0-example-for-h"></span><div id="hpke-example-one">
+<figure id="figure-2">
+          <div class="alignLeft art-text artwork" id="section-5.1-5.1">
+<pre>
+16([
+    / alg = HPKE-0 (Assumed: 35) /
+    h'a1011823',
+    {
+        / kid /
+        4: h'3031',
+        / ek /
+        -4: h'045df24272faf43849530db6be01f42708b3c3a9
+              df8e268513f0a996ed09ba7840894a3fb946cb28
+              23f609c59463093d8815a7400233b75ca8ecb177
+              54d241973e',
+    },
+    / encrypted plaintext /
+    h'35aa3d98739289b83751125abe44e3b977e4b9abbf2c8cfaade
+      b15f7681eef76df88f096',
+])
+</pre>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-cose_encrypt0-example-for-h" class="selfRef">COSE_Encrypt0 Example for HPKE</a>
+          </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="two-layer-example">
+<section id="section-5.2">
+        <h3 id="name-cose-hpke-key-encryption-mo">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-cose-hpke-key-encryption-mo" class="section-name selfRef">COSE HPKE Key Encryption Mode</a>
+        </h3>
+<p id="section-5.2-1">In this example we assume that a sender wants to transmit a
+payload to two recipients using the HPKE Key Encryption mode.
+Note that it is possible to send two single-layer payloads,
+although it will be less efficient.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<div id="coseencrypt">
+<section id="section-5.2.1">
+          <h4 id="name-cose_encrypt">
+<a href="#section-5.2.1" class="section-number selfRef">5.2.1. </a><a href="#name-cose_encrypt" class="section-name selfRef">COSE_Encrypt</a>
+          </h4>
+<p id="section-5.2.1-1">An example of key encryption using the COSE_Encrypt structure using HPKE is
+shown in <a href="#hpke-example-cose-encrypt" class="auto internal xref">Figure 3</a>. Line breaks and comments have been
+inserted for better readability.<a href="#section-5.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-2">This example uses the following input parameters:<a href="#section-5.2.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.2.1-3.1">
+              <p id="section-5.2.1-3.1.1">Content encryption algorithm: AES-128-GCM<a href="#section-5.2.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.2.1-3.2">
+              <p id="section-5.2.1-3.2.1">plaintext: "This is the payload."<a href="#section-5.2.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.2.1-3.3">
+              <p id="section-5.2.1-3.3.1">kid:"alice"<a href="#section-5.2.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.2.1-3.4">
+              <p id="section-5.2.1-3.4.1">alg: HPKE-0-KE (assumed 46) - Key Encryption, DHKEM(P-256, HKDF-SHA256), KDF: HKDF-SHA256, AEAD: AES-128-GCM<a href="#section-5.2.1-3.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-5.2.1-3.5">
+              <p id="section-5.2.1-3.5.1">external_aad: "some externally provided aad"<a href="#section-5.2.1-3.5.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-5.2.1-4">Alice uses the following NIST P-256 ECC keys.<a href="#section-5.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-5">Private Key:<a href="#section-5.2.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2.1-6">
+<pre>
+0xaf, 0xf9, 0x07, 0xc9, 0x9f, 0x9a, 0xd3, 0xaa,
+0xe6, 0xc4, 0xcd, 0xf2, 0x11, 0x22, 0xbc, 0xe2,
+0xbd, 0x68, 0xb5, 0x28, 0x3e, 0x69, 0x07, 0x15,
+0x4a, 0xd9, 0x11, 0x84, 0x0f, 0xa2, 0x08, 0xcf
+</pre><a href="#section-5.2.1-6" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2.1-7">Public Key:<a href="#section-5.2.1-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2.1-8">
+<pre>
+/* SEC Serialization of X and Y */
+0x04,
+
+/* X &amp; Y */
+0x65, 0xed, 0xa5, 0xa1, 0x25, 0x77, 0xc2, 0xba,
+0xe8, 0x29, 0x43, 0x7f, 0xe3, 0x38, 0x70, 0x1a,
+0x10, 0xaa, 0xa3, 0x75, 0xe1, 0xbb, 0x5b, 0x5d,
+0xe1, 0x08, 0xde, 0x43, 0x9c, 0x08, 0x55, 0x1d,
+
+0x1e, 0x52, 0xed, 0x75, 0x70, 0x11, 0x63, 0xf7,
+0xf9, 0xe4, 0x0d, 0xdf, 0x9f, 0x34, 0x1b, 0x3d,
+0xc9, 0xba, 0x86, 0x0a, 0xf7, 0xe0, 0xca, 0x7c,
+0xa7, 0xe9, 0xee, 0xcd, 0x00, 0x84, 0xd1, 0x9c
+</pre><a href="#section-5.2.1-8" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2.1-9">As a result, the following COSE_Encrypt payload is
+created:<a href="#section-5.2.1-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2.1-10">
+<pre>
+d8 60 84 43 a1 01 01 a1 05 50 7f 55 a2 6b 98 c0
+49 b4 28 a7 cf 25 9d c3 0e 54 58 23 3f ae 53 ee
+83 55 ee 40 4e 86 7c 00 74 f8 c3 8c 6d 13 6b 65
+bb 61 93 92 79 b4 38 48 c5 8c b6 a4 76 03 55 81
+83 4b a2 01 18 23 04 45 61 6c 69 63 65 a1 23 58
+41 04 fe 73 6d 1d 93 11 4d f6 11 3b c2 87 cd 8e
+63 67 e1 0a b4 78 d7 fe df ac a1 6e 12 6f f0 16
+d6 95 d5 f7 22 34 03 e3 99 60 75 55 bc cf b9 65
+17 5f 49 14 e0 47 73 f7 04 07 5b 46 58 bf 7a dd
+84 a3 58 20 55 12 c2 35 7d 4c b6 bd 23 8a 5f bc
+10 84 b6 c9 74 0a c2 41 1d 93 63 7a 51 e6 9d 51
+0b 4f ae f8
+</pre><a href="#section-5.2.1-10" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2.1-11">Decoded, this hex-sequence has the following
+content:<a href="#section-5.2.1-11" class="pilcrow">¶</a></p>
+<span id="name-cose_encrypt-example-for-hp"></span><div id="hpke-example-cose-encrypt">
+<figure id="figure-3">
+            <div class="alignLeft art-text artwork" id="section-5.2.1-12.1">
+<pre>
+=============== NOTE: '\' line wrapping per RFC 8792 ================
+
+  96([
+       / alg = AES-128-GCM (1) /
+       h'A10101',
+       {
+           / iv /
+           5: h'33739C468ACB8EEC693C563EAEA12DD0'
+       },
+       / ciphertext /
+       h'\
+1F3EE9966D5CEE016E49365CF366FD608F271FC3B5ABDD5253844EE38EE6ABB7F555\
+                                                                 9A',
+       [
+           [
+               / alg = HPKE-0 (35), kid = 'alice' /
+               h'A20118230445616C696365',
+               {
+                   / ek /
+                   -4: h'\
+040506BE8D9C2AFE42D3330676A3F616BAE02F6779D962449F26759B8D1E8F4DF10C\
+      9F344627DEB063EE1DDB4858A5E7605BD09ECEB409B037E6E61F44D1E946C1'
+               },
+               / ciphertext containing encrypted CEK /
+               h'\
+    B11361397A19E9C155C3E0E8117B5E88155600E550DDE03DC834A46A182DE6F1'
+           ]
+       ]
+   ])
+</pre>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-cose_encrypt-example-for-hp" class="selfRef">COSE_Encrypt Example for HPKE</a>
+            </figcaption></figure>
+</div>
+<p id="section-5.2.1-13">To offer authentication of the sender the payload in <a href="#hpke-example-cose-encrypt" class="auto internal xref">Figure 3</a>
+is signed with a COSE_Sign1 wrapper, which is outlined in <a href="#hpke-example-sign" class="auto internal xref">Figure 4</a>.
+The payload in <a href="#hpke-example-sign" class="auto internal xref">Figure 4</a> is meant to contain the content of
+<a href="#hpke-example-cose-encrypt" class="auto internal xref">Figure 3</a>.<a href="#section-5.2.1-13" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-14">Bob uses the following signature key to sign the COSE_Encrypt payload
+without any additional data.<a href="#section-5.2.1-14" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-15">Private Key:<a href="#section-5.2.1-15" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2.1-16">
+<pre>
+0xd9, 0xb5, 0xe7, 0x1f, 0x77, 0x28, 0xbf, 0xe5,
+0x63, 0xa9, 0xdc, 0x93, 0x75, 0x62, 0x27, 0x7e,
+0x32, 0x7d, 0x98, 0xd9, 0x94, 0x80, 0xf3, 0xdc,
+0x92, 0x41, 0xe5, 0x74, 0x2a, 0xc4, 0x58, 0x89
+</pre><a href="#section-5.2.1-16" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2.1-17">The output of the message is as follows:<a href="#section-5.2.1-17" class="pilcrow">¶</a></p>
+<span id="name-cose_sign1-example"></span><div id="hpke-example-sign">
+<figure id="figure-4">
+            <div class="alignLeft art-text artwork" id="section-5.2.1-18.1">
+<pre>
+=============== NOTE: '\' line wrapping per RFC 8792 ================
+
+18([
+       / alg = ES256 (-7) /
+       h'A10126',
+       {
+          / kid = 'bob' /
+          4: h'626F62'
+       },
+       / payload / h'\
+D8608443A10101A1055033739C468ACB8EEC693C563EAEA12DD058231F3EE9966D5C\
+EE016E49365CF366FD608F271FC3B5ABDD5253844EE38EE6ABB7F5559A81834BA201\
+18230445616C696365A1235841040506BE8D9C2AFE42D3330676A3F616BAE02F6779\
+D962449F26759B8D1E8F4DF10C9F344627DEB063EE1DDB4858A5E7605BD09ECEB409\
+B037E6E61F44D1E946C15820B11361397A19E9C155C3E0E8117B5E88155600E550DD\
+                                            E03DC834A46A182DE6F1',
+       / Signature /
+       h'\
+7F9A83D1753E6FA8475A1250A786DA3E680265949A0AEE1984895A406E41AE8A2966\
+        38CA64AE270C5317829BD3968EF76C42DF1566DADC9A68B06BA6ED376B8A'
+  ])
+</pre>
+</div>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-cose_sign1-example" class="selfRef">COSE_Sign1 Example</a>
+            </figcaption></figure>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="key-representation-example">
+<section id="section-5.3">
+        <h3 id="name-key-representation-2">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-key-representation-2" class="section-name selfRef">Key Representation</a>
+        </h3>
+<p id="section-5.3-1">Examples of private and public KEM key representation are shown below.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<div id="public-key-for-hpke-0">
+<section id="section-5.3.1">
+          <h4 id="name-public-key-for-hpke-0">
+<a href="#section-5.3.1" class="section-number selfRef">5.3.1. </a><a href="#name-public-key-for-hpke-0" class="section-name selfRef">Public Key for HPKE-0</a>
+          </h4>
+<span id="name-public-key-representation-e"></span><div id="hpke-example-key-1">
+<figure id="figure-5">
+            <div class="alignLeft art-text artwork" id="section-5.3.1-1.1">
+<pre>
+{
+    / kty = 'EC2' /
+    1: 2,
+    / kid = '01' /
+    2: h'3031',
+    / alg = HPKE-0 (Assumed: 35) /
+    3: 35,
+    / crv = 'P-256' /
+    -1: 1,
+    / x /
+    -2: h'65eda5a12577c2bae829437fe338701a10aaa375
+          e1bb5b5de108de439c08551d',
+    / y /
+    -3: h'1e52ed75701163f7f9e40ddf9f341b3dc9ba860af
+          7e0ca7ca7e9eecd0084d19c'
+}
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-public-key-representation-e" class="selfRef">Public Key Representation Example for HPKE-0</a>
+            </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="private-key-for-hpke-0">
+<section id="section-5.3.2">
+          <h4 id="name-private-key-for-hpke-0">
+<a href="#section-5.3.2" class="section-number selfRef">5.3.2. </a><a href="#name-private-key-for-hpke-0" class="section-name selfRef">Private Key for HPKE-0</a>
+          </h4>
+<span id="name-private-key-representation-"></span><div id="hpke-example-key-2">
+<figure id="figure-6">
+            <div class="alignLeft art-text artwork" id="section-5.3.2-1.1">
+<pre>
+{
+    / kty = 'EC2' /
+    1: 2,
+    / kid = '01' /
+    2: h'3031',
+    / alg = HPKE-0 (Assumed: 35) /
+    3: 35,
+    / key_ops = ['derive_bits'] /
+    4: [8],
+    / crv = 'P-256' /
+    -1: 1,
+    / x /
+    -2: h'bac5b11cad8f99f9c72b05cf4b9e26d244dc189f7
+          45228255a219a86d6a09eff',
+    / y /
+    -3: h'20138bf82dc1b6d562be0fa54ab7804a3a64b6d72
+          ccfed6b6fb6ed28bbfc117e',
+    / d /
+    -4: h'57c92077664146e876760c9520d054aa93c3afb04
+          e306705db6090308507b4d3',
+}
+</pre>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-private-key-representation-" class="selfRef">Private Key Representation Example for HPKE-0</a>
+            </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="kem-public-key-for-hpke-4">
+<section id="section-5.3.3">
+          <h4 id="name-kem-public-key-for-hpke-4">
+<a href="#section-5.3.3" class="section-number selfRef">5.3.3. </a><a href="#name-kem-public-key-for-hpke-4" class="section-name selfRef">KEM Public Key for HPKE-4</a>
+          </h4>
+<span id="name-public-key-representation-ex"></span><div id="hpke-example-key-3">
+<figure id="figure-7">
+            <div class="alignLeft art-text artwork" id="section-5.3.3-1.1">
+<pre>
+{
+    / kty = 'OKP' /
+    1: 1,
+    / kid = '11' /
+    2: h'3131',
+    / alg = HPKE-4 (Assumed: 42) /
+    3: 42,
+    / crv = 'X25519' /
+    -1: 4,
+    / x /
+    -2: h'cb7c09ab7b973c77a808ee05b9bbd373b55c06eaa
+          9bd4ad2bd4e9931b1c34c22',
+}
+</pre>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-public-key-representation-ex" class="selfRef">Public Key Representation Example for HPKE-4</a>
+            </figcaption></figure>
+</div>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-cons">
+<section id="section-6">
+      <h2 id="name-security-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-6-1">This specification is based on HPKE and the security considerations of
+<span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> are therefore applicable also to this specification.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">Both HPKE and HPKE COSE assume that the sender possesses the recipient's
+public key. Therefore, some form of public key distribution mechanism is
+assumed to exist, but this is outside the scope of this document.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">HPKE relies on a source of randomness to be available on the device. Additionally,
+with the two layer structure the CEK is randomly generated and it MUST be
+ensured that the guidelines in <span>[<a href="#RFC8937" class="cite xref">RFC8937</a>]</span> for random number generation are followed.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4">HPKE in Base mode does not offer authentication as part of the HPKE KEM. In this
+case COSE constructs like COSE_Sign, COSE_Sign1, COSE_Mac, or COSE_Mac0 can be
+used to add authentication.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-5">If COSE_Encrypt or COSE_Encrypt0 is used with a detached ciphertext then the
+subsequently applied integrity protection via COSE_Sign, COSE_Sign1, COSE_Mac,
+or COSE_Mac0 does not cover this detached ciphertext. Implementers MUST ensure
+that the detached ciphertext also experiences integrity protection. This is, for
+example, the case when an AEAD cipher is used to produce the detached ciphertext
+but may not be guaranteed by non-AEAD ciphers.<a href="#section-6-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="IANA">
+<section id="section-7">
+      <h2 id="name-iana-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-7-1">This document requests IANA to add new values to the 'COSE Algorithms' and to
+the 'COSE Header Parameters' registries.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<div id="cose-algorithms-registry">
+<section id="section-7.1">
+        <h3 id="name-cose-algorithms-registry">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-cose-algorithms-registry" class="section-name selfRef">COSE Algorithms Registry</a>
+        </h3>
+<div id="hpke-0">
+<section id="section-7.1.1">
+          <h4 id="name-hpke-0">
+<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-hpke-0" class="section-name selfRef">HPKE-0</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.1-1.1">
+              <p id="section-7.1.1-1.1.1">Name: HPKE-0<a href="#section-7.1.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.1-1.2">
+              <p id="section-7.1.1-1.2.1">Value: TBD1 (Assumed: 35)<a href="#section-7.1.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.1-1.3">
+              <p id="section-7.1.1-1.3.1">Description: COSE HPKE Integrated Encryption using DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.<a href="#section-7.1.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.1-1.4">
+              <p id="section-7.1.1-1.4.1">Capabilities: [kty]<a href="#section-7.1.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.1-1.5">
+              <p id="section-7.1.1-1.5.1">Change Controller: IESG<a href="#section-7.1.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.1-1.6">
+              <p id="section-7.1.1-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.1-1.7">
+              <p id="section-7.1.1-1.7.1">Recommended: Yes<a href="#section-7.1.1-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-1">
+<section id="section-7.1.2">
+          <h4 id="name-hpke-1">
+<a href="#section-7.1.2" class="section-number selfRef">7.1.2. </a><a href="#name-hpke-1" class="section-name selfRef">HPKE-1</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.2-1.1">
+              <p id="section-7.1.2-1.1.1">Name: HPKE-1<a href="#section-7.1.2-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-1.2">
+              <p id="section-7.1.2-1.2.1">Value: TBD3 (Assumed: 37)<a href="#section-7.1.2-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-1.3">
+              <p id="section-7.1.2-1.3.1">Description: COSE HPKE Integrated Encryption using DHKEM(P-384, HKDF-SHA384) KEM, HKDF-SHA384 KDF, and AES-256-GCM AEAD.<a href="#section-7.1.2-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-1.4">
+              <p id="section-7.1.2-1.4.1">Capabilities: [kty]<a href="#section-7.1.2-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-1.5">
+              <p id="section-7.1.2-1.5.1">Change Controller: IESG<a href="#section-7.1.2-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-1.6">
+              <p id="section-7.1.2-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.2-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.2-1.7">
+              <p id="section-7.1.2-1.7.1">Recommended: Yes<a href="#section-7.1.2-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-2">
+<section id="section-7.1.3">
+          <h4 id="name-hpke-2">
+<a href="#section-7.1.3" class="section-number selfRef">7.1.3. </a><a href="#name-hpke-2" class="section-name selfRef">HPKE-2</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.3-1.1">
+              <p id="section-7.1.3-1.1.1">Name: HPKE-2<a href="#section-7.1.3-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.3-1.2">
+              <p id="section-7.1.3-1.2.1">Value: TBD5 (Assumed: 39)<a href="#section-7.1.3-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.3-1.3">
+              <p id="section-7.1.3-1.3.1">Description: COSE HPKE Integrated Encryption using DHKEM(P-521, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.<a href="#section-7.1.3-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.3-1.4">
+              <p id="section-7.1.3-1.4.1">Capabilities: [kty]<a href="#section-7.1.3-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.3-1.5">
+              <p id="section-7.1.3-1.5.1">Change Controller: IESG<a href="#section-7.1.3-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.3-1.6">
+              <p id="section-7.1.3-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.3-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.3-1.7">
+              <p id="section-7.1.3-1.7.1">Recommended: Yes<a href="#section-7.1.3-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-3">
+<section id="section-7.1.4">
+          <h4 id="name-hpke-3">
+<a href="#section-7.1.4" class="section-number selfRef">7.1.4. </a><a href="#name-hpke-3" class="section-name selfRef">HPKE-3</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.4-1.1">
+              <p id="section-7.1.4-1.1.1">Name: HPKE-3<a href="#section-7.1.4-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.4-1.2">
+              <p id="section-7.1.4-1.2.1">Value: TBD7 (Assumed: 41)<a href="#section-7.1.4-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.4-1.3">
+              <p id="section-7.1.4-1.3.1">Description: COSE HPKE Integrated Encryption using DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.<a href="#section-7.1.4-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.4-1.4">
+              <p id="section-7.1.4-1.4.1">Capabilities: [kty]<a href="#section-7.1.4-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.4-1.5">
+              <p id="section-7.1.4-1.5.1">Change Controller: IESG<a href="#section-7.1.4-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.4-1.6">
+              <p id="section-7.1.4-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.4-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.4-1.7">
+              <p id="section-7.1.4-1.7.1">Recommended: Yes<a href="#section-7.1.4-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-4">
+<section id="section-7.1.5">
+          <h4 id="name-hpke-4">
+<a href="#section-7.1.5" class="section-number selfRef">7.1.5. </a><a href="#name-hpke-4" class="section-name selfRef">HPKE-4</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.5-1.1">
+              <p id="section-7.1.5-1.1.1">Name: HPKE-4<a href="#section-7.1.5-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.5-1.2">
+              <p id="section-7.1.5-1.2.1">Value: TBD8 (Assumed: 42)<a href="#section-7.1.5-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.5-1.3">
+              <p id="section-7.1.5-1.3.1">Description: COSE HPKE Integrated Encryption using DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and ChaCha20Poly1305 AEAD.<a href="#section-7.1.5-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.5-1.4">
+              <p id="section-7.1.5-1.4.1">Capabilities: [kty]<a href="#section-7.1.5-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.5-1.5">
+              <p id="section-7.1.5-1.5.1">Change Controller: IESG<a href="#section-7.1.5-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.5-1.6">
+              <p id="section-7.1.5-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.5-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.5-1.7">
+              <p id="section-7.1.5-1.7.1">Recommended: Yes<a href="#section-7.1.5-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-5">
+<section id="section-7.1.6">
+          <h4 id="name-hpke-5">
+<a href="#section-7.1.6" class="section-number selfRef">7.1.6. </a><a href="#name-hpke-5" class="section-name selfRef">HPKE-5</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.6-1.1">
+              <p id="section-7.1.6-1.1.1">Name: HPKE-5<a href="#section-7.1.6-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.6-1.2">
+              <p id="section-7.1.6-1.2.1">Value: TBD9 (Assumed: 43)<a href="#section-7.1.6-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.6-1.3">
+              <p id="section-7.1.6-1.3.1">Description: COSE HPKE Integrated Encryption using DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.<a href="#section-7.1.6-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.6-1.4">
+              <p id="section-7.1.6-1.4.1">Capabilities: [kty]<a href="#section-7.1.6-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.6-1.5">
+              <p id="section-7.1.6-1.5.1">Change Controller: IESG<a href="#section-7.1.6-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.6-1.6">
+              <p id="section-7.1.6-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.6-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.6-1.7">
+              <p id="section-7.1.6-1.7.1">Recommended: Yes<a href="#section-7.1.6-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-6">
+<section id="section-7.1.7">
+          <h4 id="name-hpke-6">
+<a href="#section-7.1.7" class="section-number selfRef">7.1.7. </a><a href="#name-hpke-6" class="section-name selfRef">HPKE-6</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.7-1.1">
+              <p id="section-7.1.7-1.1.1">Name: HPKE-6<a href="#section-7.1.7-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.7-1.2">
+              <p id="section-7.1.7-1.2.1">Value: TBD10 (Assumed: 44)<a href="#section-7.1.7-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.7-1.3">
+              <p id="section-7.1.7-1.3.1">Description: COSE HPKE Integrated Encryption using DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and ChaCha20Poly1305 AEAD.<a href="#section-7.1.7-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.7-1.4">
+              <p id="section-7.1.7-1.4.1">Capabilities: [kty]<a href="#section-7.1.7-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.7-1.5">
+              <p id="section-7.1.7-1.5.1">Change Controller: IESG<a href="#section-7.1.7-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.7-1.6">
+              <p id="section-7.1.7-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.7-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.7-1.7">
+              <p id="section-7.1.7-1.7.1">Recommended: Yes<a href="#section-7.1.7-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-7">
+<section id="section-7.1.8">
+          <h4 id="name-hpke-7">
+<a href="#section-7.1.8" class="section-number selfRef">7.1.8. </a><a href="#name-hpke-7" class="section-name selfRef">HPKE-7</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.8-1.1">
+              <p id="section-7.1.8-1.1.1">Name: HPKE-7<a href="#section-7.1.8-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.8-1.2">
+              <p id="section-7.1.8-1.2.1">Value: TBD13 (Assumed: 45)<a href="#section-7.1.8-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.8-1.3">
+              <p id="section-7.1.8-1.3.1">Description: COSE HPKE Integrated Encryption using DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-256-GCM AEAD.<a href="#section-7.1.8-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.8-1.4">
+              <p id="section-7.1.8-1.4.1">Capabilities: [kty]<a href="#section-7.1.8-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.8-1.5">
+              <p id="section-7.1.8-1.5.1">Change Controller: IESG<a href="#section-7.1.8-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.8-1.6">
+              <p id="section-7.1.8-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.8-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.8-1.7">
+              <p id="section-7.1.8-1.7.1">Recommended: Yes<a href="#section-7.1.8-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-0-ke">
+<section id="section-7.1.9">
+          <h4 id="name-hpke-0-ke">
+<a href="#section-7.1.9" class="section-number selfRef">7.1.9. </a><a href="#name-hpke-0-ke" class="section-name selfRef">HPKE-0-KE</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.9-1.1">
+              <p id="section-7.1.9-1.1.1">Name: HPKE-0-KE<a href="#section-7.1.9-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.9-1.2">
+              <p id="section-7.1.9-1.2.1">Value: TBD14 (Assumed: 46)<a href="#section-7.1.9-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.9-1.3">
+              <p id="section-7.1.9-1.3.1">Description: COSE HPKE Key Encryption using DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.<a href="#section-7.1.9-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.9-1.4">
+              <p id="section-7.1.9-1.4.1">Capabilities: [kty]<a href="#section-7.1.9-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.9-1.5">
+              <p id="section-7.1.9-1.5.1">Change Controller: IESG<a href="#section-7.1.9-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.9-1.6">
+              <p id="section-7.1.9-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.9-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.9-1.7">
+              <p id="section-7.1.9-1.7.1">Recommended: Yes<a href="#section-7.1.9-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-1-ke">
+<section id="section-7.1.10">
+          <h4 id="name-hpke-1-ke">
+<a href="#section-7.1.10" class="section-number selfRef">7.1.10. </a><a href="#name-hpke-1-ke" class="section-name selfRef">HPKE-1-KE</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.10-1.1">
+              <p id="section-7.1.10-1.1.1">Name: HPKE-1-KE<a href="#section-7.1.10-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.10-1.2">
+              <p id="section-7.1.10-1.2.1">Value: TBD15 (Assumed: 47)<a href="#section-7.1.10-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.10-1.3">
+              <p id="section-7.1.10-1.3.1">Description: COSE HPKE Key Encryption using DHKEM(P-384, HKDF-SHA384) KEM, HKDF-SHA384 KDF, and AES-256-GCM AEAD.<a href="#section-7.1.10-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.10-1.4">
+              <p id="section-7.1.10-1.4.1">Capabilities: [kty]<a href="#section-7.1.10-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.10-1.5">
+              <p id="section-7.1.10-1.5.1">Change Controller: IESG<a href="#section-7.1.10-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.10-1.6">
+              <p id="section-7.1.10-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.10-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.10-1.7">
+              <p id="section-7.1.10-1.7.1">Recommended: Yes<a href="#section-7.1.10-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-2-ke">
+<section id="section-7.1.11">
+          <h4 id="name-hpke-2-ke">
+<a href="#section-7.1.11" class="section-number selfRef">7.1.11. </a><a href="#name-hpke-2-ke" class="section-name selfRef">HPKE-2-KE</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.11-1.1">
+              <p id="section-7.1.11-1.1.1">Name: HPKE-2-KE<a href="#section-7.1.11-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.11-1.2">
+              <p id="section-7.1.11-1.2.1">Value: TBD16 (Assumed: 48)<a href="#section-7.1.11-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.11-1.3">
+              <p id="section-7.1.11-1.3.1">Description: COSE HPKE Key Encryption using DHKEM(P-521, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.<a href="#section-7.1.11-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.11-1.4">
+              <p id="section-7.1.11-1.4.1">Capabilities: [kty]<a href="#section-7.1.11-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.11-1.5">
+              <p id="section-7.1.11-1.5.1">Change Controller: IESG<a href="#section-7.1.11-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.11-1.6">
+              <p id="section-7.1.11-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.11-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.11-1.7">
+              <p id="section-7.1.11-1.7.1">Recommended: Yes<a href="#section-7.1.11-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-3-ke">
+<section id="section-7.1.12">
+          <h4 id="name-hpke-3-ke">
+<a href="#section-7.1.12" class="section-number selfRef">7.1.12. </a><a href="#name-hpke-3-ke" class="section-name selfRef">HPKE-3-KE</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.12-1.1">
+              <p id="section-7.1.12-1.1.1">Name: HPKE-3-KE<a href="#section-7.1.12-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.12-1.2">
+              <p id="section-7.1.12-1.2.1">Value: TBD17 (Assumed: 49)<a href="#section-7.1.12-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.12-1.3">
+              <p id="section-7.1.12-1.3.1">Description: COSE HPKE Key Encryption using DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-128-GCM AEAD.<a href="#section-7.1.12-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.12-1.4">
+              <p id="section-7.1.12-1.4.1">Capabilities: [kty]<a href="#section-7.1.12-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.12-1.5">
+              <p id="section-7.1.12-1.5.1">Change Controller: IESG<a href="#section-7.1.12-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.12-1.6">
+              <p id="section-7.1.12-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.12-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.12-1.7">
+              <p id="section-7.1.12-1.7.1">Recommended: Yes<a href="#section-7.1.12-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-4-ke">
+<section id="section-7.1.13">
+          <h4 id="name-hpke-4-ke">
+<a href="#section-7.1.13" class="section-number selfRef">7.1.13. </a><a href="#name-hpke-4-ke" class="section-name selfRef">HPKE-4-KE</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.13-1.1">
+              <p id="section-7.1.13-1.1.1">Name: HPKE-4-KE<a href="#section-7.1.13-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.13-1.2">
+              <p id="section-7.1.13-1.2.1">Value: TBD18 (Assumed: 50)<a href="#section-7.1.13-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.13-1.3">
+              <p id="section-7.1.13-1.3.1">Description: COSE HPKE Key Encryption using DHKEM(X25519, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and ChaCha20Poly1305 AEAD.<a href="#section-7.1.13-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.13-1.4">
+              <p id="section-7.1.13-1.4.1">Capabilities: [kty]<a href="#section-7.1.13-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.13-1.5">
+              <p id="section-7.1.13-1.5.1">Change Controller: IESG<a href="#section-7.1.13-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.13-1.6">
+              <p id="section-7.1.13-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.13-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.13-1.7">
+              <p id="section-7.1.13-1.7.1">Recommended: Yes<a href="#section-7.1.13-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-5-ke">
+<section id="section-7.1.14">
+          <h4 id="name-hpke-5-ke">
+<a href="#section-7.1.14" class="section-number selfRef">7.1.14. </a><a href="#name-hpke-5-ke" class="section-name selfRef">HPKE-5-KE</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.14-1.1">
+              <p id="section-7.1.14-1.1.1">Name: HPKE-5-KE<a href="#section-7.1.14-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.14-1.2">
+              <p id="section-7.1.14-1.2.1">Value: TBD19 (Assumed: 51)<a href="#section-7.1.14-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.14-1.3">
+              <p id="section-7.1.14-1.3.1">Description: COSE HPKE Key Encryption using DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and AES-256-GCM AEAD.<a href="#section-7.1.14-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.14-1.4">
+              <p id="section-7.1.14-1.4.1">Capabilities: [kty]<a href="#section-7.1.14-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.14-1.5">
+              <p id="section-7.1.14-1.5.1">Change Controller: IESG<a href="#section-7.1.14-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.14-1.6">
+              <p id="section-7.1.14-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.14-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.14-1.7">
+              <p id="section-7.1.14-1.7.1">Recommended: Yes<a href="#section-7.1.14-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-6-ke">
+<section id="section-7.1.15">
+          <h4 id="name-hpke-6-ke">
+<a href="#section-7.1.15" class="section-number selfRef">7.1.15. </a><a href="#name-hpke-6-ke" class="section-name selfRef">HPKE-6-KE</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.15-1.1">
+              <p id="section-7.1.15-1.1.1">Name: HPKE-6-KE<a href="#section-7.1.15-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.15-1.2">
+              <p id="section-7.1.15-1.2.1">Value: TBD20 (Assumed: 52)<a href="#section-7.1.15-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.15-1.3">
+              <p id="section-7.1.15-1.3.1">Description: COSE HPKE Key Encryption using DHKEM(X448, HKDF-SHA512) KEM, HKDF-SHA512 KDF, and ChaCha20Poly1305 AEAD.<a href="#section-7.1.15-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.15-1.4">
+              <p id="section-7.1.15-1.4.1">Capabilities: [kty]<a href="#section-7.1.15-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.15-1.5">
+              <p id="section-7.1.15-1.5.1">Change Controller: IESG<a href="#section-7.1.15-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.15-1.6">
+              <p id="section-7.1.15-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.15-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.15-1.7">
+              <p id="section-7.1.15-1.7.1">Recommended: Yes<a href="#section-7.1.15-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="hpke-7-ke">
+<section id="section-7.1.16">
+          <h4 id="name-hpke-7-ke">
+<a href="#section-7.1.16" class="section-number selfRef">7.1.16. </a><a href="#name-hpke-7-ke" class="section-name selfRef">HPKE-7-KE</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.1.16-1.1">
+              <p id="section-7.1.16-1.1.1">Name: HPKE-7-KE<a href="#section-7.1.16-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.16-1.2">
+              <p id="section-7.1.16-1.2.1">Value: TBD21 (Assumed: 53)<a href="#section-7.1.16-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.16-1.3">
+              <p id="section-7.1.16-1.3.1">Description: COSE HPKE Key Encryption using DHKEM(P-256, HKDF-SHA256) KEM, HKDF-SHA256 KDF, and AES-256-GCM AEAD.<a href="#section-7.1.16-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.16-1.4">
+              <p id="section-7.1.16-1.4.1">Capabilities: [kty]<a href="#section-7.1.16-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.16-1.5">
+              <p id="section-7.1.16-1.5.1">Change Controller: IESG<a href="#section-7.1.16-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.16-1.6">
+              <p id="section-7.1.16-1.6.1">Reference:  [[TBD: This RFC]]<a href="#section-7.1.16-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.1.16-1.7">
+              <p id="section-7.1.16-1.7.1">Recommended: Yes<a href="#section-7.1.16-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="cose-header-parameters">
+<section id="section-7.2">
+        <h3 id="name-cose-header-parameters">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-cose-header-parameters" class="section-name selfRef">COSE Header Parameters</a>
+        </h3>
+<div id="ek-header-parameter">
+<section id="section-7.2.1">
+          <h4 id="name-ek-header-parameter">
+<a href="#section-7.2.1" class="section-number selfRef">7.2.1. </a><a href="#name-ek-header-parameter" class="section-name selfRef">ek Header Parameter</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.2.1-1.1">
+              <p id="section-7.2.1-1.1.1">Name: ek<a href="#section-7.2.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.1-1.2">
+              <p id="section-7.2.1-1.2.1">Label: TBD11 (Assumed: -4)<a href="#section-7.2.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.1-1.3">
+              <p id="section-7.2.1-1.3.1">Value type: bstr<a href="#section-7.2.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.1-1.4">
+              <p id="section-7.2.1-1.4.1">Value Registry: N/A<a href="#section-7.2.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.1-1.5">
+              <p id="section-7.2.1-1.5.1">Description: HPKE encapsulated key<a href="#section-7.2.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.1-1.6">
+              <p id="section-7.2.1-1.6.1">Reference: [[TBD: This RFC]]<a href="#section-7.2.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="pskid-header-parameter">
+<section id="section-7.2.2">
+          <h4 id="name-psk_id-header-parameter">
+<a href="#section-7.2.2" class="section-number selfRef">7.2.2. </a><a href="#name-psk_id-header-parameter" class="section-name selfRef">psk_id Header Parameter</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-7.2.2-1.1">
+              <p id="section-7.2.2-1.1.1">Name: psk_id<a href="#section-7.2.2-1.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.2-1.2">
+              <p id="section-7.2.2-1.2.1">Label: TBD12 (Assumed: -5)<a href="#section-7.2.2-1.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.2-1.3">
+              <p id="section-7.2.2-1.3.1">Value type: bstr<a href="#section-7.2.2-1.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.2-1.4">
+              <p id="section-7.2.2-1.4.1">Value Registry: N/A<a href="#section-7.2.2-1.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.2-1.5">
+              <p id="section-7.2.2-1.5.1">Description: A key identifier (kid) for the pre-shared key
+as defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span><a href="#section-7.2.2-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7.2.2-1.6">
+              <p id="section-7.2.2-1.6.1">Reference: [[TBD: This RFC]]<a href="#section-7.2.2-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-8">
+      <h2 id="name-references">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-8.1">
+        <h3 id="name-normative-references">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8949">[RFC8949]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9052">[RFC9052]</dt>
+        <dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Structures and Process"</span>, <span class="seriesInfo">STD 96</span>, <span class="seriesInfo">RFC 9052</span>, <span class="seriesInfo">DOI 10.17487/RFC9052</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9052">https://www.rfc-editor.org/rfc/rfc9052</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9053">[RFC9053]</dt>
+        <dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Initial Algorithms"</span>, <span class="seriesInfo">RFC 9053</span>, <span class="seriesInfo">DOI 10.17487/RFC9053</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9053">https://www.rfc-editor.org/rfc/rfc9053</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9180">[RFC9180]</dt>
+      <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-8.2">
+        <h3 id="name-informative-references">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="HPKE-IANA">[HPKE-IANA]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"Hybrid Public Key Encryption (HPKE) IANA Registry"</span>, <time datetime="2023-10" class="refDate">October 2023</time>, <span>&lt;<a href="https://www.iana.org/assignments/hpke/hpke.xhtml">https://www.iana.org/assignments/hpke/hpke.xhtml</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-lamps-cms-cek-hkdf-sha256">[I-D.ietf-lamps-cms-cek-hkdf-sha256]</dt>
+        <dd>
+<span class="refAuthor">Housley, R.</span>, <span class="refTitle">"Encryption Key Derivation in the Cryptographic Message Syntax (CMS) using HKDF with SHA-256"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-cms-cek-hkdf-sha256-05</span>, <time datetime="2024-09-19" class="refDate">19 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-cek-hkdf-sha256-05">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-cek-hkdf-sha256-05</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.irtf-cfrg-dnhpke">[I-D.irtf-cfrg-dnhpke]</dt>
+        <dd>
+<span class="refAuthor">Harkins, D.</span>, <span class="refTitle">"Deterministic Nonce-less Hybrid Public Key Encryption"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-dnhpke-07</span>, <time datetime="2025-10-16" class="refDate">16 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-dnhpke-07">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-dnhpke-07</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5652">[RFC5652]</dt>
+        <dd>
+<span class="refAuthor">Housley, R.</span>, <span class="refTitle">"Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">STD 70</span>, <span class="seriesInfo">RFC 5652</span>, <span class="seriesInfo">DOI 10.17487/RFC5652</span>, <time datetime="2009-09" class="refDate">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5652">https://www.rfc-editor.org/rfc/rfc5652</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8937">[RFC8937]</dt>
+        <dd>
+<span class="refAuthor">Cremers, C.</span>, <span class="refAuthor">Garratt, L.</span>, <span class="refAuthor">Smyshlyaev, S.</span>, <span class="refAuthor">Sullivan, N.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Randomness Improvements for Security Protocols"</span>, <span class="seriesInfo">RFC 8937</span>, <span class="seriesInfo">DOI 10.17487/RFC8937</span>, <time datetime="2020-10" class="refDate">October 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8937">https://www.rfc-editor.org/rfc/rfc8937</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9864">[RFC9864]</dt>
+      <dd>
+<span class="refAuthor">Jones, M.B.</span> and <span class="refAuthor">O. Steele</span>, <span class="refTitle">"Fully-Specified Algorithms for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)"</span>, <span class="seriesInfo">RFC 9864</span>, <span class="seriesInfo">DOI 10.17487/RFC9864</span>, <time datetime="2025-10" class="refDate">October 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9864">https://www.rfc-editor.org/rfc/rfc9864</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="contributors">
+<section id="appendix-A">
+      <h2 id="name-contributors">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-contributors" class="section-name selfRef">Contributors</a>
+      </h2>
+<p id="appendix-A-1">We would like to thank the following individuals for their contributions
+to the design of embedding the HPKE output into the COSE structure
+following a long and lively mailing list discussion:<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A-2.1">
+          <p id="appendix-A-2.1.1">Richard Barnes<a href="#appendix-A-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-A-2.2">
+          <p id="appendix-A-2.2.1">Ilari Liusvaara<a href="#appendix-A-2.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-A-3">Finally, we would like to thank Russ Housley and Brendan Moran for their
+contributions to the draft as co-authors of initial versions.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="acknowledgements">
+<section id="appendix-B">
+      <h2 id="name-acknowledgements">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      </h2>
+<p id="appendix-B-1">We would like to thank
+John Mattsson,
+Mike Prorock,
+Michael Richardson,
+Thomas Fossati,
+and
+Göran Selander
+for their contributions to the specification.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-C">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Hannes Tschofenig</span></div>
+<div dir="auto" class="left"><span class="org">University of Applied Sciences Bonn-Rhein-Sieg</span></div>
+<div dir="auto" class="left"><span class="country-name">Germany</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:hannes.tschofenig@gmx.net" class="email">hannes.tschofenig@gmx.net</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Orie Steele (<span class="role">editor</span>)</span></div>
+<div dir="auto" class="left"><span class="org">Tradeverifyd</span></div>
+<div dir="auto" class="left"><span class="country-name">United States</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:orie@or13.io" class="email">orie@or13.io</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Daisuke Ajitomi</span></div>
+<div dir="auto" class="left"><span class="org">bibital</span></div>
+<div dir="auto" class="left"><span class="country-name">Japan</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:dajiaji@gmail.com" class="email">dajiaji@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Laurence Lundblade</span></div>
+<div dir="auto" class="left"><span class="org">Security Theory LLC</span></div>
+<div dir="auto" class="left"><span class="country-name">United States</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:lgl@securitytheory.com" class="email">lgl@securitytheory.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Michael B. Jones</span></div>
+<div dir="auto" class="left"><span class="org">Self-Issued Consulting</span></div>
+<div dir="auto" class="left"><span class="country-name">United States</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:michael_b_jones@hotmail.com" class="email">michael_b_jones@hotmail.com</a>
+</div>
+<div class="url">
+<span>URI:</span>
+<a href="https://self-issued.info/" class="url">https://self-issued.info/</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
