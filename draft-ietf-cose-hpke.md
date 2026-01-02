@@ -131,6 +131,8 @@ encrypt the plaintext. This mode supports multiple recipients.
 Distinct algorithm identifiers are defined and registered
 that are specific to each COSE HPKE mode
 so that they are fully specified, as required by {{RFC9864}}.
+Algorithm identifiers MUST only be used in the COSE HPKE mode
+that is specified for them.
 
 In both cases, the new COSE header parameter 'ek' MUST be present.
 It contains the encapsulated KEM shared secret.
