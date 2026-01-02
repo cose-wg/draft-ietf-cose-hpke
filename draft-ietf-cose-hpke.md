@@ -104,10 +104,8 @@ when, and only when, they appear in all capitals, as shown here.
 
 This specification uses the following abbreviations and terms:
 
-- Content-encryption key (CEK), a term defined in CMS {{RFC5652}}.
+- Content-encryption key (CEK), a term defined in {{RFC5652}}.
 - Hybrid Public Key Encryption (HPKE) is defined in {{RFC9180}}.
-- pkR is the public key of the recipient, as defined in {{RFC9180}}.
-- skR is the private key of the recipient, as defined in {{RFC9180}}.
 - Key Encapsulation Mechanism (KEM), see {{RFC9180}}.
 - Key Derivation Function (KDF), see {{RFC9180}}.
 - Authenticated Encryption with Associated Data (AEAD), see {{RFC9180}}.
