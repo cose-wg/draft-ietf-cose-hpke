@@ -1510,7 +1510,7 @@ If 'mode_base' has been chosen, then the 'psk_id' parameter MUST NOT be present.
             <p id="section-3.2-10.5.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-10.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-10.6">
-            <p id="section-3.2-10.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-10.6.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-10.6.1">aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.<a href="#section-3.2-10.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-10.7">
             <p id="section-3.2-10.7.1">enc: The contents of the layer 'ek' parameter.<a href="#section-3.2-10.7.1" class="pilcrow">¶</a></p>
