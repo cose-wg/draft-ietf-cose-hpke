@@ -1198,18 +1198,24 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-hpke-for-cose" class="internal xref">HPKE for COSE</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.1">
-                    <p id="section-toc.1-1.3.2.1.2.1.1" class="keepWithNext"><a href="#section-3.1.1" class="auto internal xref">3.1.1</a>.  <a href="#name-hpke-integrated-encryption-" class="internal xref">HPKE Integrated Encryption Mode</a></p>
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.2">
-                    <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="auto internal xref">3.1.2</a>.  <a href="#name-hpke-key-encryption-mode" class="internal xref">HPKE Key Encryption Mode</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-hpke-integrated-encryption-" class="internal xref">HPKE Integrated Encryption Mode</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-hpke-key-encryption-mode" class="internal xref">HPKE Key Encryption Mode</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
+                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-recipient_structure" class="internal xref">Recipient_structure</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.2">
+                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-cose-hpke-recipient-constru" class="internal xref">COSE-HPKE Recipient Construction</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-key-representation" class="internal xref">Key Representation</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-key-representation" class="internal xref">Key Representation</a></p>
 </li>
             </ul>
 </li>
@@ -1409,13 +1415,13 @@ when, and only when, they appear in all capitals, as shown here.<a href="#sectio
 <li class="normal" id="section-3.1-2.1">
             <p id="section-3.1-2.1.1">HPKE Integrated Encryption mode, where HPKE is used to encrypt
 the plaintext. This mode can only be used with a single recipient.
-<a href="#one-layer" class="auto internal xref">Section 3.1.1</a> provides the details.<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
+<a href="#one-layer" class="auto internal xref">Section 3.2</a> provides the details.<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-2.2">
             <p id="section-3.1-2.2.1">HPKE Key Encryption mode, where HPKE is used to encrypt a
 content encryption key (CEK) and the CEK is subsequently used to
 encrypt the plaintext. This mode supports multiple recipients.
-<a href="#two-layer" class="auto internal xref">Section 3.1.2</a> provides the details.<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
+<a href="#two-layer" class="auto internal xref">Section 3.3</a> provides the details.<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.1-3">Distinct algorithm identifiers are defined and registered
@@ -1431,127 +1437,129 @@ The mode is 'mode_psk' if the 'psk_id' header parameter is present; otherwise, t
 'mode_base' is described in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.1" class="relref">Section 5.1.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>, which only enables encryption
 to the holder of a given KEM private key. 'mode_psk' is described in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>,
 which authenticates using a pre-shared key.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
 <div id="one-layer">
-<section id="section-3.1.1">
-          <h4 id="name-hpke-integrated-encryption-">
-<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-hpke-integrated-encryption-" class="section-name selfRef">HPKE Integrated Encryption Mode</a>
-          </h4>
-<p id="section-3.1.1-1">This mode applies if the COSE_Encrypt0 structure uses a COSE-HPKE algorithm
-and has no recipient structure(s).<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-2">Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it MUST be included
-in the protected header and MUST be a COSE-HPKE algorithm.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-3">Although the use of the 'kid' parameter in COSE_Encrypt0 is
+<section id="section-3.2">
+        <h3 id="name-hpke-integrated-encryption-">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-hpke-integrated-encryption-" class="section-name selfRef">HPKE Integrated Encryption Mode</a>
+        </h3>
+<p id="section-3.2-1">This mode applies if the COSE_Encrypt0 structure uses a COSE-HPKE algorithm
+and has no recipient structure(s).<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it MUST be included
+in the protected header and MUST be a COSE-HPKE algorithm.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">Although the use of the 'kid' parameter in COSE_Encrypt0 is
 discouraged by RFC 9052, this document RECOMMENDS the use of the 'kid' parameter
 (or other parameters) to explicitly identify the static recipient public key
 used by the sender. If the COSE_Encrypt0 structure includes a 'kid' parameter, the
-recipient MAY use it to select the corresponding private key.<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-4">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
+recipient MAY use it to select the corresponding private key.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.1-5.1">
-              <p id="section-3.1.1-5.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.1-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.2-5.1">
+            <p id="section-3.2-5.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-5.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-5.2">
-              <p id="section-3.1.1-5.2.1">pkR: The recipient public key, converted into an HPKE public key.<a href="#section-3.1.1-5.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-5.2">
+            <p id="section-3.2-5.2.1">pkR: The recipient public key, converted into an HPKE public key.<a href="#section-3.2-5.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-5.3">
-              <p id="section-3.1.1-5.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.1-5.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-5.3">
+            <p id="section-3.2-5.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-5.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-5.4">
-              <p id="section-3.1.1-5.4.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.1.1-5.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-5.4">
+            <p id="section-3.2-5.4.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-5.4.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-5.5">
-              <p id="section-3.1.1-5.5.1">aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
-For the Integrated Encryption mode the context string will be "Encrypt0".<a href="#section-3.1.1-5.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-5.5">
+            <p id="section-3.2-5.5.1">aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
+For the Integrated Encryption mode the context string will be "Encrypt0".<a href="#section-3.2-5.5.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-5.6">
-              <p id="section-3.1.1-5.6.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.1-5.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-5.6">
+            <p id="section-3.2-5.6.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-5.6.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-5.7">
-              <p id="section-3.1.1-5.7.1">pt: The raw message plaintext.<a href="#section-3.1.1-5.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-5.7">
+            <p id="section-3.2-5.7.1">pt: The raw message plaintext.<a href="#section-3.2-5.7.1" class="pilcrow">¶</a></p>
 </li>
-          </ul>
-<p id="section-3.1.1-6">The outputs are used as follows:<a href="#section-3.1.1-6" class="pilcrow">¶</a></p>
+        </ul>
+<p id="section-3.2-6">The outputs are used as follows:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.1-7.1">
-              <p id="section-3.1.1-7.1.1">enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.<a href="#section-3.1.1-7.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.2-7.1">
+            <p id="section-3.2-7.1.1">enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.<a href="#section-3.2-7.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-7.2">
-              <p id="section-3.1.1-7.2.1">ct: MUST be used as layer ciphertext. If not using detached content, this is directly placed as
+          <li class="normal" id="section-3.2-7.2">
+            <p id="section-3.2-7.2.1">ct: MUST be used as layer ciphertext. If not using detached content, this is directly placed as
 ciphertext in COSE_Encrypt0 structure. Otherwise, it is transported separately and the ciphertext field is nil.
-See <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5" class="relref">Section 5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> for a description of detached payloads.<a href="#section-3.1.1-7.2.1" class="pilcrow">¶</a></p>
+See <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5" class="relref">Section 5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> for a description of detached payloads.<a href="#section-3.2-7.2.1" class="pilcrow">¶</a></p>
 </li>
-          </ul>
-<p id="section-3.1.1-8">If 'mode_psk' has been selected, then the 'psk_id' parameter MUST be present.
-If 'mode_base' has been chosen, then the 'psk_id' parameter MUST NOT be present.<a href="#section-3.1.1-8" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-9">When decrypting, the inputs to the HPKE Open operation are set as follows:<a href="#section-3.1.1-9" class="pilcrow">¶</a></p>
+        </ul>
+<p id="section-3.2-8">If 'mode_psk' has been selected, then the 'psk_id' parameter MUST be present.
+If 'mode_base' has been chosen, then the 'psk_id' parameter MUST NOT be present.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
+<p id="section-3.2-9">When decrypting, the inputs to the HPKE Open operation are set as follows:<a href="#section-3.2-9" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.1-10.1">
-              <p id="section-3.1.1-10.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.1-10.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.2-10.1">
+            <p id="section-3.2-10.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-10.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-10.2">
-              <p id="section-3.1.1-10.2.1">skR: The recipient private key, converted into an HPKE private key.<a href="#section-3.1.1-10.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-10.2">
+            <p id="section-3.2-10.2.1">skR: The recipient private key, converted into an HPKE private key.<a href="#section-3.2-10.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-10.3">
-              <p id="section-3.1.1-10.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.1-10.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-10.3">
+            <p id="section-3.2-10.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-10.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-10.4">
-              <p id="section-3.1.1-10.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.1-10.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-10.4">
+            <p id="section-3.2-10.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-10.4.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-10.5">
-              <p id="section-3.1.1-10.5.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.1.1-10.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-10.5">
+            <p id="section-3.2-10.5.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-10.5.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-10.6">
-              <p id="section-3.1.1-10.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.1.1-10.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-10.6">
+            <p id="section-3.2-10.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-10.6.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-10.7">
-              <p id="section-3.1.1-10.7.1">enc: The contents of the layer 'ek' parameter.<a href="#section-3.1.1-10.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-10.7">
+            <p id="section-3.2-10.7.1">enc: The contents of the layer 'ek' parameter.<a href="#section-3.2-10.7.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.1-10.8">
-              <p id="section-3.1.1-10.8.1">ct: The contents of the layer ciphertext.<a href="#section-3.1.1-10.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-10.8">
+            <p id="section-3.2-10.8.1">ct: The contents of the layer ciphertext.<a href="#section-3.2-10.8.1" class="pilcrow">¶</a></p>
 </li>
-          </ul>
-<p id="section-3.1.1-11">The plaintext output is the raw message plaintext.<a href="#section-3.1.1-11" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-12">The COSE_Encrypt0 MAY be tagged or untagged.<a href="#section-3.1.1-12" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-13">An example is shown in <a href="#one-layer-example" class="auto internal xref">Section 5.1</a>.<a href="#section-3.1.1-13" class="pilcrow">¶</a></p>
+        </ul>
+<p id="section-3.2-11">The plaintext output is the raw message plaintext.<a href="#section-3.2-11" class="pilcrow">¶</a></p>
+<p id="section-3.2-12">The COSE_Encrypt0 MAY be tagged or untagged.<a href="#section-3.2-12" class="pilcrow">¶</a></p>
+<p id="section-3.2-13">An example is shown in <a href="#one-layer-example" class="auto internal xref">Section 5.1</a>.<a href="#section-3.2-13" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="two-layer">
-<section id="section-3.1.2">
-          <h4 id="name-hpke-key-encryption-mode">
-<a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-hpke-key-encryption-mode" class="section-name selfRef">HPKE Key Encryption Mode</a>
-          </h4>
-<p id="section-3.1.2-1">This mode is selected if the COSE_recipient structure uses a COSE-HPKE algorithm.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-2">In this approach the following layers are involved:<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
+<section id="section-3.3">
+        <h3 id="name-hpke-key-encryption-mode">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-hpke-key-encryption-mode" class="section-name selfRef">HPKE Key Encryption Mode</a>
+        </h3>
+<p id="section-3.3-1">This mode is selected if the COSE_recipient structure uses a COSE-HPKE algorithm.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">In this approach the following layers are involved:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.2-3.1">
-              <p id="section-3.1.2-3.1.1">Layer 0 (corresponding to the COSE_Encrypt structure) contains the content (plaintext)
+<li class="normal" id="section-3.3-3.1">
+            <p id="section-3.3-3.1.1">Layer 0 (corresponding to the COSE_Encrypt structure) contains the content (plaintext)
 encrypted with the CEK. This ciphertext may be detached, and if not detached, then
-it is included in the COSE_Encrypt structure.<a href="#section-3.1.2-3.1.1" class="pilcrow">¶</a></p>
+it is included in the COSE_Encrypt structure.<a href="#section-3.3-3.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.1.2-3.2">
-              <p id="section-3.1.2-3.2.1">Layer 1 (corresponding to a recipient structure) contains parameters needed for
+          <li class="normal" id="section-3.3-3.2">
+            <p id="section-3.3-3.2.1">Layer 1 (corresponding to a recipient structure) contains parameters needed for
 HPKE to generate a shared secret used to encrypt the CEK. This layer conveys the
 encrypted CEK in the COSE_recipient structure using a COSE-HPKE algorithm.
 The unprotected header MAY contain the kid parameter to identify the static recipient
-public key that the sender has been using with HPKE.<a href="#section-3.1.2-3.2.1" class="pilcrow">¶</a></p>
+public key that the sender has been using with HPKE.<a href="#section-3.3-3.2.1" class="pilcrow">¶</a></p>
 </li>
-          </ul>
-<p id="section-3.1.2-4">This two-layer structure is used to encrypt content that can also be shared with
+        </ul>
+<p id="section-3.3-4">This two-layer structure is used to encrypt content that can also be shared with
 multiple parties at the expense of a single additional encryption operation.
-As stated above, the specification uses a CEK to encrypt the content at layer 0.<a href="#section-3.1.2-4" class="pilcrow">¶</a></p>
-<div id="recipient-encryption">
-<section id="section-3.1.2.1">
-            <h5 id="name-recipient-encryption">
-<a href="#section-3.1.2.1" class="section-number selfRef">3.1.2.1. </a><a href="#name-recipient-encryption" class="section-name selfRef">Recipient Encryption</a>
-            </h5>
-<p id="section-3.1.2.1-1">This section defines the Recipient_structure, which is used in place of COSE_KDF_Context
+As stated above, the specification uses a CEK to encrypt the content at layer 0.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<div id="recipientstructure">
+<section id="section-3.3.1">
+          <h4 id="name-recipient_structure">
+<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-recipient_structure" class="section-name selfRef">Recipient_structure</a>
+          </h4>
+<p id="section-3.3.1-1">This section defines the Recipient_structure, which is used in place of COSE_KDF_Context
 for COSE-HPKE recipients. It MUST be used for COSE-HPKE recipients, as it provides
-integrity protection for recipient-protected header parameters.<a href="#section-3.1.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.2.1-2">The Recipient_structure is modeled after the Enc_structure defined in <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>,
-but is specific to COSE_recipient structures and MUST NOT be used with COSE_Encrypt.<a href="#section-3.1.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.2.1-3">Furthermore, the use of COSE_KDF_Context is prohibited in COSE-HPKE; it MUST NOT be
-used.<a href="#section-3.1.2.1-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.1.2.1-4">
+integrity protection for recipient-protected header parameters.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-2">The Recipient_structure is modeled after the Enc_structure defined in <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>,
+but is specific to COSE_recipient structures and MUST NOT be used with COSE_Encrypt.<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-3">Furthermore, the use of COSE_KDF_Context is prohibited in COSE-HPKE; it MUST NOT be
+used.<a href="#section-3.3.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3.1-4">
 <pre>
 Recipient_structure = [
     context: "HPKE Recipient",
@@ -1559,139 +1567,137 @@ Recipient_structure = [
     recipient_protected_header: empty_or_serialize_map,
     recipient_extra_info: bstr
 ]
-</pre><a href="#section-3.1.2.1-4" class="pilcrow">¶</a>
+</pre><a href="#section-3.3.1-4" class="pilcrow">¶</a>
 </div>
 <ul class="normal">
-<li class="normal" id="section-3.1.2.1-5.1">
-                <p id="section-3.1.2.1-5.1.1">"next_layer_alg" is the algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
+<li class="normal" id="section-3.3.1-5.1">
+              <p id="section-3.3.1-5.1.1">"next_layer_alg" is the algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
 It is the algorithm that the key MUST be used with.
 This value MUST match the alg parameter in the next lower COSE layer.
 (This serves the same purpose as the alg ID in the COSE_KDF_Context.
 It also mitigates attacks where the attacker manipulates the content-encryption
 algorithm identifier. This attack has been demonstrated against CMS and the mitigation
-can be found in <span>[<a href="#I-D.ietf-lamps-cms-cek-hkdf-sha256" class="cite xref">I-D.ietf-lamps-cms-cek-hkdf-sha256</a>]</span>.<a href="#section-3.1.2.1-5.1.1" class="pilcrow">¶</a></p>
+can be found in <span>[<a href="#I-D.ietf-lamps-cms-cek-hkdf-sha256" class="cite xref">I-D.ietf-lamps-cms-cek-hkdf-sha256</a>]</span>.<a href="#section-3.3.1-5.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.1-5.2">
-                <p id="section-3.1.2.1-5.2.1">"recipient_protected_header" contains the protected header parameters from the COSE_recipient
+            <li class="normal" id="section-3.3.1-5.2">
+              <p id="section-3.3.1-5.2.1">"recipient_protected_header" contains the protected header parameters from the COSE_recipient
 CBOR-encoded deterministically with the "Core Deterministic Encoding Requirements",
-specified in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-3.1.2.1-5.2.1" class="pilcrow">¶</a></p>
+specified in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-3.3.1-5.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.1-5.3">
-                <p id="section-3.1.2.1-5.3.1">"recipient_extra_info" contains any additional context the application wishes to include in
-the key derivation via the HPKE info parameter. If none, it is a zero-length string.<a href="#section-3.1.2.1-5.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.1-5.3">
+              <p id="section-3.3.1-5.3.1">"recipient_extra_info" contains any additional context the application wishes to include in
+the key derivation via the HPKE info parameter. If none, it is a zero-length string.<a href="#section-3.3.1-5.3.1" class="pilcrow">¶</a></p>
 </li>
-            </ul>
+          </ul>
 </section>
 </div>
 <div id="cose-hpke-recipient-construction">
-<section id="section-3.1.2.2">
-            <h5 id="name-cose-hpke-recipient-constru">
-<a href="#section-3.1.2.2" class="section-number selfRef">3.1.2.2. </a><a href="#name-cose-hpke-recipient-constru" class="section-name selfRef">COSE-HPKE Recipient Construction</a>
-            </h5>
-<p id="section-3.1.2.2-1">Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it
-MUST be in the protected header parameters and MUST be a COSE-HPKE algorithm.<a href="#section-3.1.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.2.2-2">The protected header MAY contain the kid parameter to identify the static recipient
+<section id="section-3.3.2">
+          <h4 id="name-cose-hpke-recipient-constru">
+<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-cose-hpke-recipient-constru" class="section-name selfRef">COSE-HPKE Recipient Construction</a>
+          </h4>
+<p id="section-3.3.2-1">Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it
+MUST be in the protected header parameters and MUST be a COSE-HPKE algorithm.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-2">The protected header MAY contain the kid parameter to identify the static recipient
 public key that the sender used. Use of the 'kid' parameter is RECOMMENDED
 to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
-key derivation function of HPKE.<a href="#section-3.1.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.2.2-3">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.1.2.2-3" class="pilcrow">¶</a></p>
+key derivation function of HPKE.<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-3">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.3.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.2.2-4.1">
-                <p id="section-3.1.2.2-4.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.2.2-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.3.2-4.1">
+              <p id="section-3.3.2-4.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-4.2">
-                <p id="section-3.1.2.2-4.2.1">pkR: The recipient public key, converted into HPKE public key.<a href="#section-3.1.2.2-4.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-4.2">
+              <p id="section-3.3.2-4.2.1">pkR: The recipient public key, converted into HPKE public key.<a href="#section-3.3.2-4.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-4.3">
-                <p id="section-3.1.2.2-4.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.2.2-4.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-4.3">
+              <p id="section-3.3.2-4.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-4.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-4.4">
-                <p id="section-3.1.2.2-4.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.2.2-4.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-4.4">
+              <p id="section-3.3.2-4.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-4.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-4.5">
-                <p id="section-3.1.2.2-4.5.1">info: Deterministic encoding of the Recipient_structure.<a href="#section-3.1.2.2-4.5.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-4.5">
+              <p id="section-3.3.2-4.5.1">info: Deterministic encoding of the Recipient_structure.<a href="#section-3.3.2-4.5.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-4.6">
-                <p id="section-3.1.2.2-4.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.1.2.2-4.6.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-4.6">
+              <p id="section-3.3.2-4.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-4.6.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-4.7">
-                <p id="section-3.1.2.2-4.7.1">pt: The raw key for the next layer down.<a href="#section-3.1.2.2-4.7.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-4.7">
+              <p id="section-3.3.2-4.7.1">pt: The raw key for the next layer down.<a href="#section-3.3.2-4.7.1" class="pilcrow">¶</a></p>
 </li>
-            </ul>
-<p id="section-3.1.2.2-5">The outputs are used as follows:<a href="#section-3.1.2.2-5" class="pilcrow">¶</a></p>
+          </ul>
+<p id="section-3.3.2-5">The outputs are used as follows:<a href="#section-3.3.2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.2.2-6.1">
-                <p id="section-3.1.2.2-6.1.1">enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.<a href="#section-3.1.2.2-6.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.3.2-6.1">
+              <p id="section-3.3.2-6.1.1">enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.<a href="#section-3.3.2-6.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-6.2">
-                <p id="section-3.1.2.2-6.2.1">ct: MUST be placed raw in the ciphertext field in the COSE_recipient.<a href="#section-3.1.2.2-6.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-6.2">
+              <p id="section-3.3.2-6.2.1">ct: MUST be placed raw in the ciphertext field in the COSE_recipient.<a href="#section-3.3.2-6.2.1" class="pilcrow">¶</a></p>
 </li>
-            </ul>
-<p id="section-3.1.2.2-7">When decrypting, the inputs to the HPKE Open operation are set as follows:<a href="#section-3.1.2.2-7" class="pilcrow">¶</a></p>
+          </ul>
+<p id="section-3.3.2-7">When decrypting, the inputs to the HPKE Open operation are set as follows:<a href="#section-3.3.2-7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1.2.2-8.1">
-                <p id="section-3.1.2.2-8.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.2.2-8.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.3.2-8.1">
+              <p id="section-3.3.2-8.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-8.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-8.2">
-                <p id="section-3.1.2.2-8.2.1">skR: The recipient private key, converted into HPKE private key.<a href="#section-3.1.2.2-8.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-8.2">
+              <p id="section-3.3.2-8.2.1">skR: The recipient private key, converted into HPKE private key.<a href="#section-3.3.2-8.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-8.3">
-                <p id="section-3.1.2.2-8.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.2.2-8.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-8.3">
+              <p id="section-3.3.2-8.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-8.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-8.4">
-                <p id="section-3.1.2.2-8.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.1.2.2-8.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-8.4">
+              <p id="section-3.3.2-8.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.3.2-8.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-8.5">
-                <p id="section-3.1.2.2-8.5.1">info: Deterministic encoding of the Recipient_structure.<a href="#section-3.1.2.2-8.5.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-8.5">
+              <p id="section-3.3.2-8.5.1">info: Deterministic encoding of the Recipient_structure.<a href="#section-3.3.2-8.5.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-8.6">
-                <p id="section-3.1.2.2-8.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.1.2.2-8.6.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-8.6">
+              <p id="section-3.3.2-8.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-8.6.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1.2.2-8.7">
-                <p id="section-3.1.2.2-8.7.1">ct: The contents of the layer ciphertext field.<a href="#section-3.1.2.2-8.7.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-8.7">
+              <p id="section-3.3.2-8.7.1">ct: The contents of the layer ciphertext field.<a href="#section-3.3.2-8.7.1" class="pilcrow">¶</a></p>
 </li>
-            </ul>
-<p id="section-3.1.2.2-9">The plaintext output is the raw key for the next layer down.<a href="#section-3.1.2.2-9" class="pilcrow">¶</a></p>
-<p id="section-3.1.2.2-10">It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
+          </ul>
+<p id="section-3.3.2-9">The plaintext output is the raw key for the next layer down.<a href="#section-3.3.2-9" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-10">It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
 attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
 may still utilize recipient_aad for other purposes as needed; however, it is generally
 intended for small values such as identifiers, contextual information, or secrets. It is
-not designed for protecting large or bulk external data.<a href="#section-3.1.2.2-10" class="pilcrow">¶</a></p>
-<p id="section-3.1.2.2-11">Any bulk external data that requires protection should be handled at layer 0 using external_aad.<a href="#section-3.1.2.2-11" class="pilcrow">¶</a></p>
-<p id="section-3.1.2.2-12">The COSE_recipient structure is computed for each recipient.<a href="#section-3.1.2.2-12" class="pilcrow">¶</a></p>
-<p id="section-3.1.2.2-13">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
-authenticated data structure.<a href="#section-3.1.2.2-13" class="pilcrow">¶</a></p>
-<p id="section-3.1.2.2-14">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.1.2.2-14" class="pilcrow">¶</a></p>
-</section>
-</div>
+not designed for protecting large or bulk external data.<a href="#section-3.3.2-10" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-11">Any bulk external data that requires protection should be handled at layer 0 using external_aad.<a href="#section-3.3.2-11" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-12">The COSE_recipient structure is computed for each recipient.<a href="#section-3.3.2-12" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-13">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
+authenticated data structure.<a href="#section-3.3.2-13" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-14">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-14" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="key-representation">
-<section id="section-3.2">
+<section id="section-3.4">
         <h3 id="name-key-representation">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-key-representation" class="section-name selfRef">Key Representation</a>
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-key-representation" class="section-name selfRef">Key Representation</a>
         </h3>
-<p id="section-3.2-1">The COSE_Key with the existing key types can be used to represent KEM private
-or public keys. When using a COSE_Key for COSE-HPKE, the following checks are made:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">The COSE_Key with the existing key types can be used to represent KEM private
+or public keys. When using a COSE_Key for COSE-HPKE, the following checks are made:<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.2-2.1">
-            <p id="section-3.2-2.1.1">If the "kty" field is "AKP", then the public and private keys SHALL be the raw HPKE public and private
-keys (respectively) for the KEM used by the algorithm.<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.4-2.1">
+            <p id="section-3.4-2.1.1">If the "kty" field is "AKP", then the public and private keys SHALL be the raw HPKE public and private
+keys (respectively) for the KEM used by the algorithm.<a href="#section-3.4-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.2-2.2">
-            <p id="section-3.2-2.2.1">Otherwise, the key MUST be suitable for the KEM used by the algorithm. In case the "kty" parameter
+          <li class="normal" id="section-3.4-2.2">
+            <p id="section-3.4-2.2.1">Otherwise, the key MUST be suitable for the KEM used by the algorithm. In case the "kty" parameter
 is "EC2" or "OKP", this means the value of "crv" parameter is suitable. The valid combinations of
-KEM, "kty" and "crv" for the algorithms defined in this document are shown in <a href="#ciphersuite-kty-crv" class="auto internal xref">Figure 1</a>.<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
+KEM, "kty" and "crv" for the algorithms defined in this document are shown in <a href="#ciphersuite-kty-crv" class="auto internal xref">Figure 1</a>.<a href="#section-3.4-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.2-2.3">
-            <p id="section-3.2-2.3.1">If the "key_ops" field is present, it MUST include only "derive bits" for the private key
-and MUST be empty for the public key.<a href="#section-3.2-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-2.3">
+            <p id="section-3.4-2.3.1">If the "key_ops" field is present, it MUST include only "derive bits" for the private key
+and MUST be empty for the public key.<a href="#section-3.4-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-3">Examples of the COSE_Key for COSE-HPKE are shown in <a href="#key-representation-example" class="auto internal xref">Section 5.3</a>.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">Examples of the COSE_Key for COSE-HPKE are shown in <a href="#key-representation-example" class="auto internal xref">Section 5.3</a>.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

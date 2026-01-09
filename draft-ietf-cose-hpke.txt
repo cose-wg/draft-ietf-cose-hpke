@@ -94,9 +94,11 @@ Table of Contents
    2.  Conventions and Terminology
    3.  HPKE for COSE
      3.1.  Overview
-       3.1.1.  HPKE Integrated Encryption Mode
-       3.1.2.  HPKE Key Encryption Mode
-     3.2.  Key Representation
+     3.2.  HPKE Integrated Encryption Mode
+     3.3.  HPKE Key Encryption Mode
+       3.3.1.  Recipient_structure
+       3.3.2.  COSE-HPKE Recipient Construction
+     3.4.  Key Representation
    4.  Ciphersuite Registration
      4.1.  COSE_Keys for COSE-HPKE Ciphersuites
    5.  Examples
@@ -182,12 +184,12 @@ Table of Contents
 
    *  HPKE Integrated Encryption mode, where HPKE is used to encrypt the
       plaintext.  This mode can only be used with a single recipient.
-      Section 3.1.1 provides the details.
+      Section 3.2 provides the details.
 
    *  HPKE Key Encryption mode, where HPKE is used to encrypt a content
       encryption key (CEK) and the CEK is subsequently used to encrypt
       the plaintext.  This mode supports multiple recipients.
-      Section 3.1.2 provides the details.
+      Section 3.3 provides the details.
 
    Distinct algorithm identifiers are defined and registered that are
    specific to each COSE HPKE mode so that they are fully specified, as
@@ -208,7 +210,7 @@ Table of Contents
    described in Section 5.1.2 of [RFC9180], which authenticates using a
    pre-shared key.
 
-3.1.1.  HPKE Integrated Encryption Mode
+3.2.  HPKE Integrated Encryption Mode
 
    This mode applies if the COSE_Encrypt0 structure uses a COSE-HPKE
    algorithm and has no recipient structure(s).
@@ -288,7 +290,7 @@ Table of Contents
 
    An example is shown in Section 5.1.
 
-3.1.2.  HPKE Key Encryption Mode
+3.3.  HPKE Key Encryption Mode
 
    This mode is selected if the COSE_recipient structure uses a COSE-
    HPKE algorithm.
@@ -313,7 +315,7 @@ Table of Contents
    encryption operation.  As stated above, the specification uses a CEK
    to encrypt the content at layer 0.
 
-3.1.2.1.  Recipient Encryption
+3.3.1.  Recipient_structure
 
    This section defines the Recipient_structure, which is used in place
    of COSE_KDF_Context for COSE-HPKE recipients.  It MUST be used for
@@ -353,7 +355,7 @@ Table of Contents
       application wishes to include in the key derivation via the HPKE
       info parameter.  If none, it is a zero-length string.
 
-3.1.2.2.  COSE-HPKE Recipient Construction
+3.3.2.  COSE-HPKE Recipient Construction
 
    Because COSE-HPKE supports header protection, if the 'alg' parameter
    is present, it MUST be in the protected header parameters and MUST be
@@ -431,7 +433,7 @@ Table of Contents
 
    An example is shown in Section 5.2.
 
-3.2.  Key Representation
+3.4.  Key Representation
 
    The COSE_Key with the existing key types can be used to represent KEM
    private or public keys.  When using a COSE_Key for COSE-HPKE, the
