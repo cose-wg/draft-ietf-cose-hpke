@@ -386,6 +386,9 @@ Table of Contents
    *  aead_id: Depends on the COSE-HPKE algorithm used.
 
    *  info: Deterministic encoding of the Recipient_structure.
+      Externally provided context information MAY be provided and MUST
+      be passed into the Recipient_structure via the
+      recipient_extra_info field.
 
    *  aad: Defaults to the empty string; externally provided information
       MAY be used instead.
@@ -412,6 +415,9 @@ Table of Contents
    *  aead_id: Depends on the COSE-HPKE algorithm used.
 
    *  info: Deterministic encoding of the Recipient_structure.
+      Externally provided context information MAY be provided and MUST
+      be passed into the Recipient_structure via the
+      recipient_extra_info field.
 
    *  aad: Defaults to the empty string; externally provided information
       MAY be used instead.
