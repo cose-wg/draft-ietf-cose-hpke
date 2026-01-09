@@ -102,7 +102,6 @@ Table of Contents
    5.  Examples
      5.1.  COSE HPKE Integrated Encryption Mode
      5.2.  COSE HPKE Key Encryption Mode
-       5.2.1.  COSE_Encrypt
      5.3.  Key Representation
        5.3.1.  Public Key for HPKE-0
        5.3.2.  Private Key for HPKE-0
@@ -662,143 +661,85 @@ e'
 
 5.2.  COSE HPKE Key Encryption Mode
 
-   In this example we assume that a sender wants to transmit a payload
-   to two recipients using the HPKE Key Encryption mode.  Note that it
-   is possible to send two single-layer payloads, although it will be
-   less efficient.
-
-5.2.1.  COSE_Encrypt
-
    An example of key encryption using the COSE_Encrypt structure using
    HPKE is shown in Figure 5.  Line breaks and comments have been
    inserted for better readability.
 
    This example uses the following input parameters:
 
-   *  Content encryption algorithm: AES-128-GCM
+   *  Suite: HPKE-0 (P-256 / HKDF-SHA256 / AES-128-GCM)
 
-   *  plaintext: "This is the payload."
+   *  Plaintext: "This is the content."
 
-   *  kid:"alice"
+   *  External AAD: empty
 
-   *  alg: HPKE-0-KE (assumed 46) - Key Encryption, DHKEM(P-256, HKDF-
-      SHA256), KDF: HKDF-SHA256, AEAD: AES-128-GCM
+   *  Info: empty
 
-   *  external_aad: "some externally provided aad"
+   *  Recipient kid: "alice"
 
-   Alice uses the following NIST P-256 ECC keys.
+   Alice uses the following COSE Keys, in hex-encoding:
 
-   Private Key:
+   a701020245616c69636503182e20012158201f2124bdf7da2656a1e404fd
+   fb9958d762de1db78959d1ef7f946437161071882258202abfce2ff6083d
+   28be1cd915f5682932ce8f45c08e9db1d3dfc8bd5e89d4dcb423582031e9
+   ff686ed68feafa8774d2fb88370da73b4de5a8a8104545c2c3db412b8202
 
-   0xaf, 0xf9, 0x07, 0xc9, 0x9f, 0x9a, 0xd3, 0xaa,
-   0xe6, 0xc4, 0xcd, 0xf2, 0x11, 0x22, 0xbc, 0xe2,
-   0xbd, 0x68, 0xb5, 0x28, 0x3e, 0x69, 0x07, 0x15,
-   0x4a, 0xd9, 0x11, 0x84, 0x0f, 0xa2, 0x08, 0xcf
+   This hex-sequence decodes to the following COSE Key:
 
-   Public Key:
-
-   /* SEC Serialization of X and Y */
-   0x04,
-
-   /* X & Y */
-   0x65, 0xed, 0xa5, 0xa1, 0x25, 0x77, 0xc2, 0xba,
-   0xe8, 0x29, 0x43, 0x7f, 0xe3, 0x38, 0x70, 0x1a,
-   0x10, 0xaa, 0xa3, 0x75, 0xe1, 0xbb, 0x5b, 0x5d,
-   0xe1, 0x08, 0xde, 0x43, 0x9c, 0x08, 0x55, 0x1d,
-
-   0x1e, 0x52, 0xed, 0x75, 0x70, 0x11, 0x63, 0xf7,
-   0xf9, 0xe4, 0x0d, 0xdf, 0x9f, 0x34, 0x1b, 0x3d,
-   0xc9, 0xba, 0x86, 0x0a, 0xf7, 0xe0, 0xca, 0x7c,
-   0xa7, 0xe9, 0xee, 0xcd, 0x00, 0x84, 0xd1, 0x9c
+   {
+   1 /kty/: 2,
+   2 /kid/: h'616c696365',
+   3 /alg/: 46 /HPKE-0-KE (DHKEM(P-256, HKDF-SHA256) / HKDF-SHA256 /
+   AES-128-GCM)/,
+   -1 /crv/: 1 /P-256/,
+   -2 /x/:
+   h'1f2124bdf7da2656a1e404fdfb9958d762de1db78959d1ef7f94643716107188',
+   -3 /y/:
+   h'2abfce2ff6083d28be1cd915f5682932ce8f45c08e9db1d3dfc8bd5e89d4dcb4',
+   -4 /d/:
+   h'31e9ff686ed68feafa8774d2fb88370da73b4de5a8a8104545c2c3db412b8202'
+   }
 
    As a result, the following COSE_Encrypt payload is created:
 
-   d8 60 84 43 a1 01 01 a1 05 50 7f 55 a2 6b 98 c0
-   49 b4 28 a7 cf 25 9d c3 0e 54 58 23 3f ae 53 ee
-   83 55 ee 40 4e 86 7c 00 74 f8 c3 8c 6d 13 6b 65
-   bb 61 93 92 79 b4 38 48 c5 8c b6 a4 76 03 55 81
-   83 4b a2 01 18 23 04 45 61 6c 69 63 65 a1 23 58
-   41 04 fe 73 6d 1d 93 11 4d f6 11 3b c2 87 cd 8e
-   63 67 e1 0a b4 78 d7 fe df ac a1 6e 12 6f f0 16
-   d6 95 d5 f7 22 34 03 e3 99 60 75 55 bc cf b9 65
-   17 5f 49 14 e0 47 73 f7 04 07 5b 46 58 bf 7a dd
-   84 a3 58 20 55 12 c2 35 7d 4c b6 bd 23 8a 5f bc
-   10 84 b6 c9 74 0a c2 41 1d 93 63 7a 51 e6 9d 51
-   0b 4f ae f8
+   d8608443a10101a10550311aa7cc6cf87c1068a2ca671ede2cc758253e17
+   fb3a5e244dc66e4d175424d364c24c6f85945b75f3788cf35116c67bc7b8
+   45df5757c381834ba201182e0445616c696365a123584104a97992eb7834
+   74b632289699b5b97218595f82c0fe2ed9097d505f6a64c8c530775a66fa
+   36b8728ae329a24c8c6580a59c80e7c5d583b197cd42222cdb4f674c5820
+   649f31f9e647c3d7ded69f8cd6ed1ca4e5171f681c39eed1f077a1d1a01b
+   f784
 
    Decoded, this hex-sequence has the following content:
 
-   =============== NOTE: '\' line wrapping per RFC 8792 ================
+{
+    "protected": {
+        1 /alg/: 1 /A128GCM/
+    },
+    "unprotected": {
+        5 /iv/: h'311aa7cc6cf87c1068a2ca671ede2cc7'
+    },
+    "ciphertext": h'3e17fb3a5e244dc66e4d175424d364c24c6f85945b75f3788cf3
+5116c67bc7b845df5757c3',
+    "recipients": [
+    {
+        "protected": {
+            1 /alg/: 46 /HPKE-0-KE (DHKEM(P-256, HKDF-SHA256) / HKDF-SHA
+256 / AES-128-GCM)/,
+            4 /kid/: h'616c696365'
+        },
+        "unprotected": {
+            -4 /ek/: h'04a97992eb783474b632289699b5b97218595f82c0fe2ed90
+97d505f6a64c8c530775a66fa36b8728ae329a24c8c6580a59c80e7c5d583b197cd42222
+cdb4f674c'
+        },
+        "encrypted_cek": h'649f31f9e647c3d7ded69f8cd6ed1ca4e5171f681c39e
+ed1f077a1d1a01bf784'
+    }
+    ]
+}
 
-     96([
-          / alg = AES-128-GCM (1) /
-          h'A10101',
-          {
-              / iv /
-              5: h'33739C468ACB8EEC693C563EAEA12DD0'
-          },
-          / ciphertext /
-          h'\
-   1F3EE9966D5CEE016E49365CF366FD608F271FC3B5ABDD5253844EE38EE6ABB7F555\
-                                                                    9A',
-          [
-              [
-                  / alg = HPKE-0 (35), kid = 'alice' /
-                  h'A20118230445616C696365',
-                  {
-                      / ek /
-                      -4: h'\
-   040506BE8D9C2AFE42D3330676A3F616BAE02F6779D962449F26759B8D1E8F4DF10C\
-         9F344627DEB063EE1DDB4858A5E7605BD09ECEB409B037E6E61F44D1E946C1'
-                  },
-                  / ciphertext containing encrypted CEK /
-                  h'\
-       B11361397A19E9C155C3E0E8117B5E88155600E550DDE03DC834A46A182DE6F1'
-              ]
-          ]
-      ])
-
-                  Figure 5: COSE_Encrypt Example for HPKE
-
-   To offer authentication of the sender the payload in Figure 5 is
-   signed with a COSE_Sign1 wrapper, which is outlined in Figure 6.  The
-   payload in Figure 6 is meant to contain the content of Figure 5.
-
-   Bob uses the following signature key to sign the COSE_Encrypt payload
-   without any additional data.
-
-   Private Key:
-
-   0xd9, 0xb5, 0xe7, 0x1f, 0x77, 0x28, 0xbf, 0xe5,
-   0x63, 0xa9, 0xdc, 0x93, 0x75, 0x62, 0x27, 0x7e,
-   0x32, 0x7d, 0x98, 0xd9, 0x94, 0x80, 0xf3, 0xdc,
-   0x92, 0x41, 0xe5, 0x74, 0x2a, 0xc4, 0x58, 0x89
-
-   The output of the message is as follows:
-
-   =============== NOTE: '\' line wrapping per RFC 8792 ================
-
-   18([
-          / alg = ES256 (-7) /
-          h'A10126',
-          {
-             / kid = 'bob' /
-             4: h'626F62'
-          },
-          / payload / h'\
-   D8608443A10101A1055033739C468ACB8EEC693C563EAEA12DD058231F3EE9966D5C\
-   EE016E49365CF366FD608F271FC3B5ABDD5253844EE38EE6ABB7F5559A81834BA201\
-   18230445616C696365A1235841040506BE8D9C2AFE42D3330676A3F616BAE02F6779\
-   D962449F26759B8D1E8F4DF10C9F344627DEB063EE1DDB4858A5E7605BD09ECEB409\
-   B037E6E61F44D1E946C15820B11361397A19E9C155C3E0E8117B5E88155600E550DD\
-                                               E03DC834A46A182DE6F1',
-          / Signature /
-          h'\
-   7F9A83D1753E6FA8475A1250A786DA3E680265949A0AEE1984895A406E41AE8A2966\
-           38CA64AE270C5317829BD3968EF76C42DF1566DADC9A68B06BA6ED376B8A'
-     ])
-
-                        Figure 6: COSE_Sign1 Example
+               Figure 5: COSE_Encrypt Example for HPKE
 
 5.3.  Key Representation
 
@@ -824,7 +765,7 @@ e'
              7e0ca7ca7e9eecd0084d19c'
    }
 
-           Figure 7: Public Key Representation Example for HPKE-0
+           Figure 6: Public Key Representation Example for HPKE-0
 
 5.3.2.  Private Key for HPKE-0
 
@@ -850,7 +791,7 @@ e'
              e306705db6090308507b4d3',
    }
 
-          Figure 8: Private Key Representation Example for HPKE-0
+          Figure 7: Private Key Representation Example for HPKE-0
 
 5.3.3.  KEM Public Key for HPKE-4
 
@@ -868,7 +809,7 @@ e'
              9bd4ad2bd4e9931b1c34c22',
    }
 
-           Figure 9: Public Key Representation Example for HPKE-4
+           Figure 8: Public Key Representation Example for HPKE-4
 
 6.  Security Considerations
 
