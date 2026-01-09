@@ -1469,7 +1469,8 @@ recipient MAY use it to select the corresponding private key.<a href="#section-3
 </li>
           <li class="normal" id="section-3.2-5.5">
             <p id="section-3.2-5.5.1">aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
-For the Integrated Encryption mode the context string will be "Encrypt0".<a href="#section-3.2-5.5.1" class="pilcrow">¶</a></p>
+For the Integrated Encryption mode the context string will be "Encrypt0".
+Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.<a href="#section-3.2-5.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-5.6">
             <p id="section-3.2-5.6.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-5.6.1" class="pilcrow">¶</a></p>
