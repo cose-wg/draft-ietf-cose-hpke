@@ -144,7 +144,7 @@ The mode is 'mode_psk' if the 'psk_id' header parameter is present; otherwise, t
 to the holder of a given KEM private key. 'mode_psk' is described in {{Section 5.1.2 of RFC9180}},
 which authenticates using a pre-shared key.
 
-### HPKE Integrated Encryption Mode {#one-layer}
+## HPKE Integrated Encryption Mode {#one-layer}
 
 This mode applies if the COSE_Encrypt0 structure uses a COSE-HPKE algorithm
 and has no recipient structure(s).
@@ -196,7 +196,7 @@ The COSE_Encrypt0 MAY be tagged or untagged.
 
 An example is shown in {{one-layer-example}}.
 
-### HPKE Key Encryption Mode {#two-layer}
+## HPKE Key Encryption Mode {#two-layer}
 
 This mode is selected if the COSE_recipient structure uses a COSE-HPKE algorithm.
 
@@ -216,7 +216,7 @@ This two-layer structure is used to encrypt content that can also be shared with
 multiple parties at the expense of a single additional encryption operation.
 As stated above, the specification uses a CEK to encrypt the content at layer 0.
 
-#### Recipient Encryption
+### Recipient_structure
 
 This section defines the Recipient_structure, which is used in place of COSE_KDF_Context
 for COSE-HPKE recipients. It MUST be used for COSE-HPKE recipients, as it provides
@@ -252,8 +252,7 @@ specified in {{Section 4.2.1 of RFC8949}}.
 - "recipient_extra_info" contains any additional context the application wishes to include in
 the key derivation via the HPKE info parameter. If none, it is a zero-length string.
 
-
-#### COSE-HPKE Recipient Construction
+### COSE-HPKE Recipient Construction
 
 Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it
 MUST be in the protected header parameters and MUST be a COSE-HPKE algorithm.
