@@ -187,7 +187,7 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - kdf_id: Depends on the COSE-HPKE algorithm used.
 - aead_id: Depends on the COSE-HPKE algorithm used.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
+- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
 - enc: The contents of the layer 'ek' parameter.
 - ct: The contents of the layer ciphertext.
 
