@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-04T02:09:56.711965+00:00",
+  "timestamp": "2026-01-11T02:09:42.588753+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -7101,24 +7101,26 @@
       "id": "PR_kwDOGr5frc67Sj8E",
       "title": "Update for Integrated Encryption Example",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/100",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Updated the COSE HPKE Integrated Encryption Mode example following the recent changes to the draft.",
       "createdAt": "2026-01-02T14:12:23Z",
-      "updatedAt": "2026-01-02T23:31:07Z",
+      "updatedAt": "2026-01-09T16:11:34Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "da03bec7d2a4f20c94db5d035d3ab3b5edecc6a8",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "hannestschofenig-patch-10",
       "headRefOid": "eb0fc242a1ffd987bd7c775f756a2b24a6fe39d8",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-09T16:11:33Z",
+      "mergedAt": "2026-01-09T16:11:33Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "4c6f9d212723158e183ff1cfd1537e0f53f4c6e9"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7141,24 +7143,26 @@
       "id": "PR_kwDOGr5frc67TMpd",
       "title": "Updated HPKE Key Encryption Example",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/101",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Updated the COSE HPKE Key Encryption example because of the recent changes in the draft.",
       "createdAt": "2026-01-02T15:56:58Z",
-      "updatedAt": "2026-01-02T23:31:41Z",
+      "updatedAt": "2026-01-09T16:12:13Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "da03bec7d2a4f20c94db5d035d3ab3b5edecc6a8",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "hannestschofenig-patch-11",
       "headRefOid": "32c639b2177e3db8c6053dcfe47d98f8c38d91b7",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-09T16:12:13Z",
+      "mergedAt": "2026-01-09T16:12:13Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "fb190344467c9cc7ed8811934f32416dcd8321ee"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7207,24 +7211,26 @@
       "id": "PR_kwDOGr5frc67TTWy",
       "title": "Revise section headings in draft-ietf-cose-hpke.md",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/103",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2026-01-02T16:10:37Z",
-      "updatedAt": "2026-01-02T23:15:07Z",
+      "updatedAt": "2026-01-09T16:13:20Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "da03bec7d2a4f20c94db5d035d3ab3b5edecc6a8",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "hannestschofenig-patch-13",
       "headRefOid": "7e551e3feac79b5dff90c952c2c4b5ac4e1086a1",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-09T16:13:20Z",
+      "mergedAt": "2026-01-09T16:13:20Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "94a2a4740417f3b850bec59a65017756e125dbf4"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7247,24 +7253,26 @@
       "id": "PR_kwDOGr5frc67TaUO",
       "title": "Update AAD information handling in Integrated Encryption",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/104",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Clarified the use of externally provided AAD information in the Integrated Encryption mode and noted that it must be passed into the external_aad field of the Enc_structure.\r\n\r\nThis part was left unspecified and not allowing externally supplied AAD information creates an imbalance with the HPKE Key Encryption mode.",
       "createdAt": "2026-01-02T16:31:35Z",
-      "updatedAt": "2026-01-02T23:26:57Z",
+      "updatedAt": "2026-01-09T16:16:01Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "da03bec7d2a4f20c94db5d035d3ab3b5edecc6a8",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "hannestschofenig-patch-14",
-      "headRefOid": "77f8b05134cd3e4c95f11de0632fe886c2d0fc83",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "a53c50cfb2d1f04fb34f95a2ba24679cd333cf20",
+      "closedAt": "2026-01-09T16:16:01Z",
+      "mergedAt": "2026-01-09T16:16:01Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "0a6428b6779dd451b3c984b858a88d89a973795a"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7279,6 +7287,46 @@
           "createdAt": "2026-01-02T23:26:57Z",
           "updatedAt": "2026-01-02T23:26:57Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7ZPJAh",
+          "commit": {
+            "abbreviatedOid": "77f8b05"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-09T16:14:07Z",
+          "updatedAt": "2026-01-09T16:14:08Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\nFor the Integrated Encryption mode the context string will be \"Encrypt0\".\nExternally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.\n```",
+              "createdAt": "2026-01-09T16:14:07Z",
+              "updatedAt": "2026-01-09T16:14:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7ZPJ6m",
+          "commit": {
+            "abbreviatedOid": "77f8b05"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-09T16:14:53Z",
+          "updatedAt": "2026-01-09T16:14:53Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\nFor the Integrated Encryption mode the context string will be \"Encrypt0\".\nExternally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.\n```",
+              "createdAt": "2026-01-09T16:14:53Z",
+              "updatedAt": "2026-01-09T16:14:53Z"
+            }
+          ]
         }
       ]
     },
@@ -7287,24 +7335,26 @@
       "id": "PR_kwDOGr5frc67TcRx",
       "title": "Clarify requirements for 'aad' field",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/105",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Updated the requirements for the 'aad' field to specify that it must contain the byte string for the authenticated data structure and provided details on the context string and external AAD information.",
       "createdAt": "2026-01-02T16:37:20Z",
-      "updatedAt": "2026-01-02T23:28:26Z",
+      "updatedAt": "2026-01-09T16:19:00Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "da03bec7d2a4f20c94db5d035d3ab3b5edecc6a8",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "hannestschofenig-patch-15-1",
       "headRefOid": "36c3d45866c0246ddd01cf8cd2be05725fae85e6",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-09T16:19:00Z",
+      "mergedAt": "2026-01-09T16:18:59Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "bbb9435b4d291d7d8c13cb62e28c220a2a43a92e"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7353,24 +7403,26 @@
       "id": "PR_kwDOGr5frc67TfjQ",
       "title": "Update info field description",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/107",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Clarified the info field in the HPKE Key Encryption mode",
       "createdAt": "2026-01-02T16:46:49Z",
-      "updatedAt": "2026-01-02T23:30:12Z",
+      "updatedAt": "2026-01-09T16:20:25Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "da03bec7d2a4f20c94db5d035d3ab3b5edecc6a8",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "hannestschofenig-patch-16",
       "headRefOid": "cac5cd36a0b17b2af4323c2d657cf5c873edbcaa",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-09T16:20:25Z",
+      "mergedAt": "2026-01-09T16:20:25Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "4bb6c3d9b715e755d33af15b93816cea13f78a1d"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7393,24 +7445,26 @@
       "id": "PR_kwDOGr5frc67V4TY",
       "title": "Use algorithm identifiers in the correct mode",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/108",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "selfissued",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2026-01-02T23:49:21Z",
-      "updatedAt": "2026-01-03T15:32:06Z",
+      "updatedAt": "2026-01-09T16:20:59Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "da03bec7d2a4f20c94db5d035d3ab3b5edecc6a8",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "mbj-use-correct-mode",
       "headRefOid": "4a650537965ce0c5ab186eb4401a1a64b0e99d62",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-01-09T16:20:56Z",
+      "mergedAt": "2026-01-09T16:20:56Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "9dd430efec82aff84cdb2fd053148424d5893654"
+      },
       "comments": [],
       "reviews": [
         {
