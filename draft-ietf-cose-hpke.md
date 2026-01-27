@@ -495,7 +495,8 @@ The following COSE Key was used in this example:
   h'96b6621abf5ca532e042dc5c346c1ef0c9186b83cb122e50a46f1458de023d35',
  -4 /d/:
   h'eca39300147c91a2a65d17e00ea278b57a14178245bf5686d9a404cca1816b8e'
-}~~~
+}
+~~~
 {: #hpke-example-one-key title="COSE Key"}
 
 ## COSE HPKE Key Encryption Mode {#two-layer-example}
