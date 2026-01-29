@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-11T02:09:42.588753+00:00",
+  "timestamp": "2026-01-29T02:25:48.585120+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -7478,6 +7478,86 @@
           "body": "A good addition, Mike.",
           "createdAt": "2026-01-03T15:32:06Z",
           "updatedAt": "2026-01-03T15:32:06Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 109,
+      "id": "PR_kwDOGr5frc6_slXI",
+      "title": "Updated Integrated Encryption Mode Example",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/109",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-01-27T20:35:43Z",
+      "updatedAt": "2026-01-28T11:30:20Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "9dd430efec82aff84cdb2fd053148424d5893654",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "hannestschofenig-patch-17",
+      "headRefOid": "e009fc664de9a168521874ba3d0be240d941e763",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7dVae8",
+          "commit": {
+            "abbreviatedOid": "0982c37"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-27T20:44:36Z",
+          "updatedAt": "2026-01-27T20:44:54Z",
+          "comments": [
+            {
+              "originalPosition": 69,
+              "body": "```suggestion\n}\n~~~\n```",
+              "createdAt": "2026-01-27T20:44:36Z",
+              "updatedAt": "2026-01-27T20:44:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7dWWT8",
+          "commit": {
+            "abbreviatedOid": "e009fc6"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-01-27T21:50:52Z",
+          "updatedAt": "2026-01-27T21:50:52Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "```suggestion\n    1 /alg/: 35 /HPKE-0 (P-256 + HKDF-SHA256 + AES-128-GCM)/\n```\n\nDelete extra space that was somehow added.",
+              "createdAt": "2026-01-27T21:50:52Z",
+              "updatedAt": "2026-01-27T21:50:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7dgKb3",
+          "commit": {
+            "abbreviatedOid": "e009fc6"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Let's keep the first examples for each kind of encryption using the default empty info and aad values, as that's what most people will use.\n\nIf you want to add additional examples showing the use of non-empty values, that's fine with me.",
+          "createdAt": "2026-01-28T11:30:20Z",
+          "updatedAt": "2026-01-28T11:30:20Z",
           "comments": []
         }
       ]
