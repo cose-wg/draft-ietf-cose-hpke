@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 31 July 2026                                       Tradeverifyd
+Expires: 5 August 2026                                      Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                         27 January 2026
+                                                         1 February 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 July 2026.
+   This Internet-Draft will expire on 5 August 2026.
 
 Copyright Notice
 
@@ -629,36 +629,34 @@ Table of Contents
 
    *  External AAD: empty
 
-   *  External Info: "test"
+   *  External Info: empty
 
    *  Recipient kid: "bob"
 
    The ciphertext (hex) transmitted to "bob" is:
 
-   d08344a1011823a123584104d58509dc58f8d6622898100c6fa3e76f8034
-   d5ebbfbb9c31762fdcd6f5dd59ee71e9404f3dcad660e5c006dd724d5479
-   2bbec6d1d1b8453a2e8ac75bd3da16c25825e2ab4d54f969db0c2d6e0347
-   88088b65a5cd470f0dc0f66adfe5ded0c7487aeb8934631aa2
+   d08344a1011823a20443626f622358410457229bdd99407b384a9e59fa15
+   53224d58b106e9ebebdaa06d2126bd96757674847669966ecb0dcdf21af5
+   623f19f0b799b0cddf3ee930b739dd474f6282de0158253f3c1595e9d252
+   e816215a9ce73f47ba4b57acb06ecc39ca5a03a14108bbe7807af5688d61
 
                   Figure 2: Hex-Encoding of COSE_Encrypt0
 
    COSE_Encrypt0 pretty-printed:
 
- {
-   "protected": {
-     1 /alg/: 35 /HPKE-0  (P-256 + HKDF-SHA256 + AES-128-GCM)/
-   },
-   "unprotected": {
-     -4 /ek/: h'04d58509dc58f8d6622898100c6fa3e76f8034d5ebbfbb9c31762fdc
- d6f5dd59ee71e9404f3dcad660e5c006dd724d54792bbec6d1d1b8453a2e8ac75bd3da1
- 6c2'
-   },
-   "ciphertext":
-     h'e2ab4d54f969db0c2d6e034788088b65a5cd470f0dc0f66adfe5ded0c7487aeb8
- 934631aa2'
- }
+   16([
+     h'A1011823',
+     {
+       4: 'bob',
+       -4: h'0457229BDD99407B384A9E59FA1553224D58B106E9EBEBDA
+       A06D2126BD96757674847669966ECB0DCDF21AF5623F19F0B799B0
+       CDDF3EE930B739DD474F6282DE01'
+     },
+     h'3F3C1595E9D252E816215A9CE73F47BA4B57ACB06ECC39CA5A03A1
+     4108BBE7807AF5688D61'
+     ])
 
-                Figure 3: COSE_Encrypt0 Example for HPKE
+                  Figure 3: COSE_Encrypt0 Example for HPKE
 
    The following COSE Key was used in this example:
 
