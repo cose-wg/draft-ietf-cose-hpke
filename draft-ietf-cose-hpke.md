@@ -131,6 +131,8 @@ encrypt the plaintext. This mode supports multiple recipients.
 Distinct algorithm identifiers are defined and registered
 that are specific to each COSE HPKE mode
 so that they are fully specified, as required by {{RFC9864}}.
+Algorithm identifiers MUST only be used in the COSE HPKE mode
+that is specified for them.
 
 In both cases, the new COSE header parameter 'ek' MUST be present.
 It contains the encapsulated KEM shared secret.
@@ -144,7 +146,7 @@ The mode is 'mode_psk' if the 'psk_id' header parameter is present; otherwise, t
 to the holder of a given KEM private key. 'mode_psk' is described in {{Section 5.1.2 of RFC9180}},
 which authenticates using a pre-shared key.
 
-### HPKE Integrated Encryption Mode {#one-layer}
+## HPKE Integrated Encryption Mode {#one-layer}
 
 This mode applies if the COSE_Encrypt0 structure uses a COSE-HPKE algorithm
 and has no recipient structure(s).
@@ -166,6 +168,7 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - info: Defaults to the empty string; externally provided information MAY be used instead.
 - aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
 For the Integrated Encryption mode the context string will be "Encrypt0".
+Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
 - aead_id: Depends on the COSE-HPKE algorithm used.
 - pt: The raw message plaintext.
 
@@ -186,7 +189,7 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - kdf_id: Depends on the COSE-HPKE algorithm used.
 - aead_id: Depends on the COSE-HPKE algorithm used.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
+- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
 - enc: The contents of the layer 'ek' parameter.
 - ct: The contents of the layer ciphertext.
 
@@ -196,7 +199,7 @@ The COSE_Encrypt0 MAY be tagged or untagged.
 
 An example is shown in {{one-layer-example}}.
 
-### HPKE Key Encryption Mode {#two-layer}
+## HPKE Key Encryption Mode {#two-layer}
 
 This mode is selected if the COSE_recipient structure uses a COSE-HPKE algorithm.
 
@@ -216,7 +219,7 @@ This two-layer structure is used to encrypt content that can also be shared with
 multiple parties at the expense of a single additional encryption operation.
 As stated above, the specification uses a CEK to encrypt the content at layer 0.
 
-#### Recipient Encryption
+### Recipient_structure
 
 This section defines the Recipient_structure, which is used in place of COSE_KDF_Context
 for COSE-HPKE recipients. It MUST be used for COSE-HPKE recipients, as it provides
@@ -252,8 +255,7 @@ specified in {{Section 4.2.1 of RFC8949}}.
 - "recipient_extra_info" contains any additional context the application wishes to include in
 the key derivation via the HPKE info parameter. If none, it is a zero-length string.
 
-
-#### COSE-HPKE Recipient Construction
+### COSE-HPKE Recipient Construction
 
 Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it
 MUST be in the protected header parameters and MUST be a COSE-HPKE algorithm.
@@ -270,7 +272,7 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - pkR: The recipient public key, converted into HPKE public key.
 - kdf_id: Depends on the COSE-HPKE algorithm used.
 - aead_id: Depends on the COSE-HPKE algorithm used.
-- info: Deterministic encoding of the Recipient_structure.
+- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
 - pt: The raw key for the next layer down.
 
@@ -285,7 +287,7 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - skR: The recipient private key, converted into HPKE private key.
 - kdf_id: Depends on the COSE-HPKE algorithm used.
 - aead_id: Depends on the COSE-HPKE algorithm used.
-- info: Deterministic encoding of the Recipient_structure.
+- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
 - ct: The contents of the layer ciphertext field.
 
@@ -429,22 +431,14 @@ This holds for COSE algorithms using either of the COSE HPKE modes
 
 # Examples
 
-This section provides a set of examples that show all COSE message types
-(COSE_Encrypt0 and COSE_Encrypt) to which the COSE-HPKE can be
-applied, and also provides some examples of key representation for HPKE KEM.
-
-Each example of the COSE message includes the following information
-that can be used to check the interoperability of COSE-HPKE implementations:
-
-- plaintext: Original data of the encrypted payload.
-- external_aad: Externally supplied AAD.
-- skR: A recipient private key.
-- skE: An ephemeral sender private key paired with the encapsulated key.
+This section provides a set of examples that show the HPKE Integrated Encryption
+Mode and the HPKE Key Encryption Mode, and illustrates the use of key representations
+for HPKE KEM.
 
 ## COSE HPKE Integrated Encryption Mode {#one-layer-example}
 
 This example assumes that a sender wants to communicate an
-encrypted payload to a single recipient in the most efficient way.
+encrypted payload to a single recipient, named "bob".
 
 An example of the HPKE Integrated Encryption Mode is
 shown in {{hpke-example-one}}. Line breaks and comments have been inserted
@@ -452,40 +446,57 @@ for better readability.
 
 This example uses the following:
 
-- alg: HPKE-0
-- plaintext: "This is the content."
-- external_aad: "COSE-HPKE app"
-- skR: h'57c92077664146e876760c9520d054aa93c3afb04e306705db6090308507b4d3'
-- skE: h'42dd125eefc409c3b57366e721a40043fb5a58e346d51c133128a77237160218'
+- Suite: HPKE-0 (P-256 / HKDF-SHA256 / AES-128-GCM)
+- Plaintext: "This is the content."
+- External AAD: empty
+- Info: empty
+- Recipient kid: "bob"
+
+The ciphertext (hex) transmitted to "bob" is:
 
 ~~~
-16([
-    / alg = HPKE-0 (Assumed: 35) /
-    h'a1011823',
-    {
-        / kid /
-        4: h'3031',
-        / ek /
-        -4: h'045df24272faf43849530db6be01f42708b3c3a9
-              df8e268513f0a996ed09ba7840894a3fb946cb28
-              23f609c59463093d8815a7400233b75ca8ecb177
-              54d241973e',
-    },
-    / encrypted plaintext /
-    h'35aa3d98739289b83751125abe44e3b977e4b9abbf2c8cfaade
-      b15f7681eef76df88f096',
-])
+d08344a1011823a1235841042fee971fa778fac9c095f835bdf4033d2ae8
+d1b8e8dde4b1f6739a05df8bb338a9bccd52aea211b12d13496d1d5aad5f
+26bc0a1789160d940130003176cf861e5825d4a351c896b4dd9c66fd9ab3
+00bd5788ba8d0c9c895202bd0a42be864a5854c36b00280748
+~~~
+{: #hpke-example-ciphertext title="Hex-Encoding of COSE_Encrypt0"}
+
+COSE_Encrypt0 pretty-printed:
+
+~~~
+{
+  "protected": {
+    1 /alg/: 35 /HPKE-0 (P-256 + HKDF-SHA256 + AES-128-GCM)/
+  },
+  "unprotected": {
+    -4 /ek/: h'042fee971fa778fac9c095f835bdf4033d2ae8d1b8e8dde4b1f6739a0
+5df8bb338a9bccd52aea211b12d13496d1d5aad5f26bc0a1789160d940130003176cf861
+e'
+  },
+  "ciphertext": h'd4a351c896b4dd9c66fd9ab300bd5788ba8d0c9c895202bd0a42be
+864a5854c36b00280748'
+}
 ~~~
 {: #hpke-example-one title="COSE_Encrypt0 Example for HPKE"}
 
+The following COSE Key was used in this example:
+
+~~~
+{
+   1 /kty/: 2,
+   2 /kid/: h'626f62',
+   3 /alg/: 35 /HPKE-0  (P-256 + HKDF-SHA256 + AES-128-GCM)/,
+   -1 /crv/: 1 /P-256/,
+   -2 /x/:
+   h'02a8e3315f96bc7355dbf85740c6d8e53fb070cd8ba5c419be49a91d789ef55c',
+   -3 /y/:
+   h'96b6621abf5ca532e042dc5c346c1ef0c9186b83cb122e50a46f1458de023d35'
+}
+~~~
+{: #hpke-example-one-key title="COSE Key"}
+
 ## COSE HPKE Key Encryption Mode {#two-layer-example}
-
-In this example we assume that a sender wants to transmit a
-payload to two recipients using the HPKE Key Encryption mode.
-Note that it is possible to send two single-layer payloads,
-although it will be less efficient.
-
-### COSE_Encrypt
 
 An example of key encryption using the COSE_Encrypt structure using HPKE is
 shown in below. Line breaks and comments have been
