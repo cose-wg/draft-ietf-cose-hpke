@@ -167,8 +167,10 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - kdf_id: Depends on the COSE-HPKE algorithm used.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
 - aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
+
 For the Integrated Encryption mode the context string will be "Encrypt0".
 Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
+
 - aead_id: Depends on the COSE-HPKE algorithm used.
 - pt: The raw message plaintext.
 
@@ -879,3 +881,21 @@ Thomas Fossati,
 and
 Göran Selander
 for their contributions to the specification.
+
+# Testvectors
+
+The testvectors use the following input:
+
+- Plaintext: "hpke test payload"
+- AAD: "external-aad"
+- Info: "external-info"
+- HPKE AAD: "external-hpke-aad"
+
+AAD is the COSE Enc_structure.external_aad. It is used as AAD for the
+COSE AEAD in Encrypt0/Encrypt (Layer 0). HPKE AAD is the HPKE AAD for
+CEK wrap/unwrap in Key Encryption (Layer 1). It is only passed to the
+HPKE Seal/Open of the CEK.
+
+~~~
+{::include-fold testvectors.txt}
+~~~
