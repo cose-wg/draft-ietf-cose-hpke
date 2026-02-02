@@ -451,34 +451,33 @@ This example uses the following:
 - Suite: HPKE-0 (P-256 / HKDF-SHA256 / AES-128-GCM)
 - Plaintext: "This is the content."
 - External AAD: empty
-- Info: empty
+- External Info: empty
 - Recipient kid: "bob"
 
 The ciphertext (hex) transmitted to "bob" is:
 
 ~~~
-d08344a1011823a1235841042fee971fa778fac9c095f835bdf4033d2ae8
-d1b8e8dde4b1f6739a05df8bb338a9bccd52aea211b12d13496d1d5aad5f
-26bc0a1789160d940130003176cf861e5825d4a351c896b4dd9c66fd9ab3
-00bd5788ba8d0c9c895202bd0a42be864a5854c36b00280748
+d08344a1011823a20443626f622358410457229bdd99407b384a9e59fa15
+53224d58b106e9ebebdaa06d2126bd96757674847669966ecb0dcdf21af5
+623f19f0b799b0cddf3ee930b739dd474f6282de0158253f3c1595e9d252
+e816215a9ce73f47ba4b57acb06ecc39ca5a03a14108bbe7807af5688d61
 ~~~
 {: #hpke-example-ciphertext title="Hex-Encoding of COSE_Encrypt0"}
 
 COSE_Encrypt0 pretty-printed:
 
 ~~~
-{
-  "protected": {
-    1 /alg/: 35 /HPKE-0 (P-256 + HKDF-SHA256 + AES-128-GCM)/
+16([
+  h'A1011823',
+  {
+    4: 'bob',
+    -4: h'0457229BDD99407B384A9E59FA1553224D58B106E9EBEBDA
+    A06D2126BD96757674847669966ECB0DCDF21AF5623F19F0B799B0
+    CDDF3EE930B739DD474F6282DE01'
   },
-  "unprotected": {
-    -4 /ek/: h'042fee971fa778fac9c095f835bdf4033d2ae8d1b8e8dde4b1f6739a0
-5df8bb338a9bccd52aea211b12d13496d1d5aad5f26bc0a1789160d940130003176cf861
-e'
-  },
-  "ciphertext": h'd4a351c896b4dd9c66fd9ab300bd5788ba8d0c9c895202bd0a42be
-864a5854c36b00280748'
-}
+  h'3F3C1595E9D252E816215A9CE73F47BA4B57ACB06ECC39CA5A03A1
+  4108BBE7807AF5688D61'
+  ])
 ~~~
 {: #hpke-example-one title="COSE_Encrypt0 Example for HPKE"}
 
@@ -486,14 +485,16 @@ The following COSE Key was used in this example:
 
 ~~~
 {
-   1 /kty/: 2,
-   2 /kid/: h'626f62',
-   3 /alg/: 35 /HPKE-0  (P-256 + HKDF-SHA256 + AES-128-GCM)/,
-   -1 /crv/: 1 /P-256/,
-   -2 /x/:
-   h'02a8e3315f96bc7355dbf85740c6d8e53fb070cd8ba5c419be49a91d789ef55c',
-   -3 /y/:
-   h'96b6621abf5ca532e042dc5c346c1ef0c9186b83cb122e50a46f1458de023d35'
+  1 /kty/: 2,
+  2 /kid/: h'626f62',
+  3 /alg/: 35 /HPKE-0  (P-256 + HKDF-SHA256 + AES-128-GCM)/,
+ -1 /crv/: 1 /P-256/,
+ -2 /x/:
+  h'02a8e3315f96bc7355dbf85740c6d8e53fb070cd8ba5c419be49a91d789ef55c',
+ -3 /y/:
+  h'96b6621abf5ca532e042dc5c346c1ef0c9186b83cb122e50a46f1458de023d35',
+ -4 /d/:
+  h'eca39300147c91a2a65d17e00ea278b57a14178245bf5686d9a404cca1816b8e'
 }
 ~~~
 {: #hpke-example-one-key title="COSE Key"}
