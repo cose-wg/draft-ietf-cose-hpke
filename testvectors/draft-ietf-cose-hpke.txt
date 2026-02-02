@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 5 August 2026                                      Tradeverifyd
+Expires: 6 August 2026                                      Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                         1 February 2026
+                                                         2 February 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 August 2026.
+   This Internet-Draft will expire on 6 August 2026.
 
 Copyright Notice
 
@@ -194,7 +194,8 @@ Table of Contents
 
    Distinct algorithm identifiers are defined and registered that are
    specific to each COSE HPKE mode so that they are fully specified, as
-   required by [RFC9864].
+   required by [RFC9864].  Algorithm identifiers MUST only be used in
+   the COSE HPKE mode that is specified for them.
 
    In both cases, the new COSE header parameter 'ek' MUST be present.
    It contains the encapsulated KEM shared secret.  The value of this
@@ -241,10 +242,11 @@ Table of Contents
 
    *  aad: MUST contain the byte string for the authenticated data
       structure according to the steps defined in Section 5.3 of RFC
-      9052.  For the Integrated Encryption mode the context string will
-      be "Encrypt0".  Externally provided AAD information MAY be
-      provided and MUST be passed into the Enc_structure via the
-      external_aad field.
+      9052.
+
+   For the Integrated Encryption mode the context string will be
+   "Encrypt0".  Externally provided AAD information MAY be provided and
+   MUST be passed into the Enc_structure via the external_aad field.
 
    *  aead_id: Depends on the COSE-HPKE algorithm used.
 

@@ -1060,7 +1060,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tschofenig, et al.</td>
-<td class="center">Expires 5 August 2026</td>
+<td class="center">Expires 6 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1073,12 +1073,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cose-hpke-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-02-01" class="published">1 February 2026</time>
+<time datetime="2026-02-02" class="published">2 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-08-05">5 August 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-06">6 August 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1148,7 +1148,7 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1430,7 +1430,9 @@ encrypt the plaintext. This mode supports multiple recipients.
         </ul>
 <p id="section-3.1-3">Distinct algorithm identifiers are defined and registered
 that are specific to each COSE HPKE mode
-so that they are fully specified, as required by <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span>.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+so that they are fully specified, as required by <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span>.
+Algorithm identifiers MUST only be used in the COSE HPKE mode
+that is specified for them.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.1-4">In both cases, the new COSE header parameter 'ek' MUST be present.
 It contains the encapsulated KEM shared secret.
 The value of this parameter MUST be the 'enc' value output by the HPKE Seal() operation, as defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.
@@ -1472,59 +1474,62 @@ recipient MAY use it to select the corresponding private key.<a href="#section-3
             <p id="section-3.2-5.4.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-5.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-5.5">
-            <p id="section-3.2-5.5.1">aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
-For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.<a href="#section-3.2-5.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-5.6">
-            <p id="section-3.2-5.6.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-5.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-5.7">
-            <p id="section-3.2-5.7.1">pt: The raw message plaintext.<a href="#section-3.2-5.7.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-5.5.1">aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.<a href="#section-3.2-5.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-6">The outputs are used as follows:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.2-6">For the Integrated Encryption mode the context string will be "Encrypt0".
+Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-7.1">
-            <p id="section-3.2-7.1.1">enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.<a href="#section-3.2-7.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-7.1.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-7.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-7.2">
-            <p id="section-3.2-7.2.1">ct: MUST be used as layer ciphertext. If not using detached content, this is directly placed as
-ciphertext in COSE_Encrypt0 structure. Otherwise, it is transported separately and the ciphertext field is nil.
-See <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5" class="relref">Section 5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> for a description of detached payloads.<a href="#section-3.2-7.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-7.2.1">pt: The raw message plaintext.<a href="#section-3.2-7.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-8">If 'mode_psk' has been selected, then the 'psk_id' parameter MUST be present.
-If 'mode_base' has been chosen, then the 'psk_id' parameter MUST NOT be present.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
-<p id="section-3.2-9">When decrypting, the inputs to the HPKE Open operation are set as follows:<a href="#section-3.2-9" class="pilcrow">¶</a></p>
+<p id="section-3.2-8">The outputs are used as follows:<a href="#section-3.2-8" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.2-10.1">
-            <p id="section-3.2-10.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-10.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.2-9.1">
+            <p id="section-3.2-9.1.1">enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.<a href="#section-3.2-9.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.2-10.2">
-            <p id="section-3.2-10.2.1">skR: The recipient private key, converted into an HPKE private key.<a href="#section-3.2-10.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-10.3">
-            <p id="section-3.2-10.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-10.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-10.4">
-            <p id="section-3.2-10.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-10.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-10.5">
-            <p id="section-3.2-10.5.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-10.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-10.6">
-            <p id="section-3.2-10.6.1">aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.<a href="#section-3.2-10.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-10.7">
-            <p id="section-3.2-10.7.1">enc: The contents of the layer 'ek' parameter.<a href="#section-3.2-10.7.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-10.8">
-            <p id="section-3.2-10.8.1">ct: The contents of the layer ciphertext.<a href="#section-3.2-10.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-9.2">
+            <p id="section-3.2-9.2.1">ct: MUST be used as layer ciphertext. If not using detached content, this is directly placed as
+ciphertext in COSE_Encrypt0 structure. Otherwise, it is transported separately and the ciphertext field is nil.
+See <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5" class="relref">Section 5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> for a description of detached payloads.<a href="#section-3.2-9.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-11">The plaintext output is the raw message plaintext.<a href="#section-3.2-11" class="pilcrow">¶</a></p>
-<p id="section-3.2-12">The COSE_Encrypt0 MAY be tagged or untagged.<a href="#section-3.2-12" class="pilcrow">¶</a></p>
-<p id="section-3.2-13">An example is shown in <a href="#one-layer-example" class="auto internal xref">Section 5.1</a>.<a href="#section-3.2-13" class="pilcrow">¶</a></p>
+<p id="section-3.2-10">If 'mode_psk' has been selected, then the 'psk_id' parameter MUST be present.
+If 'mode_base' has been chosen, then the 'psk_id' parameter MUST NOT be present.<a href="#section-3.2-10" class="pilcrow">¶</a></p>
+<p id="section-3.2-11">When decrypting, the inputs to the HPKE Open operation are set as follows:<a href="#section-3.2-11" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-12.1">
+            <p id="section-3.2-12.1.1">kem_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-12.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-12.2">
+            <p id="section-3.2-12.2.1">skR: The recipient private key, converted into an HPKE private key.<a href="#section-3.2-12.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-12.3">
+            <p id="section-3.2-12.3.1">kdf_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-12.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-12.4">
+            <p id="section-3.2-12.4.1">aead_id: Depends on the COSE-HPKE algorithm used.<a href="#section-3.2-12.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-12.5">
+            <p id="section-3.2-12.5.1">info: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.2-12.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-12.6">
+            <p id="section-3.2-12.6.1">aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.<a href="#section-3.2-12.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-12.7">
+            <p id="section-3.2-12.7.1">enc: The contents of the layer 'ek' parameter.<a href="#section-3.2-12.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-12.8">
+            <p id="section-3.2-12.8.1">ct: The contents of the layer ciphertext.<a href="#section-3.2-12.8.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.2-13">The plaintext output is the raw message plaintext.<a href="#section-3.2-13" class="pilcrow">¶</a></p>
+<p id="section-3.2-14">The COSE_Encrypt0 MAY be tagged or untagged.<a href="#section-3.2-14" class="pilcrow">¶</a></p>
+<p id="section-3.2-15">An example is shown in <a href="#one-layer-example" class="auto internal xref">Section 5.1</a>.<a href="#section-3.2-15" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="two-layer">
