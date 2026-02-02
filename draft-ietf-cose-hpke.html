@@ -36,7 +36,7 @@ variant of HPKE.
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.32.5
-    wcwidth 0.2.14
+    wcwidth 0.3.0
 -->
 <link href="draft-ietf-cose-hpke.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -577,6 +577,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -647,7 +648,7 @@ a.pilcrow {
   }
 }
 @media not print {
-  :hover > a.pilcrow {
+  :hover > a.pilcrow, a.pilcrow:focus {
     opacity: 1;
   }
   a.pilcrow[href]:hover {
@@ -1055,11 +1056,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">COSE HPKE</td>
-<td class="right">January 2026</td>
+<td class="right">February 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tschofenig, et al.</td>
-<td class="center">Expires 13 July 2026</td>
+<td class="center">Expires 6 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1073,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cose-hpke-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-01-09" class="published">9 January 2026</time>
+<time datetime="2026-02-02" class="published">2 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-07-13">13 July 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-06">6 August 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1147,7 +1148,7 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1963,103 +1964,84 @@ e'
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-cose-hpke-key-encryption-mo" class="section-name selfRef">COSE HPKE Key Encryption Mode</a>
         </h3>
 <p id="section-5.2-1">An example of key encryption using the COSE_Encrypt structure using HPKE is
-shown in <a href="#hpke-example-cose-encrypt" class="auto internal xref">Figure 5</a>. Line breaks and comments have been
+shown in below. Line breaks and comments have been
 inserted for better readability.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">This example uses the following input parameters:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.2-3.1">
-            <p id="section-5.2-3.1.1">Suite: HPKE-0 (P-256 / HKDF-SHA256 / AES-128-GCM)<a href="#section-5.2-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-5.2-3.1.1">Content encryption algorithm: AES-128-GCM<a href="#section-5.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.2-3.2">
-            <p id="section-5.2-3.2.1">Plaintext: "This is the content."<a href="#section-5.2-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-5.2-3.2.1">plaintext: "This is the content."<a href="#section-5.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.2-3.3">
-            <p id="section-5.2-3.3.1">External AAD: empty<a href="#section-5.2-3.3.1" class="pilcrow">¶</a></p>
+            <p id="section-5.2-3.3.1">kid:"bob"<a href="#section-5.2-3.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.2-3.4">
-            <p id="section-5.2-3.4.1">Info: empty<a href="#section-5.2-3.4.1" class="pilcrow">¶</a></p>
+            <p id="section-5.2-3.4.1">alg: HPKE-0-KE (assumed 46) - Key Encryption, DHKEM(P-256, HKDF-SHA256), KDF: HKDF-SHA256, AEAD: AES-128-GCM<a href="#section-5.2-3.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.2-3.5">
-            <p id="section-5.2-3.5.1">Recipient kid: "alice"<a href="#section-5.2-3.5.1" class="pilcrow">¶</a></p>
+            <p id="section-5.2-3.5.1">external aad and info are empty<a href="#section-5.2-3.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-5.2-4">Alice uses the following COSE Keys, in hex-encoding:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.2-4">The following COSE Key is used:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.2-5">
 <pre>
-a701020245616c69636503182e20012158201f2124bdf7da2656a1e404fd
-fb9958d762de1db78959d1ef7f946437161071882258202abfce2ff6083d
-28be1cd915f5682932ce8f45c08e9db1d3dfc8bd5e89d4dcb423582031e9
-ff686ed68feafa8774d2fb88370da73b4de5a8a8104545c2c3db412b8202
+a701020243626f6203182e2001215820d832916778598ea6203af974c97b
+45970ac0266fc6a3b7f213ba9f8b591b92972258208d9410599a8e83d00e
+b46d67b34d4dac8fbd4b8b1f08864599659cee9ef09184235820b1162c56
+8efcba91c8e4e82f66e36b45aa10bc55228cf65ecd3bb29cfb09f989
 </pre><a href="#section-5.2-5" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2-6">This hex-sequence decodes to the following COSE Key:<a href="#section-5.2-6" class="pilcrow">¶</a></p>
+<p id="section-5.2-6">As a pretty-printed version:<a href="#section-5.2-6" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.2-7">
 <pre>
 {
-1 /kty/: 2,
-2 /kid/: h'616c696365',
-3 /alg/: 46 /HPKE-0-KE (DHKEM(P-256, HKDF-SHA256) / HKDF-SHA256 /
-AES-128-GCM)/,
--1 /crv/: 1 /P-256/,
--2 /x/:
-h'1f2124bdf7da2656a1e404fdfb9958d762de1db78959d1ef7f94643716107188',
--3 /y/:
-h'2abfce2ff6083d28be1cd915f5682932ce8f45c08e9db1d3dfc8bd5e89d4dcb4',
--4 /d/:
-h'31e9ff686ed68feafa8774d2fb88370da73b4de5a8a8104545c2c3db412b8202'
+   1 /kty/: 2,
+   2 /kid/: h'626f62' /"bob"/,
+   3 /alg/: 46 /HPKE-0-KE/,
+  -1 /crv/: 1 /P-256/,
+  -2 /x/:
+     h'd832916778598ea6203af974c97b45970ac0266fc6a3b7f213ba9
+f8b591b9297',
+  -3 /y/:
+    h'8d9410599a8e83d00eb46d67b34d4dac8fbd4b8b1f08864599659c
+ee9ef09184',
+  -4 /d/:
+    h'b1162c568efcba91c8e4e82f66e36b45aa10bc55228cf65ecd3bb2
+9cfb09f989'
 }
 </pre><a href="#section-5.2-7" class="pilcrow">¶</a>
 </div>
 <p id="section-5.2-8">As a result, the following COSE_Encrypt payload is
-created:<a href="#section-5.2-8" class="pilcrow">¶</a></p>
+produced:<a href="#section-5.2-8" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.2-9">
 <pre>
-d8608443a10101a10550311aa7cc6cf87c1068a2ca671ede2cc758253e17
-fb3a5e244dc66e4d175424d364c24c6f85945b75f3788cf35116c67bc7b8
-45df5757c381834ba201182e0445616c696365a123584104a97992eb7834
-74b632289699b5b97218595f82c0fe2ed9097d505f6a64c8c530775a66fa
-36b8728ae329a24c8c6580a59c80e7c5d583b197cd42222cdb4f674c5820
-649f31f9e647c3d7ded69f8cd6ed1ca4e5171f681c39eed1f077a1d1a01b
-f784
+d8608443a10101a1055089115f10ecc1c7fd834442cb87929bc15825534d
+b92f5366e3cadd096774a9576bb8d8867e75ea38c329ecfc7b8793c5a4ae
+9603e5b0b6818349a201182e0443626f62a12358410417cd85837981ddb1
+4963061ab5fb7308988eb922f87cf6cf6ef83556f7657922c9815947e41b
+9bc932e48c6f1c4677d9a5506a30d694587628b5193a4cde2f3f58204b50
+8a340e463c317f4e62fb8d08c887cac4788087ad022562d05855a50ca4a0
 </pre><a href="#section-5.2-9" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2-10">Decoded, this hex-sequence has the following
+<p id="section-5.2-10">Pretty-printed, this hex-sequence has the following
 content:<a href="#section-5.2-10" class="pilcrow">¶</a></p>
-<span id="name-cose_encrypt-example-for-hp"></span><div id="hpke-example-cose-encrypt">
-<figure id="figure-5">
-          <div class="alignLeft art-text artwork" id="section-5.2-11.1">
+<div class="alignLeft art-text artwork" id="section-5.2-11">
 <pre>
-{
-    "protected": {
-        1 /alg/: 1 /A128GCM/
-    },
-    "unprotected": {
-        5 /iv/: h'311aa7cc6cf87c1068a2ca671ede2cc7'
-    },
-    "ciphertext": h'3e17fb3a5e244dc66e4d175424d364c24c6f85945b75f3788cf3
-5116c67bc7b845df5757c3',
-    "recipients": [
-    {
-        "protected": {
-            1 /alg/: 46 /HPKE-0-KE (DHKEM(P-256, HKDF-SHA256) / HKDF-SHA
-256 / AES-128-GCM)/,
-            4 /kid/: h'616c696365'
-        },
-        "unprotected": {
-            -4 /ek/: h'04a97992eb783474b632289699b5b97218595f82c0fe2ed90
-97d505f6a64c8c530775a66fa36b8728ae329a24c8c6580a59c80e7c5d583b197cd42222
-cdb4f674c'
-        },
-        "encrypted_cek": h'649f31f9e647c3d7ded69f8cd6ed1ca4e5171f681c39e
-ed1f077a1d1a01bf784'
-    }
-    ]
-}
-</pre>
-</div>
-<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
-<a href="#name-cose_encrypt-example-for-hp" class="selfRef">COSE_Encrypt Example for HPKE</a>
-          </figcaption></figure>
+96([
+  h'A10101',
+  {5: h'89115F10ECC1C7FD834442CB87929BC1'}, h'534DB92F5366E3CADD096774A9576BB8D8867E75EA38C329ECFC7B87
+  93C5A4AE9603E5B0B6',
+  [
+    [
+    h'A201182E0443626F62',
+    {-4: h'0417CD85837981DDB14963061AB5FB7308988EB922F87CF6C
+    F6EF83556F7657922C9815947E41B9BC932E48C6F1C4677D9A5506A3
+    0D694587628B5193A4CDE2F3F'}, h'4B508A340E463C317F4E62FB8D08C887CAC4788087AD022562D058
+    55A50CA4A0']]
+  ])
+</pre><a href="#section-5.2-11" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2075,7 +2057,7 @@ ed1f077a1d1a01bf784'
 <a href="#section-5.3.1" class="section-number selfRef">5.3.1. </a><a href="#name-public-key-for-hpke-0" class="section-name selfRef">Public Key for HPKE-0</a>
           </h4>
 <span id="name-public-key-representation-e"></span><div id="hpke-example-key-1">
-<figure id="figure-6">
+<figure id="figure-5">
             <div class="alignLeft art-text artwork" id="section-5.3.1-1.1">
 <pre>
 {
@@ -2096,7 +2078,7 @@ ed1f077a1d1a01bf784'
 }
 </pre>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
 <a href="#name-public-key-representation-e" class="selfRef">Public Key Representation Example for HPKE-0</a>
             </figcaption></figure>
 </div>
@@ -2108,7 +2090,7 @@ ed1f077a1d1a01bf784'
 <a href="#section-5.3.2" class="section-number selfRef">5.3.2. </a><a href="#name-private-key-for-hpke-0" class="section-name selfRef">Private Key for HPKE-0</a>
           </h4>
 <span id="name-private-key-representation-"></span><div id="hpke-example-key-2">
-<figure id="figure-7">
+<figure id="figure-6">
             <div class="alignLeft art-text artwork" id="section-5.3.2-1.1">
 <pre>
 {
@@ -2134,7 +2116,7 @@ ed1f077a1d1a01bf784'
 }
 </pre>
 </div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-private-key-representation-" class="selfRef">Private Key Representation Example for HPKE-0</a>
             </figcaption></figure>
 </div>
@@ -2146,7 +2128,7 @@ ed1f077a1d1a01bf784'
 <a href="#section-5.3.3" class="section-number selfRef">5.3.3. </a><a href="#name-kem-public-key-for-hpke-4" class="section-name selfRef">KEM Public Key for HPKE-4</a>
           </h4>
 <span id="name-public-key-representation-ex"></span><div id="hpke-example-key-3">
-<figure id="figure-8">
+<figure id="figure-7">
             <div class="alignLeft art-text artwork" id="section-5.3.3-1.1">
 <pre>
 {
@@ -2164,7 +2146,7 @@ ed1f077a1d1a01bf784'
 }
 </pre>
 </div>
-<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-public-key-representation-ex" class="selfRef">Public Key Representation Example for HPKE-4</a>
             </figcaption></figure>
 </div>
