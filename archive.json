@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-01-29T02:25:48.585120+00:00",
+  "timestamp": "2026-02-03T02:31:54.825415+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -687,7 +687,7 @@
       "id": "I_kwDOGr5frc5yp1Mi",
       "title": "Add more examples",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/32",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -696,8 +696,8 @@
       ],
       "body": "Adding more examples to cover other algorithms and the use of HPKE for establishing a secret with COSE_Mac would be good.",
       "createdAt": "2023-10-03T08:13:10Z",
-      "updatedAt": "2025-07-02T18:43:19Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-01T19:21:09Z",
+      "closedAt": "2026-02-01T19:21:09Z",
       "comments": [
         {
           "author": "OR13",
@@ -822,7 +822,7 @@
       ],
       "body": "@hannestschofenig @selfissued @OR13 and other folks,\r\n\r\nI think Orie also mentioned this in another issur/PR, but how about providing test vectors in the COSE-HPKE spec?\r\n\r\nSince the COSE specs are referred by many IETF WGs such as SUTE, TEEP, RATS, SCITT, etc., I think it is better for the COSE WG to provide the official test vectors. \r\n\r\nHere are my suggestions:\r\n- Create a test-vectors repository under the cose-wg group on github (cose-wg/test-vectors).\r\n- Create comprehensive test-vectors for COSE-HPKE spec in this repository\r\n- Pick out a few typical ones from the repository's test-vectors and list them in the appendix in the COSE-HPKE spec with a link to the repository.\r\n\r\n[HPKE spec (RFC9180)](https://www.rfc-editor.org/rfc/rfc9180.html) also provides test vectors in the same manner.\r\n\r\nWhat do you think?",
       "createdAt": "2023-10-09T13:44:25Z",
-      "updatedAt": "2025-12-16T16:48:43Z",
+      "updatedAt": "2026-02-01T19:21:59Z",
       "closedAt": null,
       "comments": [
         {
@@ -838,6 +838,20 @@
           "body": "What format should those examples be in? The format used by that examples repository looks to have some issues:\n\n* It is not trivial to locate relevant examples (tags 16 and 96).\n* The keys seem to be represented as JWKs, which might not be possible for some keys (or loses information, e.g., alg).\n* It contains debug fields that are meaningless or not exported in non-debug implementations.\n\nFor dumping examples from my implementation, I quickly cooked a format that is a CBOR dictionary with the following keys:\n\n* plaintext (bytes): The plaintext the message should decrypt to (for debugging, successful decryption should never give a wrong plaintext).\n* encrypted (COSE_Messages): The COSE encrypted message.\n* keys (array of COSE_Key): The private key or keys the message should decrypt with.\n* application_aad (bytes): The application_aad at layer 0 (Other application_aad and supplementary data fields are always empty).\n\nI dumped 11 examples (8 one-layer and 3 two-layer split by symmetric cipher) covering all the 16 algorithms from -19.",
           "createdAt": "2025-12-16T16:48:43Z",
           "updatedAt": "2025-12-16T16:48:43Z"
+        },
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/110",
+          "createdAt": "2026-02-01T17:49:11Z",
+          "updatedAt": "2026-02-01T17:49:11Z"
+        },
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Ilari, could you check my test vectors against your implementation?",
+          "createdAt": "2026-02-01T19:21:59Z",
+          "updatedAt": "2026-02-01T19:21:59Z"
         }
       ]
     },
@@ -7487,25 +7501,42 @@
       "id": "PR_kwDOGr5frc6_slXI",
       "title": "Updated Integrated Encryption Mode Example",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/109",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2026-01-27T20:35:43Z",
-      "updatedAt": "2026-01-28T11:30:20Z",
+      "updatedAt": "2026-02-02T13:50:26Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "9dd430efec82aff84cdb2fd053148424d5893654",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "hannestschofenig-patch-17",
-      "headRefOid": "e009fc664de9a168521874ba3d0be240d941e763",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "00f58170cd151eb14e9f385b2439d76a77263e51",
+      "closedAt": "2026-02-02T13:50:23Z",
+      "mergedAt": "2026-02-02T13:50:23Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "e9a700c887461e4e8581d89a64412cdda48692f3"
+      },
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Updated example, as requested.",
+          "createdAt": "2026-02-01T18:19:17Z",
+          "updatedAt": "2026-02-01T18:19:17Z"
+        },
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The changes in the ciphertext are a result of the change to the empty aad & info values.",
+          "createdAt": "2026-02-02T13:46:24Z",
+          "updatedAt": "2026-02-02T13:46:24Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOGr5frc7dVae8",
@@ -7558,6 +7589,103 @@
           "body": "Let's keep the first examples for each kind of encryption using the default empty info and aad values, as that's what most people will use.\n\nIf you want to add additional examples showing the use of non-empty values, that's fine with me.",
           "createdAt": "2026-01-28T11:30:20Z",
           "updatedAt": "2026-01-28T11:30:20Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7eutEn",
+          "commit": {
+            "abbreviatedOid": "00f5817"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Is the updated ciphertext at lines 458-461 correct or is a holdover from changing to using a non-empty info value?",
+          "createdAt": "2026-02-01T23:00:54Z",
+          "updatedAt": "2026-02-01T23:00:54Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 110,
+      "id": "PR_kwDOGr5frc7AvW5F",
+      "title": "Testvectors",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/110",
+      "state": "MERGED",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-01T17:48:47Z",
+      "updatedAt": "2026-02-02T13:50:08Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "9dd430efec82aff84cdb2fd053148424d5893654",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "testvectors",
+      "headRefOid": "c850a134e680f7765a71ca59730dee0e4ed306f2",
+      "closedAt": "2026-02-02T13:50:05Z",
+      "mergedAt": "2026-02-02T13:50:05Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "a51bc863a5c0116aa92dd9c9e1ee17b56e7babf7"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7euuEN",
+          "commit": {
+            "abbreviatedOid": "cdbf0fc"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-01T23:03:34Z",
+          "updatedAt": "2026-02-01T23:03:34Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 111,
+      "id": "PR_kwDOGr5frc7Av73F",
+      "title": "Updated key encryption example.",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/111",
+      "state": "MERGED",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-01T19:17:22Z",
+      "updatedAt": "2026-02-02T13:49:55Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "9dd430efec82aff84cdb2fd053148424d5893654",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "ke-example",
+      "headRefOid": "14f3e0206caf37a36858e4e9c8e30c8708d62647",
+      "closedAt": "2026-02-02T13:49:51Z",
+      "mergedAt": "2026-02-02T13:49:51Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "a104544033915261dc3f2218678aeaa9366f4af1"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7eutW-",
+          "commit": {
+            "abbreviatedOid": "14f3e02"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-01T23:02:10Z",
+          "updatedAt": "2026-02-01T23:02:10Z",
           "comments": []
         }
       ]
