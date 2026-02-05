@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-03T02:31:54.825415+00:00",
+  "timestamp": "2026-02-05T02:28:08.786251+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1587,6 +1587,22 @@
           "updatedAt": "2025-12-05T20:38:11Z"
         }
       ]
+    },
+    {
+      "number": 112,
+      "id": "I_kwDOGr5frc7oZvoY",
+      "title": "Deterministic serialization for Recipient_structure, not header parameters",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/112",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It might have been me that wrote this text wrong in the first place...\n\nIt is Recipient_structure that must be serialized deterministic just like Sig_structure and friends. The current text says it should be the COSE_Recipient headers.\n\nI am working on a PR for this and related.",
+      "createdAt": "2026-02-05T00:48:21Z",
+      "updatedAt": "2026-02-05T00:48:21Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
