@@ -201,35 +201,23 @@ An example is shown in {{one-layer-example}}.
 
 ## HPKE Key Encryption Mode {#two-layer}
 
-This mode is selected if the COSE_recipient structure uses a COSE-HPKE algorithm.
+In key encryption mode, one or more COSE_Recipients using HPKE are included.
+Each such COSE_Recipient protects a randomly generated Content Encryption Key (CEK) using HPKE.
+The service provided by this COSE_Recipient, and the way it integrates into COSE, are essentially the same as described in {{Section 8.5.5 of RFC9052}}.
 
-In this approach the following layers are involved:
+In a COSE message with multiple recipients, some COSE_Recipients may use HPKE as specified in this document, while others may use different key management algorithms, such as ECDH Key Wrap, {{Section 6.4.1 of RFC9053}}.
 
-- Layer 0 (corresponding to the COSE_Encrypt structure) contains the content (plaintext)
-encrypted with the CEK. This ciphertext may be detached, and if not detached, then
-it is included in the COSE_Encrypt structure.
+In typical usage, layer 0 protects the bulk content (payload) using an AEAD algorithm.
+The AEAD is keyed with the CEK.
+There is exactly one CEK, regardless of the number of recipients.
+At layer 1, each recipient independently protects the CEK using its selected key management algorithm.
 
-- Layer 1 (corresponding to a recipient structure) contains parameters needed for
-HPKE to generate a shared secret used to encrypt the CEK. This layer conveys the
-encrypted CEK in the COSE_recipient structure using a COSE-HPKE algorithm.
-The unprotected header MAY contain the kid parameter to identify the static recipient
-public key that the sender has been using with HPKE.
-
-This two-layer structure is used to encrypt content that can also be shared with
-multiple parties at the expense of a single additional encryption operation.
-As stated above, the specification uses a CEK to encrypt the content at layer 0.
 
 ### Recipient_structure
 
-This section defines the Recipient_structure, which is used in place of COSE_KDF_Context
-for COSE-HPKE recipients. It MUST be used for COSE-HPKE recipients, as it provides
-integrity protection for recipient-protected header parameters.
-
-The Recipient_structure is modeled after the Enc_structure defined in {{RFC9052}},
-but is specific to COSE_recipient structures and MUST NOT be used with COSE_Encrypt.
-
-Furthermore, the use of COSE_KDF_Context is prohibited in COSE-HPKE; it MUST NOT be
-used.
+Creating a COSE_Recipient that uses HPKE requires the construction of a Recipient_structure, which is newly defined in this document.
+This new structure replaces the COSE_KDF_Context used in the construction of similar COSE_Recipients.
+It aggregates all data items that require integrity protection, along with any additional inputs desired for the key agreement algorithm.
 
 ~~~
 Recipient_structure = [
@@ -240,72 +228,90 @@ Recipient_structure = [
 ]
 ~~~
 
-- "next_layer_alg" is the algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
-It is the algorithm that the key MUST be used with.
-This value MUST match the alg parameter in the next lower COSE layer.
-(This serves the same purpose as the alg ID in the COSE_KDF_Context.
-It also mitigates attacks where the attacker manipulates the content-encryption
-algorithm identifier. This attack has been demonstrated against CMS and the mitigation
-can be found in {{I-D.ietf-lamps-cms-cek-hkdf-sha256}}.
+- "next_layer_alg": The algorithm ID of the COSE layer for which the COSE_recipient is encrypting a CEK.
+It is the algorithm that the CEK MUST be used with.
+This value MUST match the algorithm ID parameter in the next lower COSE layer.
 
-- "recipient_protected_header" contains the protected header parameters from the COSE_recipient
-CBOR-encoded deterministically with the "Core Deterministic Encoding Requirements",
-specified in {{Section 4.2.1 of RFC8949}}.
+- "recipient_protected_header": The byte string containing the protected header parameters of the COSE_Recipient.
 
-- "recipient_extra_info" contains any additional context the application wishes to include in
-the key derivation via the HPKE info parameter. If none, it is a zero-length string.
+- "recipient_extra_info": Application-specific context information to be included in the HPKE info parameter during key derivation.
+If no additional context is provided, this value MUST be a zero-length byte string.
 
-### COSE-HPKE Recipient Construction
+The Recipient_structure MUST be serialized using deterministic serialization, as specified in {{Section 4.2.1 of RFC 8949}}.
 
-Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it
-MUST be in the protected header parameters and MUST be a COSE-HPKE algorithm.
+#### Recipient_structure Design Commentary
 
-The protected header MAY contain the kid parameter to identify the static recipient
-public key that the sender used. Use of the 'kid' parameter is RECOMMENDED
-to explicitly identify the static recipient public key used by the sender.
-Including it in the protected header parameters ensures that it is input into the
-key derivation function of HPKE.
+COSE-HPKE does not use COSE_KDF_Context for the following reasons:
+- HPKE is a well-analyzed and widely reviewed construction that already incorporates the core protections provided by COSE_KDF_Context.
+- HPKE is specified in a manner that avoids many of the weaknesses present in earlier key agreement protocols—weaknesses that COSE_KDF_Context was designed to mitigate.
+- The COSE_KDF_Context introduces unnecessary complexity; many of the fields go unused.
+- It is difficult for developers to know what to put in the COSE_KDF_Context.
 
-When encrypting, the inputs to the HPKE Seal operation are set as follows:
+An attack has been identified in which the algorithm identifier for the bulk content encryption algorithm can be manipulated because it is not integrity protected by anything other than the algorithm it identifies.
+In particular, it is not protected by the COSE_Recipient structure and is not covered by the key agreement or key management algorithm.
+This class of attack has been demonstrated against CMS; a corresponding mitigation is described in {{I-D.ietf-lamps-cms-cek-hkdf-sha256}}.
 
-- kem_id: Depends on the COSE-HPKE algorithm used.
-- pkR: The recipient public key, converted into HPKE public key.
-- kdf_id: Depends on the COSE-HPKE algorithm used.
-- aead_id: Depends on the COSE-HPKE algorithm used.
-- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
-- pt: The raw key for the next layer down.
+The next_layer_alg parameter mitigates this attack by explicitly protecting the bulk encryption algorithm ID with the COSE_Recipient.
+Note that next_layer_alg is explicitly defined in COSE to refer to the immediately following COSE layer.
+This clarity was not provided for the AlgorithmID field in COSE_KDF_Context, where the intended layering semantics were ambiguous.
 
-The outputs are used as follows:
 
-- enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.
-- ct: MUST be placed raw in the ciphertext field in the COSE_recipient.
+### Construction of COSE-HPKE Message in Key Encryption Mode
 
-When decrypting, the inputs to the HPKE Open operation are set as follows:
+The steps for encrypting are as fowllows.
+They are descriptive, not proscriptive.
 
-- kem_id: Depends on the COSE-HPKE algorithm used.
-- skR: The recipient private key, converted into HPKE private key.
-- kdf_id: Depends on the COSE-HPKE algorithm used.
-- aead_id: Depends on the COSE-HPKE algorithm used.
-- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
-- ct: The contents of the layer ciphertext field.
+* Layer 0 steps
+  * Select the content encryption algorithm.
+  * Generate a CEK suited for this algorithm.
+  * Construct the header parameters for COSE_Encrypt.
+    * The content encryption algorithm identifier MUST be present.
+    * Including the 'kid' parameter is RECOMMENDED so it is integrity protected.
+  * Construct an Enc_structure {{Section 5.3 of RFC9052}}.
+  * Encrypt the payload using the content encryption algorithm.
+* Layer 1 steps
+  * Select the COSE-HPKE algorithm.
+  * Construct the header parameters for the COSE_Recipient.
+  * Construct a Recipient_structure.
+  * Invoke HPKE Seal as follows:
+    * pkR: The recipient public key, converted into HPKE public key.
+    * kdf_id: Comes from the COSE-HPKE algorithm selected.
+    * aead_id: Comes from the COSE-HPKE algorithm selected.
+    * info: The Recipient_structure
+    * aad: Defaults to the empty string; externally provided information MAY be used instead.
+    * pt: The CEK
+  * Assemble the COSE_Recipient with the following:
+    * The header parameters
+    * The “enc” parameter which is the ek output from Seal
+    * The “cipher text” field is the “ct” output from SEAL
 
-The plaintext output is the raw key for the next layer down.
-
-It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
-attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
-may still utilize recipient_aad for other purposes as needed; however, it is generally
-intended for small values such as identifiers, contextual information, or secrets. It is
-not designed for protecting large or bulk external data.
+If there are multiple recipients, the steps for layer 1 are repeated for each.
 
 Any bulk external data that requires protection should be handled at layer 0 using external_aad.
 
-The COSE_recipient structure is computed for each recipient.
+The steps for encrypting are as fowllows.
+They are descriptive, not proscriptive.
 
-When encrypting the content at layer 0, the instructions in {{Section 5.3
-of RFC9052}} MUST be followed, including the calculation of the
-authenticated data structure.
+* Layer 0 steps, part one.
+  * Decode the COSE_Encrypt header parameters
+    * Get the identifier of the content encryption algorithm.
+* Layer 1 steps
+  * Decode the COSE_Recipient.
+  * Construct the Recipient_structure
+    * next_layer_alg is the content encryption algorithm from layer 0.
+  * Invoke HPKE Open as follows:
+    * kem_id: Comes from the algorithm ID in the COSE_Recipient header parameters.
+    * skR: The recipient private key, converted into HPKE private key.
+    * kdf_id: Comes from the algorithm ID in the COSE_Recipient header parameters.
+    * aead_id: Comes from the algorithm ID in the COSE_Recipient header parameters.
+    * info: The Recipient_structure
+    * aad: Defaults to the empty string; externally provided information MAY be used instead.
+    * ct: The contents of the ciphertext field.
+  * Check that HPKE Open succeeded to know the integrity of the headers is intact.
+  * The output from Open is the CEK
+* Layer 0 steps, part two
+  * Construct an Enc_structure
+  * Decrypt the payload using the content encryption algorithm and the CEK
 
 An example is shown in {{two-layer-example}}.
 
