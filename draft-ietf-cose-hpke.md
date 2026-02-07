@@ -167,8 +167,10 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - kdf_id: Depends on the COSE-HPKE algorithm used.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
 - aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
+
 For the Integrated Encryption mode the context string will be "Encrypt0".
 Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
+
 - aead_id: Depends on the COSE-HPKE algorithm used.
 - pt: The raw message plaintext.
 
@@ -455,34 +457,33 @@ This example uses the following:
 - Suite: HPKE-0 (P-256 / HKDF-SHA256 / AES-128-GCM)
 - Plaintext: "This is the content."
 - External AAD: empty
-- Info: empty
+- External Info: empty
 - Recipient kid: "bob"
 
 The ciphertext (hex) transmitted to "bob" is:
 
 ~~~
-d08344a1011823a1235841042fee971fa778fac9c095f835bdf4033d2ae8
-d1b8e8dde4b1f6739a05df8bb338a9bccd52aea211b12d13496d1d5aad5f
-26bc0a1789160d940130003176cf861e5825d4a351c896b4dd9c66fd9ab3
-00bd5788ba8d0c9c895202bd0a42be864a5854c36b00280748
+d08344a1011823a20443626f622358410457229bdd99407b384a9e59fa15
+53224d58b106e9ebebdaa06d2126bd96757674847669966ecb0dcdf21af5
+623f19f0b799b0cddf3ee930b739dd474f6282de0158253f3c1595e9d252
+e816215a9ce73f47ba4b57acb06ecc39ca5a03a14108bbe7807af5688d61
 ~~~
 {: #hpke-example-ciphertext title="Hex-Encoding of COSE_Encrypt0"}
 
 COSE_Encrypt0 pretty-printed:
 
 ~~~
-{
-  "protected": {
-    1 /alg/: 35 /HPKE-0 (P-256 + HKDF-SHA256 + AES-128-GCM)/
+16([
+  h'A1011823',
+  {
+    4: 'bob',
+    -4: h'0457229BDD99407B384A9E59FA1553224D58B106E9EBEBDA
+    A06D2126BD96757674847669966ECB0DCDF21AF5623F19F0B799B0
+    CDDF3EE930B739DD474F6282DE01'
   },
-  "unprotected": {
-    -4 /ek/: h'042fee971fa778fac9c095f835bdf4033d2ae8d1b8e8dde4b1f6739a0
-5df8bb338a9bccd52aea211b12d13496d1d5aad5f26bc0a1789160d940130003176cf861
-e'
-  },
-  "ciphertext": h'd4a351c896b4dd9c66fd9ab300bd5788ba8d0c9c895202bd0a42be
-864a5854c36b00280748'
-}
+  h'3F3C1595E9D252E816215A9CE73F47BA4B57ACB06ECC39CA5A03A1
+  4108BBE7807AF5688D61'
+  ])
 ~~~
 {: #hpke-example-one title="COSE_Encrypt0 Example for HPKE"}
 
@@ -490,14 +491,16 @@ The following COSE Key was used in this example:
 
 ~~~
 {
-   1 /kty/: 2,
-   2 /kid/: h'626f62',
-   3 /alg/: 35 /HPKE-0  (P-256 + HKDF-SHA256 + AES-128-GCM)/,
-   -1 /crv/: 1 /P-256/,
-   -2 /x/:
-   h'02a8e3315f96bc7355dbf85740c6d8e53fb070cd8ba5c419be49a91d789ef55c',
-   -3 /y/:
-   h'96b6621abf5ca532e042dc5c346c1ef0c9186b83cb122e50a46f1458de023d35'
+  1 /kty/: 2,
+  2 /kid/: h'626f62',
+  3 /alg/: 35 /HPKE-0  (P-256 + HKDF-SHA256 + AES-128-GCM)/,
+ -1 /crv/: 1 /P-256/,
+ -2 /x/:
+  h'02a8e3315f96bc7355dbf85740c6d8e53fb070cd8ba5c419be49a91d789ef55c',
+ -3 /y/:
+  h'96b6621abf5ca532e042dc5c346c1ef0c9186b83cb122e50a46f1458de023d35',
+ -4 /d/:
+  h'eca39300147c91a2a65d17e00ea278b57a14178245bf5686d9a404cca1816b8e'
 }
 ~~~
 {: #hpke-example-one-key title="COSE Key"}
@@ -505,89 +508,75 @@ The following COSE Key was used in this example:
 ## COSE HPKE Key Encryption Mode {#two-layer-example}
 
 An example of key encryption using the COSE_Encrypt structure using HPKE is
-shown in {{hpke-example-cose-encrypt}}. Line breaks and comments have been
+shown in below. Line breaks and comments have been
 inserted for better readability.
 
 This example uses the following input parameters:
 
-- Suite: HPKE-0 (P-256 / HKDF-SHA256 / AES-128-GCM)
-- Plaintext: "This is the content."
-- External AAD: empty
-- Info: empty
-- Recipient kid: "alice"
+- Content encryption algorithm: AES-128-GCM
+- plaintext: "This is the content."
+- kid:"bob"
+- alg: HPKE-0-KE (assumed 46) - Key Encryption, DHKEM(P-256, HKDF-SHA256), KDF: HKDF-SHA256, AEAD: AES-128-GCM
+- external aad and info are empty
 
-Alice uses the following COSE Keys, in hex-encoding:
+The following COSE Key is used:
 
 ~~~
-a701020245616c69636503182e20012158201f2124bdf7da2656a1e404fd
-fb9958d762de1db78959d1ef7f946437161071882258202abfce2ff6083d
-28be1cd915f5682932ce8f45c08e9db1d3dfc8bd5e89d4dcb423582031e9
-ff686ed68feafa8774d2fb88370da73b4de5a8a8104545c2c3db412b8202
+a701020243626f6203182e2001215820d832916778598ea6203af974c97b
+45970ac0266fc6a3b7f213ba9f8b591b92972258208d9410599a8e83d00e
+b46d67b34d4dac8fbd4b8b1f08864599659cee9ef09184235820b1162c56
+8efcba91c8e4e82f66e36b45aa10bc55228cf65ecd3bb29cfb09f989
 ~~~
 
-This hex-sequence decodes to the following COSE Key:
+As a pretty-printed version:
 
 ~~~
 {
-1 /kty/: 2,
-2 /kid/: h'616c696365',
-3 /alg/: 46 /HPKE-0-KE (DHKEM(P-256, HKDF-SHA256) / HKDF-SHA256 /
-AES-128-GCM)/,
--1 /crv/: 1 /P-256/,
--2 /x/:
-h'1f2124bdf7da2656a1e404fdfb9958d762de1db78959d1ef7f94643716107188',
--3 /y/:
-h'2abfce2ff6083d28be1cd915f5682932ce8f45c08e9db1d3dfc8bd5e89d4dcb4',
--4 /d/:
-h'31e9ff686ed68feafa8774d2fb88370da73b4de5a8a8104545c2c3db412b8202'
+   1 /kty/: 2,
+   2 /kid/: h'626f62' /"bob"/,
+   3 /alg/: 46 /HPKE-0-KE/,
+  -1 /crv/: 1 /P-256/,
+  -2 /x/:
+     h'd832916778598ea6203af974c97b45970ac0266fc6a3b7f213ba9
+f8b591b9297',
+  -3 /y/:
+    h'8d9410599a8e83d00eb46d67b34d4dac8fbd4b8b1f08864599659c
+ee9ef09184',
+  -4 /d/:
+    h'b1162c568efcba91c8e4e82f66e36b45aa10bc55228cf65ecd3bb2
+9cfb09f989'
 }
 ~~~
 
 As a result, the following COSE_Encrypt payload is
-created:
+produced:
 
 ~~~
-d8608443a10101a10550311aa7cc6cf87c1068a2ca671ede2cc758253e17
-fb3a5e244dc66e4d175424d364c24c6f85945b75f3788cf35116c67bc7b8
-45df5757c381834ba201182e0445616c696365a123584104a97992eb7834
-74b632289699b5b97218595f82c0fe2ed9097d505f6a64c8c530775a66fa
-36b8728ae329a24c8c6580a59c80e7c5d583b197cd42222cdb4f674c5820
-649f31f9e647c3d7ded69f8cd6ed1ca4e5171f681c39eed1f077a1d1a01b
-f784
+d8608443a10101a1055089115f10ecc1c7fd834442cb87929bc15825534d
+b92f5366e3cadd096774a9576bb8d8867e75ea38c329ecfc7b8793c5a4ae
+9603e5b0b6818349a201182e0443626f62a12358410417cd85837981ddb1
+4963061ab5fb7308988eb922f87cf6cf6ef83556f7657922c9815947e41b
+9bc932e48c6f1c4677d9a5506a30d694587628b5193a4cde2f3f58204b50
+8a340e463c317f4e62fb8d08c887cac4788087ad022562d05855a50ca4a0
 ~~~
 
-Decoded, this hex-sequence has the following
+Pretty-printed, this hex-sequence has the following
 content:
 
 ~~~
-{
-    "protected": {
-        1 /alg/: 1 /A128GCM/
-    },
-    "unprotected": {
-        5 /iv/: h'311aa7cc6cf87c1068a2ca671ede2cc7'
-    },
-    "ciphertext": h'3e17fb3a5e244dc66e4d175424d364c24c6f85945b75f3788cf3
-5116c67bc7b845df5757c3',
-    "recipients": [
-    {
-        "protected": {
-            1 /alg/: 46 /HPKE-0-KE (DHKEM(P-256, HKDF-SHA256) / HKDF-SHA
-256 / AES-128-GCM)/,
-            4 /kid/: h'616c696365'
-        },
-        "unprotected": {
-            -4 /ek/: h'04a97992eb783474b632289699b5b97218595f82c0fe2ed90
-97d505f6a64c8c530775a66fa36b8728ae329a24c8c6580a59c80e7c5d583b197cd42222
-cdb4f674c'
-        },
-        "encrypted_cek": h'649f31f9e647c3d7ded69f8cd6ed1ca4e5171f681c39e
-ed1f077a1d1a01bf784'
-    }
-    ]
-}
+96([
+  h'A10101',
+  {5: h'89115F10ECC1C7FD834442CB87929BC1'}, h'534DB92F5366E3CADD096774A9576BB8D8867E75EA38C329ECFC7B87
+  93C5A4AE9603E5B0B6',
+  [
+    [
+    h'A201182E0443626F62',
+    {-4: h'0417CD85837981DDB14963061AB5FB7308988EB922F87CF6C
+    F6EF83556F7657922C9815947E41B9BC932E48C6F1C4677D9A5506A3
+    0D694587628B5193A4CDE2F3F'}, h'4B508A340E463C317F4E62FB8D08C887CAC4788087AD022562D058
+    55A50CA4A0']]
+  ])
 ~~~
-{: #hpke-example-cose-encrypt title="COSE_Encrypt Example for HPKE"}
 
 ## Key Representation {#key-representation-example}
 
@@ -899,3 +888,21 @@ Thomas Fossati,
 and
 Göran Selander
 for their contributions to the specification.
+
+# Testvectors
+
+The testvectors use the following input:
+
+- Plaintext: "hpke test payload"
+- AAD: "external-aad"
+- Info: "external-info"
+- HPKE AAD: "external-hpke-aad"
+
+AAD is the COSE Enc_structure.external_aad. It is used as AAD for the
+COSE AEAD in Encrypt0/Encrypt (Layer 0). HPKE AAD is the HPKE AAD for
+CEK wrap/unwrap in Key Encryption (Layer 1). It is only passed to the
+HPKE Seal/Open of the CEK.
+
+~~~
+{::include-fold testvectors.txt}
+~~~
