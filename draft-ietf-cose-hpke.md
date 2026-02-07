@@ -897,6 +897,8 @@ COSE AEAD in Encrypt0/Encrypt (Layer 0). HPKE AAD is the HPKE AAD for
 CEK wrap/unwrap in Key Encryption (Layer 1). It is only passed to the
 HPKE Seal/Open of the CEK.
 
+XX Test Build XX
+
 ~~~
 {::include-fold testvectors.txt}
 ~~~
