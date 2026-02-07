@@ -239,7 +239,7 @@ This value MUST match the algorithm ID parameter in the next lower COSE layer.
 - "recipient_extra_info": Application-specific context information to be included in the HPKE info parameter during key derivation.
 If no additional context is provided, this value MUST be a zero-length byte string.
 
-The Recipient_structure MUST be serialized using deterministic serialization, as specified in {{Section 4.2.1 of RFC 8949}}.
+The Recipient_structure MUST be serialized using deterministic serialization, as specified in {{Section 4.2.1 of RFC8949}}.
 
 #### Recipient_structure Design Commentary
 
