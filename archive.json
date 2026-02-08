@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-05T02:28:08.786251+00:00",
+  "timestamp": "2026-02-08T02:51:09.033926+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1600,9 +1600,24 @@
       "labels": [],
       "body": "It might have been me that wrote this text wrong in the first place...\n\nIt is Recipient_structure that must be serialized deterministic just like Sig_structure and friends. The current text says it should be the COSE_Recipient headers.\n\nI am working on a PR for this and related.",
       "createdAt": "2026-02-05T00:48:21Z",
-      "updatedAt": "2026-02-05T00:48:21Z",
+      "updatedAt": "2026-02-06T15:42:28Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for the review, Laurence! Please write this PR asap.",
+          "createdAt": "2026-02-06T15:37:45Z",
+          "updatedAt": "2026-02-06T15:37:45Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Indeed, the WGLC ends on Wednesday, February 11th.  If you could create the PR before then, that would be super helpful.",
+          "createdAt": "2026-02-06T15:42:28Z",
+          "updatedAt": "2026-02-06T15:42:28Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -7705,6 +7720,66 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 113,
+      "id": "PR_kwDOGr5frc7CEBbU",
+      "title": "Rework of key encryption mode section",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/113",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is NOT ready to merge, but I'm making it available sooner rather than later.\r\n\r\nI'm having trouble with the document make system, so this may break the CI.",
+      "createdAt": "2026-02-06T18:56:36Z",
+      "updatedAt": "2026-02-07T21:39:23Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "r2_improve",
+      "headRefOid": "50c0462328021b732929e06da3acd9c30cf1b07b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 114,
+      "id": "PR_kwDOGr5frc7COStP",
+      "title": "test-build",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/114",
+      "state": "CLOSED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "trying to make sure the CI build really works",
+      "createdAt": "2026-02-07T21:10:15Z",
+      "updatedAt": "2026-02-07T21:45:11Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "test-build",
+      "headRefOid": "265fc77acae9f930311cf5ce99a2d52196de6c2a",
+      "closedAt": "2026-02-07T21:45:10Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Done debugging. Don't need this.",
+          "createdAt": "2026-02-07T21:45:10Z",
+          "updatedAt": "2026-02-07T21:45:10Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
