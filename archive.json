@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-08T02:51:09.033926+00:00",
+  "timestamp": "2026-02-10T02:44:31.131382+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1618,6 +1618,150 @@
           "updatedAt": "2026-02-06T15:42:28Z"
         }
       ]
+    },
+    {
+      "number": 115,
+      "id": "I_kwDOGr5frc7phdgF",
+      "title": "Use the term \"CEK\" consistently",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/115",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In several places it is referred to the \u201craw key for the next layer\u201d. In other places it is just \u201cthe key\u201d\n",
+      "createdAt": "2026-02-09T19:54:08Z",
+      "updatedAt": "2026-02-09T19:54:08Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 116,
+      "id": "I_kwDOGr5frc7pheIM",
+      "title": "recipient_aad",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/116",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\u201cRecipient_aad\u201d is discussed as if it were a field in a structure. It\u2019s not a term of use in COSE or HPKE. There\u2019s a whole paragraph discussing \u201crecipient_aad\u201d that I find confusing.",
+      "createdAt": "2026-02-09T19:55:09Z",
+      "updatedAt": "2026-02-09T19:55:09Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 117,
+      "id": "I_kwDOGr5frc7pheb-",
+      "title": "\u201calg\u201d  in double quote marks",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/117",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "When referring to the algorithm ID parameter it should be \u201calg\u201d in double quote marks like it is in 9052. In this document it is sometimes bare and other times in single quotes.\n",
+      "createdAt": "2026-02-09T19:55:40Z",
+      "updatedAt": "2026-02-09T19:55:40Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 118,
+      "id": "I_kwDOGr5frc7pheou",
+      "title": "Use <field> \u201c:\u201d <description> in describing Recipient_structure",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/118",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Use a colon rather than a sentence to be consistent with 9052 and to be more clear\n",
+      "createdAt": "2026-02-09T19:56:00Z",
+      "updatedAt": "2026-02-09T19:56:00Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 119,
+      "id": "I_kwDOGr5frc7phhLv",
+      "title": "Link to RFC 9052 Content Key Distribution Methods",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/119",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 8 of RFC 9052 is THE taxonomy of Content Key Distribution methods. All the Content Key Distribution Methods in Section 6 of 9053 normatively link back to Section 8. I believe that\u2019s the way COSE specifications are supposed to work.\n\nCOSE-HPKE key encryption mode is a flavor of 8.5.5, Key Agreement with Key Wrap. The normative requirements it states largely apply to COSE-HPKE recipients.\n\nNote that it's possible for a COSE-HPKE recipient to sit next to an algorithm -29 recipient and both wrap the same CEK.",
+      "createdAt": "2026-02-09T19:59:35Z",
+      "updatedAt": "2026-02-09T19:59:35Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 120,
+      "id": "I_kwDOGr5frc7phm1p",
+      "title": "Separate justification and commentary from specification",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/120",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I'd like to see the discussion of the lamps attack and justification for Recipient_structure in their own sub section rather than in parenthetical text. The main thing is the justification inserted in the definition of the \"next_layer_alg\" bullet.\n\nWhen you separate them it makes the specification part of the text clear and uncluttered.\n\nWhen you separate them, it gives more space to do a better job of the justification and commentary.",
+      "createdAt": "2026-02-09T20:06:12Z",
+      "updatedAt": "2026-02-09T20:06:12Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 121,
+      "id": "I_kwDOGr5frc7phrvv",
+      "title": "\"Depends on the COSE-HPKE algorithm used\" unclear?",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/121",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The algorithm ID's used by HPKE are all described as \"Depends on the COSE-HPKE algorithm used\". \n\nIt seems much more clear to say something like \"Comes from the COSE-HPKE Ciphersuite. See section 4\"",
+      "createdAt": "2026-02-09T20:10:28Z",
+      "updatedAt": "2026-02-09T20:10:28Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 122,
+      "id": "I_kwDOGr5frc7piZf2",
+      "title": "Reorient 3.1.2.2. COSE-HPKE Recipient Construction around COSE_Recipient",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/122",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "COSE HPKE Key encryption is a Content Key Distribution Method per section 8 or 9052. All of these define how to construct a COSE_Recipient and say so very clearly. The text in 3.1.2.2 is about filling in a COSE_Recipient, but it doesn't provide any intro or framing that this is what it is doing. It just starts talking about parameters, not even mentioning that they are COSE_Recipient parameters.",
+      "createdAt": "2026-02-09T20:54:01Z",
+      "updatedAt": "2026-02-09T20:54:01Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 123,
+      "id": "I_kwDOGr5frc7pih__",
+      "title": "Move MUSTs to 3.1.1.2",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/123",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "3.1.1.2, titled \"COSE-HPKE Recipient Construction\" is the procedure for creating the needed COSE_Recipient. That's really where most of the MUSTS should be. Some of them can move from 3.1.1.1.\n\n3.1.1.2 would also be better if it were more stepwise and procedural.",
+      "createdAt": "2026-02-09T21:02:20Z",
+      "updatedAt": "2026-02-09T21:02:20Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -7733,7 +7877,7 @@
       "labels": [],
       "body": "This is NOT ready to merge, but I'm making it available sooner rather than later.\r\n\r\nI'm having trouble with the document make system, so this may break the CI.",
       "createdAt": "2026-02-06T18:56:36Z",
-      "updatedAt": "2026-02-07T21:39:23Z",
+      "updatedAt": "2026-02-09T20:17:59Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
@@ -7744,8 +7888,37 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Hi Laurence, \r\n\r\nI think it is the wrong time to re-write the section again. If you have some specific comments, please focus on those. This document has been in development for a long, long time already. Additionally, we have synced the content with the JOSE HPKE work as well.\r\n",
+          "createdAt": "2026-02-08T17:43:16Z",
+          "updatedAt": "2026-02-08T17:43:16Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Understood that we need to work on this one specific problem at a time. I've opened some issues to describe the problems.\r\n\r\nI had to do the rewrite to get my thinking clear. Sorry for the trouble caused by dumping it in one PR.",
+          "createdAt": "2026-02-09T20:17:59Z",
+          "updatedAt": "2026-02-09T20:17:59Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7guKlE",
+          "commit": {
+            "abbreviatedOid": "50c0462"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "I agree with Hannes.  This is far more invasive than is called for at this stage in the draft (WGLC).\n\nPlease close this PR and if you want, replace it with a different one that fixes specific local problems in the exposition.",
+          "createdAt": "2026-02-08T19:13:12Z",
+          "updatedAt": "2026-02-08T19:13:12Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 114,
