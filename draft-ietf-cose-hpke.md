@@ -134,14 +134,14 @@ so that they are fully specified, as required by {{RFC9864}}.
 Algorithm identifiers MUST only be used in the COSE HPKE mode
 that is specified for them.
 
-In both cases, the new COSE header parameter 'ek' MUST be present.
+In both cases, the new COSE header parameter "ek" MUST be present.
 It contains the encapsulated KEM shared secret.
-The value of this parameter MUST be the 'enc' value output by the HPKE Seal() operation, as defined in {{Section 6.1 of RFC9180}}.
-The 'ek' header parameter MUST be encoded as a CBOR byte string.
+The value of this parameter MUST be the "enc" value output by the HPKE Seal() operation, as defined in {{Section 6.1 of RFC9180}}.
+The "ek" header parameter MUST be encoded as a CBOR byte string.
 
 HPKE defines several authentication modes, as described in Table 1 of {{RFC9180}}.
 In COSE HPKE, only 'mode_base' and 'mode_psk' are supported.
-The mode is 'mode_psk' if the 'psk_id' header parameter is present; otherwise, the mode defaults to 'mode_base'.
+The mode is 'mode_psk' if the "psk_id" header parameter is present; otherwise, the mode defaults to 'mode_base'.
 'mode_base' is described in {{Section 5.1.1 of RFC9180}}, which only enables encryption
 to the holder of a given KEM private key. 'mode_psk' is described in {{Section 5.1.2 of RFC9180}},
 which authenticates using a pre-shared key.
@@ -151,13 +151,13 @@ which authenticates using a pre-shared key.
 This mode applies if the COSE_Encrypt0 structure uses a COSE-HPKE algorithm
 and has no recipient structure(s).
 
-Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it MUST be included
+Because COSE-HPKE supports header protection, if the "alg" parameter is present, it MUST be included
 in the protected header and MUST be a COSE-HPKE algorithm.
 
-Although the use of the 'kid' parameter in COSE_Encrypt0 is
-discouraged by RFC 9052, this document RECOMMENDS the use of the 'kid' parameter
+Although the use of the "kid" parameter in COSE_Encrypt0 is
+discouraged by RFC 9052, this document RECOMMENDS the use of the "kid" parameter
 (or other parameters) to explicitly identify the static recipient public key
-used by the sender. If the COSE_Encrypt0 structure includes a 'kid' parameter, the
+used by the sender. If the COSE_Encrypt0 structure includes a "kid" parameter, the
 recipient MAY use it to select the corresponding private key.
 
 When encrypting, the inputs to the HPKE Seal operation are set as follows:
@@ -176,13 +176,13 @@ Externally provided AAD information MAY be provided and MUST be passed into the 
 
 The outputs are used as follows:
 
-- enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.
+- enc: MUST be placed raw into the "ek" (encapsulated key) parameter in the unprotected bucket.
 - ct: MUST be used as layer ciphertext. If not using detached content, this is directly placed as
 ciphertext in COSE_Encrypt0 structure. Otherwise, it is transported separately and the ciphertext field is nil.
 See {{Section 5 of RFC9052}} for a description of detached payloads.
 
-If 'mode_psk' has been selected, then the 'psk_id' parameter MUST be present.
-If 'mode_base' has been chosen, then the 'psk_id' parameter MUST NOT be present.
+If 'mode_psk' has been selected, then the "psk_id" parameter MUST be present.
+If 'mode_base' has been chosen, then the "psk_id" parameter MUST NOT be present.
 
 When decrypting, the inputs to the HPKE Open operation are set as follows:
 
@@ -192,7 +192,7 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - aead_id: Depends on the COSE-HPKE algorithm used.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
 - aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
-- enc: The contents of the layer 'ek' parameter.
+- enc: The contents of the layer "ek" parameter.
 - ct: The contents of the layer ciphertext.
 
 The plaintext output is the raw message plaintext.
@@ -214,7 +214,7 @@ it is included in the COSE_Encrypt structure.
 - Layer 1 (corresponding to a recipient structure) contains parameters needed for
 HPKE to generate a shared secret used to encrypt the CEK. This layer conveys the
 encrypted CEK in the COSE_recipient structure using a COSE-HPKE algorithm.
-The unprotected header MAY contain the kid parameter to identify the static recipient
+The unprotected header MAY contain the "kid" parameter to identify the static recipient
 public key that the sender has been using with HPKE.
 
 This two-layer structure is used to encrypt content that can also be shared with
@@ -244,7 +244,7 @@ Recipient_structure = [
 
 - "next_layer_alg" is the algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
 It is the algorithm that the key MUST be used with.
-This value MUST match the alg parameter in the next lower COSE layer.
+This value MUST match the "alg" parameter in the next lower COSE layer.
 (This serves the same purpose as the alg ID in the COSE_KDF_Context.
 It also mitigates attacks where the attacker manipulates the content-encryption
 algorithm identifier. This attack has been demonstrated against CMS and the mitigation
@@ -259,11 +259,11 @@ the key derivation via the HPKE info parameter. If none, it is a zero-length str
 
 ### COSE-HPKE Recipient Construction
 
-Because COSE-HPKE supports header protection, if the 'alg' parameter is present, it
+Because COSE-HPKE supports header protection, if the "alg" parameter is present, it
 MUST be in the protected header parameters and MUST be a COSE-HPKE algorithm.
 
-The protected header MAY contain the kid parameter to identify the static recipient
-public key that the sender used. Use of the 'kid' parameter is RECOMMENDED
+The protected header MAY contain the "kid" parameter to identify the static recipient
+public key that the sender used. Use of the "kid" parameter is RECOMMENDED
 to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
 key derivation function of HPKE.
@@ -280,7 +280,7 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 
 The outputs are used as follows:
 
-- enc: MUST be placed raw into the 'ek' (encapsulated key) parameter in the unprotected bucket.
+- enc: MUST be placed raw into the "ek" (encapsulated key) parameter in the unprotected bucket.
 - ct: MUST be placed raw in the ciphertext field in the COSE_recipient.
 
 When decrypting, the inputs to the HPKE Open operation are set as follows:
@@ -341,7 +341,7 @@ The "KEM", "KDF", and "AEAD" values are chosen from the HPKE IANA
 registry {{HPKE-IANA}}.
 
 The HPKE mode is determined by the presence or absence of the
-'psk_id' parameter and is therefore not explicitly indicated in the
+"psk_id" parameter and is therefore not explicitly indicated in the
 ciphersuite.
 
 For a list of ciphersuite registrations, please see {{IANA}}. The following
