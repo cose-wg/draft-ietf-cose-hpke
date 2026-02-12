@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-10T02:44:31.131382+00:00",
+  "timestamp": "2026-02-12T02:36:30.295926+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -7952,6 +7952,58 @@
           "updatedAt": "2026-02-07T21:45:10Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 124,
+      "id": "PR_kwDOGr5frc7DDUQn",
+      "title": "Security Design Rationale",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/124",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Address #120\r\n\r\nMove the lamps attack comment from the specification text and put it in a design rationale section\r\n\r\nAdd the rationale for not using the COSE_KDF_Context\r\n",
+      "createdAt": "2026-02-11T16:21:50Z",
+      "updatedAt": "2026-02-11T16:21:50Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "sec-com",
+      "headRefOid": "1449e7e55bf124e5f9ba8416f29502045a93320f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 125,
+      "id": "PR_kwDOGr5frc7DDltz",
+      "title": "Consistently double quote all COSE header parameters",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/125",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #117 and many other header parameters names",
+      "createdAt": "2026-02-11T16:37:50Z",
+      "updatedAt": "2026-02-11T16:37:50Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "alg-quote",
+      "headRefOid": "8d79611b2bb376653a646805b3870a4a2b667212",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
       "reviews": []
     }
   ]
