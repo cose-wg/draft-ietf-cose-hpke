@@ -250,12 +250,14 @@ It also mitigates attacks where the attacker manipulates the content-encryption
 algorithm identifier. This attack has been demonstrated against CMS and the mitigation
 can be found in {{I-D.ietf-lamps-cms-cek-hkdf-sha256}}.
 
-- "recipient_protected_header" contains the protected header parameters from the COSE_recipient
-CBOR-encoded deterministically with the "Core Deterministic Encoding Requirements",
-specified in {{Section 4.2.1 of RFC8949}}.
+- "recipient_protected_header" contains the protected header parameters from the COSE_recipient.
 
 - "recipient_extra_info" contains any additional context the application wishes to include in
 the key derivation via the HPKE info parameter. If none, it is a zero-length string.
+
+The Recipient_structure MUST be serialized deterministically in accordance with the Core Deterministic Encoding Requirements defined in {{Section 4.2.1 of RFC8949}}.
+This requirement applies only to the Recipient_structure itself and does not mandate deterministic serialization of the protected headers.
+
 
 ### COSE-HPKE Recipient Construction
 
