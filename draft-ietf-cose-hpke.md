@@ -56,7 +56,6 @@ normative:
   RFC9053:
 
 informative:
-  RFC5652:
   RFC8937:
   RFC9864:
   I-D.irtf-cfrg-dnhpke:
@@ -104,7 +103,7 @@ when, and only when, they appear in all capitals, as shown here.
 
 This specification uses the following abbreviations and terms:
 
-- Content-encryption key (CEK), a term defined in CMS {{RFC5652}}.
+- Content-encryption key (CEK), a described in {{Section 2 of RFC9052}}.
 - Hybrid Public Key Encryption (HPKE) is defined in {{RFC9180}}.
 - pkR is the public key of the recipient, as defined in {{RFC9180}}.
 - skR is the private key of the recipient, as defined in {{RFC9180}}.
@@ -123,9 +122,9 @@ This specification supports two modes of using HPKE in COSE, namely:
 the plaintext. This mode can only be used with a single recipient.
 {{one-layer}} provides the details.
 
- *  HPKE Key Encryption mode, where HPKE is used to encrypt a
-content encryption key (CEK) and the CEK is subsequently used to
-encrypt the plaintext. This mode supports multiple recipients.
+ *  HPKE Key Encryption mode, where HPKE is used to encrypt a content
+encryption key (CEK), which then encrypts the content.
+This mode supports multiple recipients.
 {{two-layer}} provides the details.
 
 Distinct algorithm identifiers are defined and registered
@@ -218,8 +217,8 @@ The unprotected header MAY contain the kid parameter to identify the static reci
 public key that the sender has been using with HPKE.
 
 This two-layer structure is used to encrypt content that can also be shared with
-multiple parties at the expense of a single additional encryption operation.
-As stated above, the specification uses a CEK to encrypt the content at layer 0.
+multiple recipients at the expense of a single additional encryption operation.
+The content is encrypted once with the CEK, then the CEK is encrypted for each recipient.
 
 ### Recipient_structure
 
@@ -276,7 +275,7 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - aead_id: Depends on the COSE-HPKE algorithm used.
 - info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
-- pt: The raw key for the next layer down.
+- pt: The CEK.
 
 The outputs are used as follows:
 
@@ -293,7 +292,7 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
 - ct: The contents of the layer ciphertext field.
 
-The plaintext output is the raw key for the next layer down.
+The plaintext output is the CEK.
 
 It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
 attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
