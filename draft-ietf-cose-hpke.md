@@ -82,6 +82,7 @@ This document defines the use of HPKE with COSE. Authentication for HPKE in COSE
 provided by COSE-native security mechanisms or by the pre-shared key authenticated
 variant of HPKE.
 
+
 --- middle
 
 #  Introduction
@@ -94,6 +95,9 @@ This document defines the use of HPKE with COSE ({{RFC9052}}, {{RFC9053}})
 with the single-shot APIs defined in {{Section 6 of RFC9180}}. Multiple
 invocations of Open() / Seal() on the same context, as discussed in
 {{Section 9.7.1 of RFC9180}} are not supported.
+
+Algorithm identifiers follow a ciphersuite scheme in which a single COSE algorithm ID maps to the three algorithm IDs required for HPKE:
+the Key Encapsulation Mechanism (KEM), the Key Derivation Function (KDF), and the Authenticated Encryption with Associated Data (AEAD) algorithm.
 
 # Conventions and Terminology
 
@@ -162,16 +166,16 @@ recipient MAY use it to select the corresponding private key.
 
 When encrypting, the inputs to the HPKE Seal operation are set as follows:
 
-- kem_id: Depends on the COSE-HPKE algorithm used.
+- kem_id: From the ciphersuite. See {{ciphersuite}}.
 - pkR: The recipient public key, converted into an HPKE public key.
-- kdf_id: Depends on the COSE-HPKE algorithm used.
+- kdf_id: From the ciphersuite. See {{ciphersuite}}.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
 - aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
 
 For the Integrated Encryption mode the context string will be "Encrypt0".
 Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
 
-- aead_id: Depends on the COSE-HPKE algorithm used.
+- aead_id: From the ciphersuite. See {{ciphersuite}}.
 - pt: The raw message plaintext.
 
 The outputs are used as follows:
@@ -186,10 +190,10 @@ If 'mode_base' has been chosen, then the 'psk_id' parameter MUST NOT be present.
 
 When decrypting, the inputs to the HPKE Open operation are set as follows:
 
-- kem_id: Depends on the COSE-HPKE algorithm used.
+- kem_id: From the ciphersuite. See {{ciphersuite}}.
 - skR: The recipient private key, converted into an HPKE private key.
-- kdf_id: Depends on the COSE-HPKE algorithm used.
-- aead_id: Depends on the COSE-HPKE algorithm used.
+- kdf_id: From the ciphersuite. See {{ciphersuite}}.
+- aead_id: From the ciphersuite. See {{ciphersuite}}.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
 - aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
 - enc: The contents of the layer 'ek' parameter.
@@ -270,10 +274,10 @@ key derivation function of HPKE.
 
 When encrypting, the inputs to the HPKE Seal operation are set as follows:
 
-- kem_id: Depends on the COSE-HPKE algorithm used.
+- kem_id: From the ciphersuite. See {{ciphersuite}}.
 - pkR: The recipient public key, converted into HPKE public key.
-- kdf_id: Depends on the COSE-HPKE algorithm used.
-- aead_id: Depends on the COSE-HPKE algorithm used.
+- kdf_id: From the ciphersuite. See {{ciphersuite}}.
+- aead_id: From the ciphersuite. See {{ciphersuite}}.
 - info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
 - pt: The raw key for the next layer down.
@@ -285,10 +289,10 @@ The outputs are used as follows:
 
 When decrypting, the inputs to the HPKE Open operation are set as follows:
 
-- kem_id: Depends on the COSE-HPKE algorithm used.
+- kem_id: From the ciphersuite. See {{ciphersuite}}.
 - skR: The recipient private key, converted into HPKE private key.
-- kdf_id: Depends on the COSE-HPKE algorithm used.
-- aead_id: Depends on the COSE-HPKE algorithm used.
+- kdf_id: From the ciphersuite. See {{ciphersuite}}.
+- aead_id: From the ciphersuite. See {{ciphersuite}}.
 - info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
 - ct: The contents of the layer ciphertext field.
@@ -326,19 +330,17 @@ and MUST be empty for the public key.
 
 Examples of the COSE_Key for COSE-HPKE are shown in {{key-representation-example}}.
 
-# Ciphersuite Registration
+# Ciphersuite Registration {#ciphersuite}
 
-A ciphersuite is a group of algorithms, often sharing component algorithms
-such as hash functions, targeting a security level.
-A COSE-HPKE algorithm is composed of the following choices:
+A ciphersuite is a set of cryptographic algorithms selected to achieve a specific security level.
+For COSE-HPKE, a single COSE algorithm ID represents a ciphersuite that maps to the following HPKE algorithm identifiers:
 
-- COSE HPKE Mode
-- KEM Algorithm
-- KDF Algorithm
-- AEAD Algorithm
+- HPKE mode
+- KEM algorithm
+- KDF algorithm
+- AEAD algorithm
 
-The "KEM", "KDF", and "AEAD" values are chosen from the HPKE IANA
-registry {{HPKE-IANA}}.
+Each COSE algorithm ID registered for COSE-HPKE MUST indicate the three HPKE algorithm IDs mapped by the ciphersuite.
 
 The HPKE mode is determined by the presence or absence of the
 'psk_id' parameter and is therefore not explicitly indicated in the
