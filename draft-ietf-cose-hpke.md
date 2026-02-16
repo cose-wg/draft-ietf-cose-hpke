@@ -335,7 +335,6 @@ Examples of the COSE_Key for COSE-HPKE are shown in {{key-representation-example
 A ciphersuite is a set of cryptographic algorithms selected to achieve a specific security level.
 For COSE-HPKE, a single COSE algorithm ID represents a ciphersuite that maps to the following HPKE algorithm identifiers:
 
-- HPKE mode
 - KEM algorithm
 - KDF algorithm
 - AEAD algorithm
