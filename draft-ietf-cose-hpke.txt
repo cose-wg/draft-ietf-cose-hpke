@@ -150,6 +150,12 @@ Table of Contents
    context, as discussed in Section 9.7.1 of [RFC9180] are not
    supported.
 
+   Algorithm identifiers follow a ciphersuite scheme in which a single
+   COSE algorithm ID maps to the three algorithm IDs required for HPKE:
+   the Key Encapsulation Mechanism (KEM), the Key Derivation Function
+   (KDF), and the Authenticated Encryption with Associated Data (AEAD)
+   algorithm.
+
 2.  Conventions and Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -231,11 +237,11 @@ Table of Contents
    When encrypting, the inputs to the HPKE Seal operation are set as
    follows:
 
-   *  kem_id: Depends on the COSE-HPKE algorithm used.
+   *  kem_id: From the ciphersuite.  See Section 4.
 
    *  pkR: The recipient public key, converted into an HPKE public key.
 
-   *  kdf_id: Depends on the COSE-HPKE algorithm used.
+   *  kdf_id: From the ciphersuite.  See Section 4.
 
    *  info: Defaults to the empty string; externally provided
       information MAY be used instead.
@@ -248,7 +254,7 @@ Table of Contents
    "Encrypt0".  Externally provided AAD information MAY be provided and
    MUST be passed into the Enc_structure via the external_aad field.
 
-   *  aead_id: Depends on the COSE-HPKE algorithm used.
+   *  aead_id: From the ciphersuite.  See Section 4.
 
    *  pt: The raw message plaintext.
 
@@ -270,14 +276,14 @@ Table of Contents
    When decrypting, the inputs to the HPKE Open operation are set as
    follows:
 
-   *  kem_id: Depends on the COSE-HPKE algorithm used.
+   *  kem_id: From the ciphersuite.  See Section 4.
 
    *  skR: The recipient private key, converted into an HPKE private
       key.
 
-   *  kdf_id: Depends on the COSE-HPKE algorithm used.
+   *  kdf_id: From the ciphersuite.  See Section 4.
 
-   *  aead_id: Depends on the COSE-HPKE algorithm used.
+   *  aead_id: From the ciphersuite.  See Section 4.
 
    *  info: Defaults to the empty string; externally provided
       information MAY be used instead.
@@ -380,13 +386,13 @@ Table of Contents
    When encrypting, the inputs to the HPKE Seal operation are set as
    follows:
 
-   *  kem_id: Depends on the COSE-HPKE algorithm used.
+   *  kem_id: From the ciphersuite.  See Section 4.
 
    *  pkR: The recipient public key, converted into HPKE public key.
 
-   *  kdf_id: Depends on the COSE-HPKE algorithm used.
+   *  kdf_id: From the ciphersuite.  See Section 4.
 
-   *  aead_id: Depends on the COSE-HPKE algorithm used.
+   *  aead_id: From the ciphersuite.  See Section 4.
 
    *  info: Deterministic encoding of the Recipient_structure.
       Externally provided context information MAY be provided and MUST
@@ -409,13 +415,13 @@ Table of Contents
    When decrypting, the inputs to the HPKE Open operation are set as
    follows:
 
-   *  kem_id: Depends on the COSE-HPKE algorithm used.
+   *  kem_id: From the ciphersuite.  See Section 4.
 
    *  skR: The recipient private key, converted into HPKE private key.
 
-   *  kdf_id: Depends on the COSE-HPKE algorithm used.
+   *  kdf_id: From the ciphersuite.  See Section 4.
 
-   *  aead_id: Depends on the COSE-HPKE algorithm used.
+   *  aead_id: From the ciphersuite.  See Section 4.
 
    *  info: Deterministic encoding of the Recipient_structure.
       Externally provided context information MAY be provided and MUST
@@ -471,20 +477,19 @@ Table of Contents
 
 4.  Ciphersuite Registration
 
-   A ciphersuite is a group of algorithms, often sharing component
-   algorithms such as hash functions, targeting a security level.  A
-   COSE-HPKE algorithm is composed of the following choices:
+   A ciphersuite is a set of cryptographic algorithms selected to
+   achieve a specific security level.  For COSE-HPKE, a single COSE
+   algorithm ID represents a ciphersuite that maps to the following HPKE
+   algorithm identifiers:
 
-   *  COSE HPKE Mode
+   *  KEM algorithm
 
-   *  KEM Algorithm
+   *  KDF algorithm
 
-   *  KDF Algorithm
+   *  AEAD algorithm
 
-   *  AEAD Algorithm
-
-   The "KEM", "KDF", and "AEAD" values are chosen from the HPKE IANA
-   registry [HPKE-IANA].
+   Each COSE algorithm ID registered for COSE-HPKE MUST indicate the
+   three HPKE algorithm IDs mapped by the ciphersuite.
 
    The HPKE mode is determined by the presence or absence of the
    "psk_id" parameter and is therefore not explicitly indicated in the
