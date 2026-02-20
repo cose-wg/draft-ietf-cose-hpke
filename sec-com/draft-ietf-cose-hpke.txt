@@ -151,6 +151,12 @@ Table of Contents
    context, as discussed in Section 9.7.1 of [RFC9180] are not
    supported.
 
+   Algorithm identifiers follow a ciphersuite scheme in which a single
+   COSE algorithm ID maps to the three algorithm IDs required for HPKE:
+   the Key Encapsulation Mechanism (KEM), the Key Derivation Function
+   (KDF), and the Authenticated Encryption with Associated Data (AEAD)
+   algorithm.
+
 2.  Conventions and Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -161,7 +167,8 @@ Table of Contents
 
    This specification uses the following abbreviations and terms:
 
-   *  Content-encryption key (CEK), a term defined in CMS [RFC5652].
+   *  Content-encryption key (CEK), a described in Section 2 of
+      [RFC9052].
 
    *  Hybrid Public Key Encryption (HPKE) is defined in [RFC9180].
 
@@ -189,24 +196,23 @@ Table of Contents
       Section 3.2 provides the details.
 
    *  HPKE Key Encryption mode, where HPKE is used to encrypt a content
-      encryption key (CEK) and the CEK is subsequently used to encrypt
-      the plaintext.  This mode supports multiple recipients.
-      Section 3.3 provides the details.
+      encryption key (CEK), which then encrypts the content.  This mode
+      supports multiple recipients.  Section 3.3 provides the details.
 
    Distinct algorithm identifiers are defined and registered that are
    specific to each COSE HPKE mode so that they are fully specified, as
    required by [RFC9864].  Algorithm identifiers MUST only be used in
    the COSE HPKE mode that is specified for them.
 
-   In both cases, the new COSE header parameter 'ek' MUST be present.
+   In both cases, the new COSE header parameter "ek" MUST be present.
    It contains the encapsulated KEM shared secret.  The value of this
-   parameter MUST be the 'enc' value output by the HPKE Seal()
-   operation, as defined in Section 6.1 of [RFC9180].  The 'ek' header
+   parameter MUST be the "enc" value output by the HPKE Seal()
+   operation, as defined in Section 6.1 of [RFC9180].  The "ek" header
    parameter MUST be encoded as a CBOR byte string.
 
    HPKE defines several authentication modes, as described in Table 1 of
    [RFC9180].  In COSE HPKE, only 'mode_base' and 'mode_psk' are
-   supported.  The mode is 'mode_psk' if the 'psk_id' header parameter
+   supported.  The mode is 'mode_psk' if the "psk_id" header parameter
    is present; otherwise, the mode defaults to 'mode_base'. 'mode_base'
    is described in Section 5.1.1 of [RFC9180], which only enables
    encryption to the holder of a given KEM private key. 'mode_psk' is
@@ -218,25 +224,25 @@ Table of Contents
    This mode applies if the COSE_Encrypt0 structure uses a COSE-HPKE
    algorithm and has no recipient structure(s).
 
-   Because COSE-HPKE supports header protection, if the 'alg' parameter
+   Because COSE-HPKE supports header protection, if the "alg" parameter
    is present, it MUST be included in the protected header and MUST be a
    COSE-HPKE algorithm.
 
-   Although the use of the 'kid' parameter in COSE_Encrypt0 is
+   Although the use of the "kid" parameter in COSE_Encrypt0 is
    discouraged by RFC 9052, this document RECOMMENDS the use of the
-   'kid' parameter (or other parameters) to explicitly identify the
+   "kid" parameter (or other parameters) to explicitly identify the
    static recipient public key used by the sender.  If the COSE_Encrypt0
-   structure includes a 'kid' parameter, the recipient MAY use it to
+   structure includes a "kid" parameter, the recipient MAY use it to
    select the corresponding private key.
 
    When encrypting, the inputs to the HPKE Seal operation are set as
    follows:
 
-   *  kem_id: Depends on the COSE-HPKE algorithm used.
+   *  kem_id: From the ciphersuite.  See Section 4.
 
    *  pkR: The recipient public key, converted into an HPKE public key.
 
-   *  kdf_id: Depends on the COSE-HPKE algorithm used.
+   *  kdf_id: From the ciphersuite.  See Section 4.
 
    *  info: Defaults to the empty string; externally provided
       information MAY be used instead.
@@ -249,13 +255,13 @@ Table of Contents
    "Encrypt0".  Externally provided AAD information MAY be provided and
    MUST be passed into the Enc_structure via the external_aad field.
 
-   *  aead_id: Depends on the COSE-HPKE algorithm used.
+   *  aead_id: From the ciphersuite.  See Section 4.
 
    *  pt: The raw message plaintext.
 
    The outputs are used as follows:
 
-   *  enc: MUST be placed raw into the 'ek' (encapsulated key) parameter
+   *  enc: MUST be placed raw into the "ek" (encapsulated key) parameter
       in the unprotected bucket.
 
    *  ct: MUST be used as layer ciphertext.  If not using detached
@@ -264,21 +270,21 @@ Table of Contents
       ciphertext field is nil.  See Section 5 of [RFC9052] for a
       description of detached payloads.
 
-   If 'mode_psk' has been selected, then the 'psk_id' parameter MUST be
-   present.  If 'mode_base' has been chosen, then the 'psk_id' parameter
+   If 'mode_psk' has been selected, then the "psk_id" parameter MUST be
+   present.  If 'mode_base' has been chosen, then the "psk_id" parameter
    MUST NOT be present.
 
    When decrypting, the inputs to the HPKE Open operation are set as
    follows:
 
-   *  kem_id: Depends on the COSE-HPKE algorithm used.
+   *  kem_id: From the ciphersuite.  See Section 4.
 
    *  skR: The recipient private key, converted into an HPKE private
       key.
 
-   *  kdf_id: Depends on the COSE-HPKE algorithm used.
+   *  kdf_id: From the ciphersuite.  See Section 4.
 
-   *  aead_id: Depends on the COSE-HPKE algorithm used.
+   *  aead_id: From the ciphersuite.  See Section 4.
 
    *  info: Defaults to the empty string; externally provided
       information MAY be used instead.
@@ -290,7 +296,7 @@ Table of Contents
       provided and MUST be passed into the Enc_structure via the
       external_aad field.
 
-   *  enc: The contents of the layer 'ek' parameter.
+   *  enc: The contents of the layer "ek" parameter.
 
    *  ct: The contents of the layer ciphertext.
 
@@ -316,14 +322,14 @@ Table of Contents
       parameters needed for HPKE to generate a shared secret used to
       encrypt the CEK.  This layer conveys the encrypted CEK in the
       COSE_recipient structure using a COSE-HPKE algorithm.  The
-      unprotected header MAY contain the kid parameter to identify the
+      unprotected header MAY contain the "kid" parameter to identify the
       static recipient public key that the sender has been using with
       HPKE.
 
    This two-layer structure is used to encrypt content that can also be
-   shared with multiple parties at the expense of a single additional
-   encryption operation.  As stated above, the specification uses a CEK
-   to encrypt the content at layer 0.
+   shared with multiple recipients at the expense of a single additional
+   encryption operation.  The content is encrypted once with the CEK,
+   then the CEK is encrypted for each recipient.
 
 3.3.1.  Recipient_structure
 
@@ -342,13 +348,13 @@ Table of Contents
    Recipient_structure = [
        context: "HPKE Recipient",
        next_layer_alg: int/tstr,
-       recipient_protected_header: empty_or_serialize_map,
+       recipient_protected_header: empty_or_serialized_map,
        recipient_extra_info: bstr
    ]
 
    *  "next_layer_alg" is the algorithm ID of the COSE layer for which
       the COSE_recipient is encrypting a key.  It is the algorithm that
-      the key MUST be used with.  This value MUST match the alg
+      the key MUST be used with.  This value MUST match the "alg"
       parameter in the next lower COSE layer.
 
    *  "recipient_protected_header" contains the protected header
@@ -362,12 +368,12 @@ Table of Contents
 
 3.3.2.  COSE-HPKE Recipient Construction
 
-   Because COSE-HPKE supports header protection, if the 'alg' parameter
+   Because COSE-HPKE supports header protection, if the "alg" parameter
    is present, it MUST be in the protected header parameters and MUST be
    a COSE-HPKE algorithm.
 
-   The protected header MAY contain the kid parameter to identify the
-   static recipient public key that the sender used.  Use of the 'kid'
+   The protected header MAY contain the "kid" parameter to identify the
+   static recipient public key that the sender used.  Use of the "kid"
    parameter is RECOMMENDED to explicitly identify the static recipient
    public key used by the sender.  Including it in the protected header
    parameters ensures that it is input into the key derivation function
@@ -376,13 +382,13 @@ Table of Contents
    When encrypting, the inputs to the HPKE Seal operation are set as
    follows:
 
-   *  kem_id: Depends on the COSE-HPKE algorithm used.
+   *  kem_id: From the ciphersuite.  See Section 4.
 
    *  pkR: The recipient public key, converted into HPKE public key.
 
-   *  kdf_id: Depends on the COSE-HPKE algorithm used.
+   *  kdf_id: From the ciphersuite.  See Section 4.
 
-   *  aead_id: Depends on the COSE-HPKE algorithm used.
+   *  aead_id: From the ciphersuite.  See Section 4.
 
    *  info: Deterministic encoding of the Recipient_structure.
       Externally provided context information MAY be provided and MUST
@@ -392,11 +398,11 @@ Table of Contents
    *  aad: Defaults to the empty string; externally provided information
       MAY be used instead.
 
-   *  pt: The raw key for the next layer down.
+   *  pt: The CEK.
 
    The outputs are used as follows:
 
-   *  enc: MUST be placed raw into the 'ek' (encapsulated key) parameter
+   *  enc: MUST be placed raw into the "ek" (encapsulated key) parameter
       in the unprotected bucket.
 
    *  ct: MUST be placed raw in the ciphertext field in the
@@ -405,13 +411,13 @@ Table of Contents
    When decrypting, the inputs to the HPKE Open operation are set as
    follows:
 
-   *  kem_id: Depends on the COSE-HPKE algorithm used.
+   *  kem_id: From the ciphersuite.  See Section 4.
 
    *  skR: The recipient private key, converted into HPKE private key.
 
-   *  kdf_id: Depends on the COSE-HPKE algorithm used.
+   *  kdf_id: From the ciphersuite.  See Section 4.
 
-   *  aead_id: Depends on the COSE-HPKE algorithm used.
+   *  aead_id: From the ciphersuite.  See Section 4.
 
    *  info: Deterministic encoding of the Recipient_structure.
       Externally provided context information MAY be provided and MUST
@@ -423,7 +429,7 @@ Table of Contents
 
    *  ct: The contents of the layer ciphertext field.
 
-   The plaintext output is the raw key for the next layer down.
+   The plaintext output is the CEK.
 
    It is not necessary to populate recipient_aad, as HPKE inherently
    mitigates the classes of attacks that COSE_KDF_Context, and SP800-56A
@@ -502,23 +508,22 @@ Table of Contents
 
 4.  Ciphersuite Registration
 
-   A ciphersuite is a group of algorithms, often sharing component
-   algorithms such as hash functions, targeting a security level.  A
-   COSE-HPKE algorithm is composed of the following choices:
+   A ciphersuite is a set of cryptographic algorithms selected to
+   achieve a specific security level.  For COSE-HPKE, a single COSE
+   algorithm ID represents a ciphersuite that maps to the following HPKE
+   algorithm identifiers:
 
-   *  COSE HPKE Mode
+   *  KEM algorithm
 
-   *  KEM Algorithm
+   *  KDF algorithm
 
-   *  KDF Algorithm
+   *  AEAD algorithm
 
-   *  AEAD Algorithm
-
-   The "KEM", "KDF", and "AEAD" values are chosen from the HPKE IANA
-   registry [HPKE-IANA].
+   Each COSE algorithm ID registered for COSE-HPKE MUST indicate the
+   three HPKE algorithm IDs mapped by the ciphersuite.
 
    The HPKE mode is determined by the presence or absence of the
-   'psk_id' parameter and is therefore not explicitly indicated in the
+   "psk_id" parameter and is therefore not explicitly indicated in the
    ciphersuite.
 
    For a list of ciphersuite registrations, please see Section 7.  The
@@ -1235,10 +1240,6 @@ Table of Contents
               cfrg-dnhpke-07, 16 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
               dnhpke-07>.
-
-   [RFC5652]  Housley, R., "Cryptographic Message Syntax (CMS)", STD 70,
-              RFC 5652, DOI 10.17487/RFC5652, September 2009,
-              <https://www.rfc-editor.org/rfc/rfc5652>.
 
    [RFC8937]  Cremers, C., Garratt, L., Smyshlyaev, S., Sullivan, N.,
               and C. Wood, "Randomness Improvements for Security
