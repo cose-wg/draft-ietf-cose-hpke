@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 15 August 2026                                     Tradeverifyd
+Expires: 24 August 2026                                     Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                        11 February 2026
+                                                        20 February 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 August 2026.
+   This Internet-Draft will expire on 24 August 2026.
 
 Copyright Notice
 
@@ -446,7 +446,8 @@ Table of Contents
 
 3.3.3.  Security Design Rationale
 
-   COSE-HPKE does not use COSE_KDF_Context for the following reasons:
+   COSE-HPKE does not use COSE_KDF_Context, which is defined in
+   Section 5.2 of [RFC9053], for the following reasons:
 
    *  HPKE is a well-analyzed and widely reviewed construction that
       already incorporates the protections provided by COSE_KDF_Context.
