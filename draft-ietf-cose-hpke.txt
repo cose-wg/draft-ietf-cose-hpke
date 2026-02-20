@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 6 August 2026                                      Tradeverifyd
+Expires: 24 August 2026                                     Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                         2 February 2026
+                                                        20 February 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 August 2026.
+   This Internet-Draft will expire on 24 August 2026.
 
 Copyright Notice
 
@@ -160,7 +160,8 @@ Table of Contents
 
    This specification uses the following abbreviations and terms:
 
-   *  Content-encryption key (CEK), a term defined in CMS [RFC5652].
+   *  Content-encryption key (CEK), a described in Section 2 of
+      [RFC9052].
 
    *  Hybrid Public Key Encryption (HPKE) is defined in [RFC9180].
 
@@ -188,9 +189,8 @@ Table of Contents
       Section 3.2 provides the details.
 
    *  HPKE Key Encryption mode, where HPKE is used to encrypt a content
-      encryption key (CEK) and the CEK is subsequently used to encrypt
-      the plaintext.  This mode supports multiple recipients.
-      Section 3.3 provides the details.
+      encryption key (CEK), which then encrypts the content.  This mode
+      supports multiple recipients.  Section 3.3 provides the details.
 
    Distinct algorithm identifiers are defined and registered that are
    specific to each COSE HPKE mode so that they are fully specified, as
@@ -320,9 +320,9 @@ Table of Contents
       HPKE.
 
    This two-layer structure is used to encrypt content that can also be
-   shared with multiple parties at the expense of a single additional
-   encryption operation.  As stated above, the specification uses a CEK
-   to encrypt the content at layer 0.
+   shared with multiple recipients at the expense of a single additional
+   encryption operation.  The content is encrypted once with the CEK,
+   then the CEK is encrypted for each recipient.
 
 3.3.1.  Recipient_structure
 
@@ -396,7 +396,7 @@ Table of Contents
    *  aad: Defaults to the empty string; externally provided information
       MAY be used instead.
 
-   *  pt: The raw key for the next layer down.
+   *  pt: The CEK.
 
    The outputs are used as follows:
 
@@ -427,7 +427,7 @@ Table of Contents
 
    *  ct: The contents of the layer ciphertext field.
 
-   The plaintext output is the raw key for the next layer down.
+   The plaintext output is the CEK.
 
    It is not necessary to populate recipient_aad, as HPKE inherently
    mitigates the classes of attacks that COSE_KDF_Context, and SP800-56A
@@ -1204,10 +1204,6 @@ Table of Contents
               cfrg-dnhpke-07, 16 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
               dnhpke-07>.
-
-   [RFC5652]  Housley, R., "Cryptographic Message Syntax (CMS)", STD 70,
-              RFC 5652, DOI 10.17487/RFC5652, September 2009,
-              <https://www.rfc-editor.org/rfc/rfc5652>.
 
    [RFC8937]  Cremers, C., Garratt, L., Smyshlyaev, S., Sullivan, N.,
               and C. Wood, "Randomness Improvements for Security
