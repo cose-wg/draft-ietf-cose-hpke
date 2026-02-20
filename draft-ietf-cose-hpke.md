@@ -309,7 +309,7 @@ An example is shown in {{two-layer-example}}.
 
 ### Security Design Rationale
 
-COSE-HPKE does not use COSE_KDF_Context for the following reasons:
+COSE-HPKE does not use COSE_KDF_Context, which is defined in {{Section 5.2 of RFC9053}}, for the following reasons:
 
 - HPKE is a well-analyzed and widely reviewed construction that already incorporates the protections provided by COSE_KDF_Context.
 - The HPKE design avoids many of the weaknesses present in earlier key agreement protocols that COSE_KDF_Context was designed to mitigate.
