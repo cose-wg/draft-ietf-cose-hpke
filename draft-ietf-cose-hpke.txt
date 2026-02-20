@@ -98,6 +98,7 @@ Table of Contents
      3.3.  HPKE Key Encryption Mode
        3.3.1.  Recipient_structure
        3.3.2.  COSE-HPKE Recipient Construction
+       3.3.3.  Security Design Rationale
      3.4.  Key Representation
    4.  Ciphersuite Registration
      4.1.  COSE_Keys for COSE-HPKE Ciphersuites
@@ -354,12 +355,7 @@ Table of Contents
    *  "next_layer_alg" is the algorithm ID of the COSE layer for which
       the COSE_recipient is encrypting a key.  It is the algorithm that
       the key MUST be used with.  This value MUST match the "alg"
-      parameter in the next lower COSE layer.  (This serves the same
-      purpose as the alg ID in the COSE_KDF_Context.  It also mitigates
-      attacks where the attacker manipulates the content-encryption
-      algorithm identifier.  This attack has been demonstrated against
-      CMS and the mitigation can be found in
-      [I-D.ietf-lamps-cms-cek-hkdf-sha256].
+      parameter in the next lower COSE layer.
 
    *  "recipient_protected_header" contains the protected header
       parameters from the COSE_recipient CBOR-encoded deterministically
@@ -453,6 +449,41 @@ Table of Contents
    of the authenticated data structure.
 
    An example is shown in Section 5.2.
+
+3.3.3.  Security Design Rationale
+
+   COSE-HPKE does not use COSE_KDF_Context, which is defined in
+   Section 5.2 of [RFC9053], for the following reasons:
+
+   *  HPKE is a well-analyzed and widely reviewed construction that
+      already incorporates the protections provided by COSE_KDF_Context.
+
+   *  The HPKE design avoids many of the weaknesses present in earlier
+      key agreement protocols that COSE_KDF_Context was designed to
+      mitigate.
+
+   *  Use of the COSE_KDF_Context would introduce unnecessary
+      complexity; many of the fields typically go unused.
+
+   *  It is difficult to know what to put in the COSE_KDF_Context
+      fields.
+
+   The algorithm identifier for the bulk content encryption algorithm
+   can be manipulated, since it is neither integrity-protected nor
+   incorporated into the key derivation.  In particular, the layer 0
+   algorithm identifier is not integrity protected by the COSE_Recipient
+   and is therefore not cryptographically bound to the key agreement
+   algorithm.  This class of attack has been demonstrated against CMS; a
+   corresponding mitigation is described in
+   [I-D.ietf-lamps-cms-cek-hkdf-sha256].
+
+   The "next_layer_alg" member of the Recipient_structure mitigates this
+   attack by explicitly binding the bulk content encryption algorithm
+   identifier with the COSE_Recipient.  The "next_layer_alg" member is
+   explicitly defined to identify the algorithm for the immediately
+   following COSE layer.  Such explicit layering semantics were not
+   provided for the AlgorithmID field in COSE_KDF_Context, where the
+   intended interpretation was ambiguous.
 
 3.4.  Key Representation
 

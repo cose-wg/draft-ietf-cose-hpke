@@ -1214,6 +1214,9 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.2">
                     <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-cose-hpke-recipient-constru" class="internal xref">COSE-HPKE Recipient Construction</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.3">
+                    <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-security-design-rationale" class="internal xref">Security Design Rationale</a></p>
+</li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
@@ -1585,11 +1588,7 @@ Recipient_structure = [
 <li class="normal" id="section-3.3.1-5.1">
               <p id="section-3.3.1-5.1.1">"next_layer_alg" is the algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
 It is the algorithm that the key MUST be used with.
-This value MUST match the "alg" parameter in the next lower COSE layer.
-(This serves the same purpose as the alg ID in the COSE_KDF_Context.
-It also mitigates attacks where the attacker manipulates the content-encryption
-algorithm identifier. This attack has been demonstrated against CMS and the mitigation
-can be found in <span>[<a href="#I-D.ietf-lamps-cms-cek-hkdf-sha256" class="cite xref">I-D.ietf-lamps-cms-cek-hkdf-sha256</a>]</span>.<a href="#section-3.3.1-5.1.1" class="pilcrow">¶</a></p>
+This value MUST match the "alg" parameter in the next lower COSE layer.<a href="#section-3.3.1-5.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-3.3.1-5.2">
               <p id="section-3.3.1-5.2.1">"recipient_protected_header" contains the protected header parameters from the COSE_recipient
@@ -1683,6 +1682,34 @@ not designed for protecting large or bulk external data.<a href="#section-3.3.2-
 <p id="section-3.3.2-13">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
 authenticated data structure.<a href="#section-3.3.2-13" class="pilcrow">¶</a></p>
 <p id="section-3.3.2-14">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-14" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="security-design-rationale">
+<section id="section-3.3.3">
+          <h4 id="name-security-design-rationale">
+<a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-security-design-rationale" class="section-name selfRef">Security Design Rationale</a>
+          </h4>
+<p id="section-3.3.3-1">COSE-HPKE does not use COSE_KDF_Context, which is defined in <span><a href="https://rfc-editor.org/rfc/rfc9053#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC9053" class="cite xref">RFC9053</a>]</span>, for the following reasons:<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3.3-2.1">
+              <p id="section-3.3.3-2.1.1">HPKE is a well-analyzed and widely reviewed construction that already incorporates the protections provided by COSE_KDF_Context.<a href="#section-3.3.3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.3-2.2">
+              <p id="section-3.3.3-2.2.1">The HPKE design avoids many of the weaknesses present in earlier key agreement protocols that COSE_KDF_Context was designed to mitigate.<a href="#section-3.3.3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.3-2.3">
+              <p id="section-3.3.3-2.3.1">Use of the COSE_KDF_Context would introduce unnecessary complexity; many of the fields typically go unused.<a href="#section-3.3.3-2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.3-2.4">
+              <p id="section-3.3.3-2.4.1">It is difficult to know what to put in the COSE_KDF_Context fields.<a href="#section-3.3.3-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-3.3.3-3">The algorithm identifier for the bulk content encryption algorithm can be manipulated, since it is neither integrity-protected nor incorporated into the key derivation.
+In particular, the layer 0 algorithm identifier is not integrity protected by the COSE_Recipient and is therefore not cryptographically bound to the key agreement algorithm.
+This class of attack has been demonstrated against CMS; a corresponding mitigation is described in <span>[<a href="#I-D.ietf-lamps-cms-cek-hkdf-sha256" class="cite xref">I-D.ietf-lamps-cms-cek-hkdf-sha256</a>]</span>.<a href="#section-3.3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-4">The "next_layer_alg" member of the Recipient_structure mitigates this attack by explicitly binding the bulk content encryption algorithm identifier with the COSE_Recipient.
+The "next_layer_alg" member is explicitly defined to identify the algorithm for the immediately following COSE layer.
+Such explicit layering semantics were not provided for the AlgorithmID field in COSE_KDF_Context, where the intended interpretation was ambiguous.<a href="#section-3.3.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
