@@ -1702,7 +1702,7 @@ authenticated data structure.<a href="#section-3.3.2-13" class="pilcrow">¶</a><
               <p id="section-3.3.3-2.4.1">It is difficult to know what to put in the COSE_KDF_Context fields.<a href="#section-3.3.3-2.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-3.3.3-3">An attack has been identified in which the algorithm identifier for the bulk content encryption algorithm can be manipulated because it is not integrity protected by anything other than the algorithm it identifies.
+<p id="section-3.3.3-3">The algorithm identifier for the bulk content encryption algorithm can be manipulated, since it is neither integrity-protected nor incorporated into the key derivation.
 In particular, the layer 0 algorithm identifier is not integrity protected by the COSE_Recipient and is therefore not cryptographically bound to the key agreement algorithm.
 This class of attack has been demonstrated against CMS; a corresponding mitigation is described in <span>[<a href="#I-D.ietf-lamps-cms-cek-hkdf-sha256" class="cite xref">I-D.ietf-lamps-cms-cek-hkdf-sha256</a>]</span>.<a href="#section-3.3.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.3.3-4">The "next_layer_alg" member of the Recipient_structure mitigates this attack by explicitly binding the bulk content encryption algorithm identifier with the COSE_Recipient.

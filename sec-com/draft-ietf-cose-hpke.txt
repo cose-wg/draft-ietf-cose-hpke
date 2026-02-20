@@ -462,14 +462,14 @@ Table of Contents
    *  It is difficult to know what to put in the COSE_KDF_Context
       fields.
 
-   An attack has been identified in which the algorithm identifier for
-   the bulk content encryption algorithm can be manipulated because it
-   is not integrity protected by anything other than the algorithm it
-   identifies.  In particular, the layer 0 algorithm identifier is not
-   integrity protected by the COSE_Recipient and is therefore not
-   cryptographically bound to the key agreement algorithm.  This class
-   of attack has been demonstrated against CMS; a corresponding
-   mitigation is described in [I-D.ietf-lamps-cms-cek-hkdf-sha256].
+   The algorithm identifier for the bulk content encryption algorithm
+   can be manipulated, since it is neither integrity-protected nor
+   incorporated into the key derivation.  In particular, the layer 0
+   algorithm identifier is not integrity protected by the COSE_Recipient
+   and is therefore not cryptographically bound to the key agreement
+   algorithm.  This class of attack has been demonstrated against CMS; a
+   corresponding mitigation is described in
+   [I-D.ietf-lamps-cms-cek-hkdf-sha256].
 
    The "next_layer_alg" member of the Recipient_structure mitigates this
    attack by explicitly binding the bulk content encryption algorithm
