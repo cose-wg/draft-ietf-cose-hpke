@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-17T02:30:41.290676+00:00",
+  "timestamp": "2026-02-22T02:33:52.002837+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1656,15 +1656,15 @@
       "id": "I_kwDOGr5frc7pheb-",
       "title": "\u201calg\u201d  in double quote marks",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/117",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "When referring to the algorithm ID parameter it should be \u201calg\u201d in double quote marks like it is in 9052. In this document it is sometimes bare and other times in single quotes.\n",
       "createdAt": "2026-02-09T19:55:40Z",
-      "updatedAt": "2026-02-09T19:55:40Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-20T18:13:42Z",
+      "closedAt": "2026-02-20T18:13:42Z",
       "comments": []
     },
     {
@@ -7870,21 +7870,21 @@
       "id": "PR_kwDOGr5frc7CEBbU",
       "title": "Rework of key encryption mode section",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/113",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This is NOT ready to merge, but I'm making it available sooner rather than later.\r\n\r\nI'm having trouble with the document make system, so this may break the CI.",
       "createdAt": "2026-02-06T18:56:36Z",
-      "updatedAt": "2026-02-09T20:17:59Z",
+      "updatedAt": "2026-02-19T15:23:18Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "r2_improve",
       "headRefOid": "50c0462328021b732929e06da3acd9c30cf1b07b",
-      "closedAt": null,
+      "closedAt": "2026-02-19T15:23:18Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -7902,6 +7902,13 @@
           "body": "Understood that we need to work on this one specific problem at a time. I've opened some issues to describe the problems.\r\n\r\nI had to do the rewrite to get my thinking clear. Sorry for the trouble caused by dumping it in one PR.",
           "createdAt": "2026-02-09T20:17:59Z",
           "updatedAt": "2026-02-09T20:17:59Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing this because it has mostly, but not entirely, been replaced by individual PRs. Issues are filed for issues that don't have PRs.",
+          "createdAt": "2026-02-19T15:23:18Z",
+          "updatedAt": "2026-02-19T15:23:18Z"
         }
       ],
       "reviews": [
@@ -7959,78 +7966,216 @@
       "id": "PR_kwDOGr5frc7DDUQn",
       "title": "Security Design Rationale",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/124",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Address #120\r\n\r\nMove the lamps attack comment from the specification text and put it in a design rationale section\r\n\r\nAdd the rationale for not using the COSE_KDF_Context\r\n",
       "createdAt": "2026-02-11T16:21:50Z",
-      "updatedAt": "2026-02-11T16:21:50Z",
+      "updatedAt": "2026-02-20T19:13:55Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
-      "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
+      "baseRefOid": "1a93f6bde9555650525807f1139300a563de490f",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "sec-com",
-      "headRefOid": "1449e7e55bf124e5f9ba8416f29502045a93320f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "headRefOid": "38a6a4c8643fa1eba753202fd0d84c2f7558cd0c",
+      "closedAt": "2026-02-20T19:13:55Z",
+      "mergedAt": "2026-02-20T19:13:55Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "867226611812d9679ac0d5f0db1bed572906767a"
+      },
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I suggested only minor editorial improvements.",
+          "createdAt": "2026-02-20T18:05:06Z",
+          "updatedAt": "2026-02-20T18:05:06Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7kGcaT",
+          "commit": {
+            "abbreviatedOid": "1449e7e"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-19T16:11:27Z",
+          "updatedAt": "2026-02-19T16:11:27Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7kfbRL",
+          "commit": {
+            "abbreviatedOid": "1449e7e"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T17:53:09Z",
+          "updatedAt": "2026-02-20T17:53:09Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "```suggestion\nCOSE-HPKE does not use COSE_KDF_Context, which is defined in {{Section 5.2 of RFC9053}}, for the following reasons:\n```",
+              "createdAt": "2026-02-20T17:53:09Z",
+              "updatedAt": "2026-02-20T17:53:45Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7kfmk0",
+          "commit": {
+            "abbreviatedOid": "1449e7e"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T18:03:14Z",
+          "updatedAt": "2026-02-20T18:03:14Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "```suggestion\nThe algorithm identifier for the bulk content encryption algorithm can be manipulated, since it is neither integrity-protected nor incorporated into the key derivation.\n```",
+              "createdAt": "2026-02-20T18:03:14Z",
+              "updatedAt": "2026-02-20T18:03:14Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 125,
       "id": "PR_kwDOGr5frc7DDltz",
       "title": "Consistently double quote all COSE header parameters",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/125",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #117 and many other header parameters names",
       "createdAt": "2026-02-11T16:37:50Z",
-      "updatedAt": "2026-02-11T16:37:50Z",
+      "updatedAt": "2026-02-20T18:13:41Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "alg-quote",
       "headRefOid": "8d79611b2bb376653a646805b3870a4a2b667212",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2026-02-20T18:13:41Z",
+      "mergedAt": "2026-02-20T18:13:40Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "dcdca5935a2763e47a7b90d266fbdd32b853eb1c"
+      },
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "It is definitely useful to consistently use quotes throughout the document. Thanks for the edits.",
+          "createdAt": "2026-02-20T18:04:41Z",
+          "updatedAt": "2026-02-20T18:04:41Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7kGewN",
+          "commit": {
+            "abbreviatedOid": "8d79611"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-19T16:13:00Z",
+          "updatedAt": "2026-02-19T16:13:00Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7kft9i",
+          "commit": {
+            "abbreviatedOid": "8d79611"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T18:08:40Z",
+          "updatedAt": "2026-02-20T18:08:40Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 126,
       "id": "PR_kwDOGr5frc7DnIeB",
       "title": "Consistent use of 'CEK'",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/126",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Most minor rewording around the CEK.\r\n\r\nChanged the reference for CEK to 9052 rather than CMS which is more consistent and eliminated the need for a CMS reference.\r\n\r\n#115 ",
       "createdAt": "2026-02-13T17:28:50Z",
-      "updatedAt": "2026-02-13T17:28:50Z",
+      "updatedAt": "2026-02-20T18:13:17Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "CEK",
       "headRefOid": "8d1218ce4e7cb7adeb4d6dbf7fc1df1a5b35df17",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2026-02-20T18:13:17Z",
+      "mergedAt": "2026-02-20T18:13:17Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "ead3049804966c4546c2aeab081a32b7df3a8ab4"
+      },
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I am fine with removing the reference to CMS for the CEK.",
+          "createdAt": "2026-02-20T18:07:37Z",
+          "updatedAt": "2026-02-20T18:07:37Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7kGgon",
+          "commit": {
+            "abbreviatedOid": "8d1218c"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-19T16:14:30Z",
+          "updatedAt": "2026-02-19T16:14:30Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7kftZ-",
+          "commit": {
+            "abbreviatedOid": "8d1218c"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T18:08:15Z",
+          "updatedAt": "2026-02-20T18:08:15Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 127,
@@ -8044,7 +8189,7 @@
       "labels": [],
       "body": "Fixes #112",
       "createdAt": "2026-02-13T17:57:00Z",
-      "updatedAt": "2026-02-13T17:57:00Z",
+      "updatedAt": "2026-02-20T18:23:56Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
@@ -8056,59 +8201,159 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7kGiLt",
+          "commit": {
+            "abbreviatedOid": "d24cb89"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-19T16:15:45Z",
+          "updatedAt": "2026-02-19T16:15:45Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7kgAxp",
+          "commit": {
+            "abbreviatedOid": "d24cb89"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T18:23:56Z",
+          "updatedAt": "2026-02-20T18:23:56Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "With the last sentence are you saying:\n\nA) This requirement covers only the CBOR encoding of the Recipient_structure itself and does not require deterministic encoding of any CBOR data embedded within recipient_protected_header.\n\nor\n\nB) This requirement applies only to the deterministic serialization of the Recipient_structure array as a CBOR data item; the CBOR map carried inside recipient_protected_header (which is wrapped as a bstr) is itself already deterministically encoded.\n\nI do not fully understand the intentions.",
+              "createdAt": "2026-02-20T18:23:56Z",
+              "updatedAt": "2026-02-20T18:23:56Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 128,
       "id": "PR_kwDOGr5frc7DnlAO",
       "title": "Fix 'serialized_map' in CDDL",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/128",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This is a reference to the CDDL in RFC 9052 -- should be \"serialized\", not \"serialize\".",
       "createdAt": "2026-02-13T18:00:43Z",
-      "updatedAt": "2026-02-13T18:00:43Z",
+      "updatedAt": "2026-02-20T19:08:52Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "serialized",
       "headRefOid": "0b08c7cc471c1aa9be8855b955a0a77f96e41d7e",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2026-02-20T19:08:52Z",
+      "mergedAt": "2026-02-20T19:08:52Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "30d12ca809f02aaf5fd1062151af2f4145c7570c"
+      },
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for catching this typo",
+          "createdAt": "2026-02-20T18:24:39Z",
+          "updatedAt": "2026-02-20T18:24:39Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7kGjGM",
+          "commit": {
+            "abbreviatedOid": "0b08c7c"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-19T16:16:31Z",
+          "updatedAt": "2026-02-19T16:16:31Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7kgBY-",
+          "commit": {
+            "abbreviatedOid": "0b08c7c"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T18:24:25Z",
+          "updatedAt": "2026-02-20T18:24:25Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 129,
       "id": "PR_kwDOGr5frc7D9iIY",
       "title": "Ciphersuites",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/129",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Most importantly the text that links Seal/Open API to cipher suites.\r\n\r\nAlso improves text about cipher suites.\r\n\r\nAddres #121 ",
       "createdAt": "2026-02-15T22:48:14Z",
-      "updatedAt": "2026-02-16T01:33:23Z",
+      "updatedAt": "2026-02-20T19:09:50Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "ciphersuite-ref",
       "headRefOid": "cdc9287a6e4971cff301f769cdd41c3508a0bdad",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-02-20T19:09:50Z",
+      "mergedAt": "2026-02-20T19:09:50Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "1a93f6bde9555650525807f1139300a563de490f"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7kGlbJ",
+          "commit": {
+            "abbreviatedOid": "cdc9287"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-19T16:18:25Z",
+          "updatedAt": "2026-02-19T16:18:25Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7kgDfE",
+          "commit": {
+            "abbreviatedOid": "cdc9287"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for the text improvements.",
+          "createdAt": "2026-02-20T18:26:06Z",
+          "updatedAt": "2026-02-20T18:26:06Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
