@@ -256,7 +256,8 @@ can be found in {{I-D.ietf-lamps-cms-cek-hkdf-sha256}}.
 the key derivation via the HPKE info parameter. If none, it is a zero-length string.
 
 The Recipient_structure MUST be serialized deterministically in accordance with the Core Deterministic Encoding Requirements defined in {{Section 4.2.1 of RFC8949}}.
-This requirement applies only to the Recipient_structure itself and does not mandate deterministic serialization of the protected headers.
+This requirement applies only to the Recipient_structure itself &mdash; the array and its four members.
+It does not extend into the byte-string wrapped protected headers.
 
 
 ### COSE-HPKE Recipient Construction
