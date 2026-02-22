@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 17 August 2026                                     Tradeverifyd
+Expires: 26 August 2026                                     Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                        13 February 2026
+                                                        22 February 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 August 2026.
+   This Internet-Draft will expire on 26 August 2026.
 
 Copyright Notice
 
@@ -365,8 +365,8 @@ Table of Contents
    The Recipient_structure MUST be serialized deterministically in
    accordance with the Core Deterministic Encoding Requirements defined
    in Section 4.2.1 of [RFC8949].  This requirement applies only to the
-   Recipient_structure itself and does not mandate deterministic
-   serialization of the protected headers.
+   Recipient_structure itself — the array and its four members.  It does
+   not extend into the byte-string wrapped protected headers.
 
 3.3.2.  COSE-HPKE Recipient Construction
 
