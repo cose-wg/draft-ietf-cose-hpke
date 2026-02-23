@@ -245,13 +245,16 @@ Recipient_structure = [
 ]
 ~~~
 
-- "next_layer_alg" is the algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
+"next_layer_alg":
+: The algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
 It is the algorithm that the key MUST be used with.
 This value MUST match the "alg" parameter in the next lower COSE layer.
 
-- "recipient_protected_header" contains the protected header parameters from the COSE_recipient.
+"recipient_protected_header":
+: The protected header parameters from the COSE_recipient.
 
-- "recipient_extra_info" contains any additional context the application wishes to include in
+"recipient_extra_info":
+: Any additional context the application wishes to include in
 the key derivation via the HPKE info parameter. If none, it is a zero-length string.
 
 The Recipient_structure MUST be serialized deterministically in accordance with the Core Deterministic Encoding Requirements defined in {{Section 4.2.1 of RFC8949}}.
