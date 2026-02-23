@@ -249,12 +249,15 @@ Recipient_structure = [
 It is the algorithm that the key MUST be used with.
 This value MUST match the "alg" parameter in the next lower COSE layer.
 
-- "recipient_protected_header" contains the protected header parameters from the COSE_recipient
-CBOR-encoded deterministically with the "Core Deterministic Encoding Requirements",
-specified in {{Section 4.2.1 of RFC8949}}.
+- "recipient_protected_header" contains the protected header parameters from the COSE_recipient.
 
 - "recipient_extra_info" contains any additional context the application wishes to include in
 the key derivation via the HPKE info parameter. If none, it is a zero-length string.
+
+The Recipient_structure MUST be serialized deterministically in accordance with the Core Deterministic Encoding Requirements defined in {{Section 4.2.1 of RFC8949}}.
+This requirement applies only to the Recipient_structure itself &mdash; the array and its four members.
+It does not extend into the byte-string wrapped protected headers.
+
 
 ### COSE-HPKE Recipient Construction
 
