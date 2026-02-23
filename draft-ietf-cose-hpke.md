@@ -66,6 +66,7 @@ informative:
      title: Hybrid Public Key Encryption (HPKE) IANA Registry
      target: https://www.iana.org/assignments/hpke/hpke.xhtml
      date: October 2023
+  NIST.SP.800-56Ar3:
 
 --- abstract
 
@@ -251,8 +252,8 @@ This value MUST match the "alg" parameter in the next lower COSE layer.
 
 - "recipient_protected_header" contains the protected header parameters from the COSE_recipient.
 
-- "recipient_extra_info" contains any additional context the application wishes to include in
-the key derivation via the HPKE info parameter. If none, it is a zero-length string.
+- "recipient_extra_info" additional context the application wishes to have validated.
+Since this is not transmitted like the protected headers, this may be a secret key.
 
 The Recipient_structure MUST be serialized deterministically in accordance with the Core Deterministic Encoding Requirements defined in {{Section 4.2.1 of RFC8949}}.
 This requirement applies only to the Recipient_structure itself &mdash; the array and its four members.
@@ -276,8 +277,8 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - pkR: The recipient public key, converted into HPKE public key.
 - kdf_id: From the ciphersuite. See {{ciphersuite}}.
 - aead_id: From the ciphersuite. See {{ciphersuite}}.
-- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
+- info: Defaults to the empty string; see below.
+- aad: Deterministic encoding of the Recipient_structure.
 - pt: The CEK.
 
 The outputs are used as follows:
@@ -291,17 +292,16 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - skR: The recipient private key, converted into HPKE private key.
 - kdf_id: From the ciphersuite. See {{ciphersuite}}.
 - aead_id: From the ciphersuite. See {{ciphersuite}}.
-- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
+- info: Defaults to the empty string; see below.
+- aad: Deterministic encoding of the Recipient_structure.
 - ct: The contents of the layer ciphertext field.
 
 The plaintext output is the CEK.
 
-It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
-attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
-may still utilize recipient_aad for other purposes as needed; however, it is generally
-intended for small values such as identifiers, contextual information, or secrets. It is
-not designed for protecting large or bulk external data.
+HPKE inherently mitigates the attacks that {{NIST.SP.800-56Ar3}} and COSE_KDF_Context are designed to address.
+Therefore, it is not necessary to include any data in the HPKE info parameter.
+Additional data that an application wishes to have checked SHOULD instead be put in the "recipient_extra_info" header parameter.
+However, COSE-HPKE does not prohibit the use of the HPKE info parameter.¶
 
 Any bulk external data that requires protection should be handled at layer 0 using external_aad.
 
