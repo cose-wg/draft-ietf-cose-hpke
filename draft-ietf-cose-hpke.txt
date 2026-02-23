@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 24 August 2026                                     Tradeverifyd
+Expires: 27 August 2026                                     Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                        20 February 2026
+                                                        23 February 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 August 2026.
+   This Internet-Draft will expire on 27 August 2026.
 
 Copyright Notice
 
@@ -358,13 +358,17 @@ Table of Contents
       parameter in the next lower COSE layer.
 
    *  "recipient_protected_header" contains the protected header
-      parameters from the COSE_recipient CBOR-encoded deterministically
-      with the "Core Deterministic Encoding Requirements", specified in
-      Section 4.2.1 of [RFC8949].
+      parameters from the COSE_recipient.
 
    *  "recipient_extra_info" contains any additional context the
       application wishes to include in the key derivation via the HPKE
       info parameter.  If none, it is a zero-length string.
+
+   The Recipient_structure MUST be serialized deterministically in
+   accordance with the Core Deterministic Encoding Requirements defined
+   in Section 4.2.1 of [RFC8949].  This requirement applies only to the
+   Recipient_structure itself — the array and its four members.  It does
+   not extend into the byte-string wrapped protected headers.
 
 3.3.2.  COSE-HPKE Recipient Construction
 
