@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-22T02:33:52.002837+00:00",
+  "timestamp": "2026-02-24T02:31:01.288644+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1593,15 +1593,15 @@
       "id": "I_kwDOGr5frc7oZvoY",
       "title": "Deterministic serialization for Recipient_structure, not header parameters",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/112",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "It might have been me that wrote this text wrong in the first place...\n\nIt is Recipient_structure that must be serialized deterministic just like Sig_structure and friends. The current text says it should be the COSE_Recipient headers.\n\nI am working on a PR for this and related.",
       "createdAt": "2026-02-05T00:48:21Z",
-      "updatedAt": "2026-02-06T15:42:28Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-23T09:05:53Z",
+      "closedAt": "2026-02-23T09:05:53Z",
       "comments": [
         {
           "author": "hannestschofenig",
@@ -1624,15 +1624,15 @@
       "id": "I_kwDOGr5frc7phdgF",
       "title": "Use the term \"CEK\" consistently",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/115",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "In several places it is referred to the \u201craw key for the next layer\u201d. In other places it is just \u201cthe key\u201d\n",
       "createdAt": "2026-02-09T19:54:08Z",
-      "updatedAt": "2026-02-09T19:54:08Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-22T03:51:08Z",
+      "closedAt": "2026-02-22T03:51:08Z",
       "comments": []
     },
     {
@@ -1704,15 +1704,15 @@
       "id": "I_kwDOGr5frc7phm1p",
       "title": "Separate justification and commentary from specification",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/120",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "I'd like to see the discussion of the lamps attack and justification for Recipient_structure in their own sub section rather than in parenthetical text. The main thing is the justification inserted in the definition of the \"next_layer_alg\" bullet.\n\nWhen you separate them it makes the specification part of the text clear and uncluttered.\n\nWhen you separate them, it gives more space to do a better job of the justification and commentary.",
       "createdAt": "2026-02-09T20:06:12Z",
-      "updatedAt": "2026-02-09T20:06:12Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-22T03:50:47Z",
+      "closedAt": "2026-02-22T03:50:47Z",
       "comments": []
     },
     {
@@ -1720,15 +1720,15 @@
       "id": "I_kwDOGr5frc7phrvv",
       "title": "\"Depends on the COSE-HPKE algorithm used\" unclear?",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/121",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The algorithm ID's used by HPKE are all described as \"Depends on the COSE-HPKE algorithm used\". \n\nIt seems much more clear to say something like \"Comes from the COSE-HPKE Ciphersuite. See section 4\"",
       "createdAt": "2026-02-09T20:10:28Z",
-      "updatedAt": "2026-02-09T20:10:28Z",
-      "closedAt": null,
+      "updatedAt": "2026-02-22T03:51:00Z",
+      "closedAt": "2026-02-22T03:51:00Z",
       "comments": []
     },
     {
@@ -1760,6 +1760,22 @@
       "body": "3.1.1.2, titled \"COSE-HPKE Recipient Construction\" is the procedure for creating the needed COSE_Recipient. That's really where most of the MUSTS should be. Some of them can move from 3.1.1.1.\n\n3.1.1.2 would also be better if it were more stepwise and procedural.",
       "createdAt": "2026-02-09T21:02:20Z",
       "updatedAt": "2026-02-09T21:02:20Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 131,
+      "id": "I_kwDOGr5frc7tLyKC",
+      "title": "Use HPKE \"aad\" input param instead of \"info\" for Recipient_structure",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/131",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The \"info\" parameter is limited in size in some circumstances while the \"aad\" parameter is not. Recipient_structure contains all the header parameters and shouldn't be limited.\n\nSee: https://mailarchive.ietf.org/arch/msg/cose/tNK5knfVhU6sAoa7r7P_HembEDE/\n",
+      "createdAt": "2026-02-23T17:20:22Z",
+      "updatedAt": "2026-02-23T17:20:22Z",
       "closedAt": null,
       "comments": []
     }
@@ -8182,24 +8198,26 @@
       "id": "PR_kwDOGr5frc7Dnhvt",
       "title": "deterministic serialization of Recipient_structure",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/127",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #112",
       "createdAt": "2026-02-13T17:57:00Z",
-      "updatedAt": "2026-02-20T18:23:56Z",
+      "updatedAt": "2026-02-23T09:06:23Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "e9a700c887461e4e8581d89a64412cdda48692f3",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "deterministic",
-      "headRefOid": "d24cb8927dc4bba6d4b876d0dfeac19d89277592",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "664e03b0eb9bac12cc38f817017bab6043e6ce0e",
+      "closedAt": "2026-02-23T09:05:52Z",
+      "mergedAt": "2026-02-23T09:05:52Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "a30a9623d3058737dc953265b64a8634bd8843a9"
+      },
       "comments": [],
       "reviews": [
         {
@@ -8232,6 +8250,59 @@
               "body": "With the last sentence are you saying:\n\nA) This requirement covers only the CBOR encoding of the Recipient_structure itself and does not require deterministic encoding of any CBOR data embedded within recipient_protected_header.\n\nor\n\nB) This requirement applies only to the deterministic serialization of the Recipient_structure array as a CBOR data item; the CBOR map carried inside recipient_protected_header (which is wrapped as a bstr) is itself already deterministically encoded.\n\nI do not fully understand the intentions.",
               "createdAt": "2026-02-20T18:23:56Z",
               "updatedAt": "2026-02-20T18:23:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7krrm_",
+          "commit": {
+            "abbreviatedOid": "d24cb89"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-22T03:49:57Z",
+          "updatedAt": "2026-02-22T03:49:57Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "I pushed an update that hopefully clarifies.\r\n\r\nSee also the last paragraph of: https://www.ietf.org/archive/id/draft-ietf-cbor-serialization-03.html#name-cddl-control-operators. Even though we're not using a CDDL control operator, the concept applies.\r\n\r\nIt needs more work, but also see this: https://www.ietf.org/archive/id/draft-ietf-cbor-serialization-03.html#name-serialization-for-cose",
+              "createdAt": "2026-02-22T03:49:57Z",
+              "updatedAt": "2026-02-22T03:49:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7k34as",
+          "commit": {
+            "abbreviatedOid": "664e03b"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for the update, Laurence!",
+          "createdAt": "2026-02-23T09:05:44Z",
+          "updatedAt": "2026-02-23T09:05:44Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7k35DH",
+          "commit": {
+            "abbreviatedOid": "d24cb89"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T09:06:23Z",
+          "updatedAt": "2026-02-23T09:06:23Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Thanks for the update and for the clarification",
+              "createdAt": "2026-02-23T09:06:23Z",
+              "updatedAt": "2026-02-23T09:06:24Z"
             }
           ]
         }
@@ -8351,6 +8422,86 @@
           "body": "Thanks for the text improvements.",
           "createdAt": "2026-02-20T18:26:06Z",
           "updatedAt": "2026-02-20T18:26:06Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 130,
+      "id": "PR_kwDOGr5frc7FtE8B",
+      "title": "format parameter definitions with : like 9052 and 9053 do",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/130",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Addresses #118",
+      "createdAt": "2026-02-23T17:17:05Z",
+      "updatedAt": "2026-02-23T21:18:04Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "a30a9623d3058737dc953265b64a8634bd8843a9",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "colon",
+      "headRefOid": "9c0e3511cec9140b6fb418f2896ae187e8b84189",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7lGICP",
+          "commit": {
+            "abbreviatedOid": "9c0e351"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-23T21:18:04Z",
+          "updatedAt": "2026-02-23T21:18:04Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 132,
+      "id": "PR_kwDOGr5frc7Fukhc",
+      "title": "Seal/Open info and aad, receipient_info",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/132",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Addresses #131 and #116\r\n\r\nThis is a normative change as it changes to use the aad parameter for Seal/Open instead of info.\r\n\r\nThis is because of the size limitation for the info parameter and the fact that all protected header parameters have to fit.\r\n\r\nThere is discussion on the mailing list that hasn't converged.",
+      "createdAt": "2026-02-23T19:10:12Z",
+      "updatedAt": "2026-02-23T21:25:06Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "a30a9623d3058737dc953265b64a8634bd8843a9",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "info_aad",
+      "headRefOid": "d9e5ab733dbbec115f5a58b2ae98a3a382d57b3b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7lGOmM",
+          "commit": {
+            "abbreviatedOid": "d9e5ab7"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "This seems like an unnecessary breaking change at this stage of the specification development.  Furthermore, this change would break the alignment with the JOSE HPKE spec, which appears to be about to successfully complete WGLC.  Any such change made here should arguably also be made there.\n\nThere's a much simpler solution to the 64-character RECOMMENDATION than a breaking change:  Reference draft-ietf-hpke-hpke, which doesn't have this limitation, rather than RFC 9180, which does.  JOSE HPKE already does this.\n\nI propose that resolution to the issue.  After working group discussion, I'd be glad to create a PR doing that as an alternative to this one.",
+          "createdAt": "2026-02-23T21:25:06Z",
+          "updatedAt": "2026-02-23T21:25:06Z",
           "comments": []
         }
       ]
