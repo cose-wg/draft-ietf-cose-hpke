@@ -206,23 +206,23 @@ An example is shown in {{one-layer-example}}.
 
 ## HPKE Key Encryption Mode {#two-layer}
 
-This mode is selected if the COSE_recipient structure uses a COSE-HPKE algorithm.
+This mode corresponds to Key Agreement with Key Wrap, as described in {{Section 8.5.5 of RFC9052}}, and specifies a method for constructing a COSE_Recipient using HPKE.
+In this construction, both key agreement and key wrapping are performed within HPKE.
 
-In this approach the following layers are involved:
+A COSE_Encrypt structure is used with two logical layers:
 
-- Layer 0 (corresponding to the COSE_Encrypt structure) contains the content (plaintext)
+- Layer 0 contains the content (plaintext)
 encrypted with the CEK. This ciphertext may be detached, and if not detached, then
 it is included in the COSE_Encrypt structure.
 
-- Layer 1 (corresponding to a recipient structure) contains parameters needed for
+- Layer 1 contains a COSE_Recipient with the parameters needed for
 HPKE to generate a shared secret used to encrypt the CEK. This layer conveys the
 encrypted CEK in the COSE_recipient structure using a COSE-HPKE algorithm.
-The unprotected header MAY contain the "kid" parameter to identify the static recipient
-public key that the sender has been using with HPKE.
 
 This two-layer structure is used to encrypt content that can also be shared with
 multiple recipients at the expense of a single additional encryption operation.
 The content is encrypted once with the CEK, then the CEK is encrypted for each recipient.
+Layer 1 may also contain other COSE_Recipients using other content key distribution methods that also encrypt the CEK.
 
 ### Recipient_structure
 
