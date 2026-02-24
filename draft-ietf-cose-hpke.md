@@ -261,8 +261,26 @@ It does not extend into the byte-string wrapped protected headers.
 
 ### COSE-HPKE Recipient Construction
 
-Because COSE-HPKE supports header protection, if the "alg" parameter is present, it
-MUST be in the protected header parameters and MUST be a COSE-HPKE algorithm.
+This section gives the steps for constructing a COSE_Recipient using HPKE.
+
+When encrypting, the inputs to the HPKE Seal operation are set as follows:
+
+- kem_id: From the ciphersuite. See {{ciphersuite}}.
+- kdf_id: From the ciphersuite. See {{ciphersuite}}.
+- aead_id: From the ciphersuite. See {{ciphersuite}}.
+- pkR: The recipient public key, converted into HPKE public key.
+- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
+- aad: Defaults to the empty string; externally provided information MAY be used instead.
+- pt: The CEK.
+
+The outputs are put in the COSE_Recipeint as follows:
+
+- enc: MUST be placed into the "ek" (encapsulated key) header parameter in the unprotected bucket.
+- ct: MUST be placed in the ciphertext field.
+
+While the "alg" header parameter is not strictly required in the COSE_Recipient, if present it must be the ciphersuite used to specify the HPKE algorithms.
+See {{ciphersuite}}.
+If the "alg" parameter is present it MUST be a protected header parameter.
 
 The protected header MAY contain the "kid" parameter to identify the static recipient
 public key that the sender used. Use of the "kid" parameter is RECOMMENDED
@@ -270,30 +288,16 @@ to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
 key derivation function of HPKE.
 
-When encrypting, the inputs to the HPKE Seal operation are set as follows:
+When decrypting, the inputs to the HPKE Open operation are as follows:
 
-- kem_id: From the ciphersuite. See {{ciphersuite}}.
-- pkR: The recipient public key, converted into HPKE public key.
-- kdf_id: From the ciphersuite. See {{ciphersuite}}.
-- aead_id: From the ciphersuite. See {{ciphersuite}}.
+- kdf_id: From the "alg" parameter ciphersuite. See {{ciphersuite}}.
+- aead_id: From the "alg" parameter ciphersuite. See {{ciphersuite}}.
+- kem_id: From the "alg" parameter ciphersuite. See {{ciphersuite}}.
+- enc: From the "ek" parameter in the COSE_Recipient headers.
+- skR: The recipient private key, converted into an HPKE private key.
 - info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
-- pt: The CEK.
-
-The outputs are used as follows:
-
-- enc: MUST be placed raw into the "ek" (encapsulated key) parameter in the unprotected bucket.
-- ct: MUST be placed raw in the ciphertext field in the COSE_recipient.
-
-When decrypting, the inputs to the HPKE Open operation are set as follows:
-
-- kem_id: From the ciphersuite. See {{ciphersuite}}.
-- skR: The recipient private key, converted into HPKE private key.
-- kdf_id: From the ciphersuite. See {{ciphersuite}}.
-- aead_id: From the ciphersuite. See {{ciphersuite}}.
-- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
-- ct: The contents of the layer ciphertext field.
+- ct: The contents of the COSE_Recipient ciphertext field.
 
 The plaintext output is the CEK.
 
