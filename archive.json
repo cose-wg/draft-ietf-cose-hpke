@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-24T02:31:01.288644+00:00",
+  "timestamp": "2026-02-26T02:28:05.633567+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -8502,6 +8502,106 @@
           "body": "This seems like an unnecessary breaking change at this stage of the specification development.  Furthermore, this change would break the alignment with the JOSE HPKE spec, which appears to be about to successfully complete WGLC.  Any such change made here should arguably also be made there.\n\nThere's a much simpler solution to the 64-character RECOMMENDATION than a breaking change:  Reference draft-ietf-hpke-hpke, which doesn't have this limitation, rather than RFC 9180, which does.  JOSE HPKE already does this.\n\nI propose that resolution to the issue.  After working group discussion, I'd be glad to create a PR doing that as an alternative to this one.",
           "createdAt": "2026-02-23T21:25:06Z",
           "updatedAt": "2026-02-23T21:25:06Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 133,
+      "id": "PR_kwDOGr5frc7GA3LF",
+      "title": "Reference section 8 of 9052...",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/133",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Address #119",
+      "createdAt": "2026-02-24T18:44:18Z",
+      "updatedAt": "2026-02-24T18:55:31Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "a30a9623d3058737dc953265b64a8634bd8843a9",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "section8",
+      "headRefOid": "38465ebd697c1db92a617a7c0678b57372d6d6dd",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7leXyV",
+          "commit": {
+            "abbreviatedOid": "38465eb"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-24T18:55:31Z",
+          "updatedAt": "2026-02-24T18:55:31Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 134,
+      "id": "PR_kwDOGr5frc7GA4tZ",
+      "title": "Clarify COSE_Recipient construction",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/134",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Address #122\r\n\r\nI think this one is critical because the previous text missed a step. The input of the \"ek\" into the Open() call was not described.\r\n\r\nA lot of this was just re ordering, so it's not as extensive as it looks.\r\n",
+      "createdAt": "2026-02-24T18:46:03Z",
+      "updatedAt": "2026-02-26T01:15:34Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "a30a9623d3058737dc953265b64a8634bd8843a9",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "construct",
+      "headRefOid": "885b8abe6a44276c31187d0850176bed611ee16a",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7leaNw",
+          "commit": {
+            "abbreviatedOid": "436aa59"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-24T18:57:45Z",
+          "updatedAt": "2026-02-24T18:57:45Z",
+          "comments": [
+            {
+              "originalPosition": 34,
+              "body": "```suggestion\nWhile the \"alg\" header parameter is not strictly required in the COSE_Recipient, if present, it must be the ciphersuite used to specify the HPKE algorithms.\n```",
+              "createdAt": "2026-02-24T18:57:45Z",
+              "updatedAt": "2026-02-24T18:57:45Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7lebGx",
+          "commit": {
+            "abbreviatedOid": "436aa59"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-24T18:58:36Z",
+          "updatedAt": "2026-02-24T18:58:36Z",
           "comments": []
         }
       ]
