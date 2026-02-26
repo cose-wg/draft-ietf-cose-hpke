@@ -273,7 +273,7 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
 - pt: The CEK.
 
-The outputs are put in the COSE_Recipeint as follows:
+The outputs are put in the COSE_Recipient as follows:
 
 - enc: MUST be placed into the "ek" (encapsulated key) header parameter in the unprotected bucket.
 - ct: MUST be placed in the ciphertext field.
