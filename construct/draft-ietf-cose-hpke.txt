@@ -396,7 +396,7 @@ Table of Contents
 
    *  pt: The CEK.
 
-   The outputs are put in the COSE_Recipeint as follows:
+   The outputs are put in the COSE_Recipient as follows:
 
    *  enc: MUST be placed into the "ek" (encapsulated key) header
       parameter in the unprotected bucket.
