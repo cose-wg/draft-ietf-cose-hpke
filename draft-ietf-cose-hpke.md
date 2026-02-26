@@ -278,7 +278,7 @@ The outputs are put in the COSE_Recipeint as follows:
 - enc: MUST be placed into the "ek" (encapsulated key) header parameter in the unprotected bucket.
 - ct: MUST be placed in the ciphertext field.
 
-While the "alg" header parameter is not strictly required in the COSE_Recipient, if present it must be the ciphersuite used to specify the HPKE algorithms.
+While the "alg" header parameter is not strictly required in the COSE_Recipient, if present, it must be the ciphersuite used to specify the HPKE algorithms.
 See {{ciphersuite}}.
 If the "alg" parameter is present it MUST be a protected header parameter.
 
