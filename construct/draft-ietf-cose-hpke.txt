@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 28 August 2026                                     Tradeverifyd
+Expires: 30 August 2026                                     Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                        24 February 2026
+                                                        26 February 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 August 2026.
+   This Internet-Draft will expire on 30 August 2026.
 
 Copyright Notice
 
@@ -404,9 +404,9 @@ Table of Contents
    *  ct: MUST be placed in the ciphertext field.
 
    While the "alg" header parameter is not strictly required in the
-   COSE_Recipient, if present it must be the ciphersuite used to specify
-   the HPKE algorithms.  See Section 4.  If the "alg" parameter is
-   present it MUST be a protected header parameter.
+   COSE_Recipient, if present, it must be the ciphersuite used to
+   specify the HPKE algorithms.  See Section 4.  If the "alg" parameter
+   is present it MUST be a protected header parameter.
 
    The protected header MAY contain the "kid" parameter to identify the
    static recipient public key that the sender used.  Use of the "kid"
