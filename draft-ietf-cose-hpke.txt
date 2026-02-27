@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 27 August 2026                                     Tradeverifyd
+Expires: 31 August 2026                                     Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                        23 February 2026
+                                                        27 February 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 August 2026.
+   This Internet-Draft will expire on 31 August 2026.
 
 Copyright Notice
 
@@ -352,17 +352,17 @@ Table of Contents
        recipient_extra_info: bstr
    ]
 
-   *  "next_layer_alg" is the algorithm ID of the COSE layer for which
-      the COSE_recipient is encrypting a key.  It is the algorithm that
-      the key MUST be used with.  This value MUST match the "alg"
-      parameter in the next lower COSE layer.
+   "next_layer_alg":  The algorithm ID of the COSE layer for which the
+      COSE_recipient is encrypting a key.  It is the algorithm that the
+      key MUST be used with.  This value MUST match the "alg" parameter
+      in the next lower COSE layer.
 
-   *  "recipient_protected_header" contains the protected header
-      parameters from the COSE_recipient.
+   "recipient_protected_header":  The protected header parameters from
+      the COSE_recipient.
 
-   *  "recipient_extra_info" contains any additional context the
-      application wishes to include in the key derivation via the HPKE
-      info parameter.  If none, it is a zero-length string.
+   "recipient_extra_info":  Any additional context the application
+      wishes to include in the key derivation via the HPKE info
+      parameter.  If none, it is a zero-length string.
 
    The Recipient_structure MUST be serialized deterministically in
    accordance with the Core Deterministic Encoding Requirements defined
