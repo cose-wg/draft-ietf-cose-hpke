@@ -1614,81 +1614,86 @@ It does not extend into the byte-string wrapped protected headers.<a href="#sect
           <h4 id="name-cose-hpke-recipient-constru">
 <a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-cose-hpke-recipient-constru" class="section-name selfRef">COSE-HPKE Recipient Construction</a>
           </h4>
-<p id="section-3.3.2-1">Because COSE-HPKE supports header protection, if the "alg" parameter is present, it
-MUST be in the protected header parameters and MUST be a COSE-HPKE algorithm.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-2">The protected header MAY contain the "kid" parameter to identify the static recipient
+<p id="section-3.3.2-1">This section gives the steps for constructing a COSE_Recipient using HPKE.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-2">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3.2-3.1">
+              <p id="section-3.3.2-3.1.1">kem_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-3.2">
+              <p id="section-3.3.2-3.2.1">kdf_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-3.3">
+              <p id="section-3.3.2-3.3.1">aead_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-3.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-3.4">
+              <p id="section-3.3.2-3.4.1">pkR: The recipient public key, converted into HPKE public key.<a href="#section-3.3.2-3.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-3.5">
+              <p id="section-3.3.2-3.5.1">info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.<a href="#section-3.3.2-3.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-3.6">
+              <p id="section-3.3.2-3.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-3.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-3.7">
+              <p id="section-3.3.2-3.7.1">pt: The CEK.<a href="#section-3.3.2-3.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-3.3.2-4">The outputs are put in the COSE_Recipient as follows:<a href="#section-3.3.2-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3.2-5.1">
+              <p id="section-3.3.2-5.1.1">enc: MUST be placed into the "ek" (encapsulated key) header parameter in the unprotected bucket.<a href="#section-3.3.2-5.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-5.2">
+              <p id="section-3.3.2-5.2.1">ct: MUST be placed in the ciphertext field.<a href="#section-3.3.2-5.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-3.3.2-6">While the "alg" header parameter is not strictly required in the COSE_Recipient, if present, it must be the ciphersuite used to specify the HPKE algorithms.
+See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.
+If the "alg" parameter is present it MUST be a protected header parameter.<a href="#section-3.3.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-7">The protected header MAY contain the "kid" parameter to identify the static recipient
 public key that the sender used. Use of the "kid" parameter is RECOMMENDED
 to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
-key derivation function of HPKE.<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-3">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.3.2-3" class="pilcrow">¶</a></p>
+key derivation function of HPKE.<a href="#section-3.3.2-7" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-8">When decrypting, the inputs to the HPKE Open operation are as follows:<a href="#section-3.3.2-8" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.3.2-4.1">
-              <p id="section-3.3.2-4.1.1">kem_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.3.2-9.1">
+              <p id="section-3.3.2-9.1.1">kdf_id: From the "alg" parameter ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-9.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-4.2">
-              <p id="section-3.3.2-4.2.1">pkR: The recipient public key, converted into HPKE public key.<a href="#section-3.3.2-4.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-9.2">
+              <p id="section-3.3.2-9.2.1">aead_id: From the "alg" parameter ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-9.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-4.3">
-              <p id="section-3.3.2-4.3.1">kdf_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-4.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-9.3">
+              <p id="section-3.3.2-9.3.1">kem_id: From the "alg" parameter ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-9.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-4.4">
-              <p id="section-3.3.2-4.4.1">aead_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-4.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-9.4">
+              <p id="section-3.3.2-9.4.1">enc: From the "ek" parameter in the COSE_Recipient headers.<a href="#section-3.3.2-9.4.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-4.5">
-              <p id="section-3.3.2-4.5.1">info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.<a href="#section-3.3.2-4.5.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-9.5">
+              <p id="section-3.3.2-9.5.1">skR: The recipient private key, converted into an HPKE private key.<a href="#section-3.3.2-9.5.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-4.6">
-              <p id="section-3.3.2-4.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-4.6.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-9.6">
+              <p id="section-3.3.2-9.6.1">info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.<a href="#section-3.3.2-9.6.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-4.7">
-              <p id="section-3.3.2-4.7.1">pt: The CEK.<a href="#section-3.3.2-4.7.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-9.7">
+              <p id="section-3.3.2-9.7.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-9.7.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-9.8">
+              <p id="section-3.3.2-9.8.1">ct: The contents of the COSE_Recipient ciphertext field.<a href="#section-3.3.2-9.8.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-3.3.2-5">The outputs are used as follows:<a href="#section-3.3.2-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3.2-6.1">
-              <p id="section-3.3.2-6.1.1">enc: MUST be placed raw into the "ek" (encapsulated key) parameter in the unprotected bucket.<a href="#section-3.3.2-6.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-6.2">
-              <p id="section-3.3.2-6.2.1">ct: MUST be placed raw in the ciphertext field in the COSE_recipient.<a href="#section-3.3.2-6.2.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-3.3.2-7">When decrypting, the inputs to the HPKE Open operation are set as follows:<a href="#section-3.3.2-7" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3.2-8.1">
-              <p id="section-3.3.2-8.1.1">kem_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-8.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-8.2">
-              <p id="section-3.3.2-8.2.1">skR: The recipient private key, converted into HPKE private key.<a href="#section-3.3.2-8.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-8.3">
-              <p id="section-3.3.2-8.3.1">kdf_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-8.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-8.4">
-              <p id="section-3.3.2-8.4.1">aead_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-8.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-8.5">
-              <p id="section-3.3.2-8.5.1">info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.<a href="#section-3.3.2-8.5.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-8.6">
-              <p id="section-3.3.2-8.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-8.6.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-8.7">
-              <p id="section-3.3.2-8.7.1">ct: The contents of the layer ciphertext field.<a href="#section-3.3.2-8.7.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-3.3.2-9">The plaintext output is the CEK.<a href="#section-3.3.2-9" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-10">It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
+<p id="section-3.3.2-10">The plaintext output is the CEK.<a href="#section-3.3.2-10" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-11">It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
 attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
 may still utilize recipient_aad for other purposes as needed; however, it is generally
 intended for small values such as identifiers, contextual information, or secrets. It is
-not designed for protecting large or bulk external data.<a href="#section-3.3.2-10" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-11">Any bulk external data that requires protection should be handled at layer 0 using external_aad.<a href="#section-3.3.2-11" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-12">The COSE_recipient structure is computed for each recipient.<a href="#section-3.3.2-12" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-13">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
-authenticated data structure.<a href="#section-3.3.2-13" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-14">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-14" class="pilcrow">¶</a></p>
+not designed for protecting large or bulk external data.<a href="#section-3.3.2-11" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-12">Any bulk external data that requires protection should be handled at layer 0 using external_aad.<a href="#section-3.3.2-12" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-13">The COSE_recipient structure is computed for each recipient.<a href="#section-3.3.2-13" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-14">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
+authenticated data structure.<a href="#section-3.3.2-14" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-15">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-15" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-design-rationale">
