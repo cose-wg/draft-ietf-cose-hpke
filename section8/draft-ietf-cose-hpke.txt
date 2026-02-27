@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 28 August 2026                                     Tradeverifyd
+Expires: 31 August 2026                                     Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                        24 February 2026
+                                                        27 February 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 August 2026.
+   This Internet-Draft will expire on 31 August 2026.
 
 Copyright Notice
 
@@ -308,10 +308,9 @@ Table of Contents
 
 3.3.  HPKE Key Encryption Mode
 
-   This mode corresponds to Key Agreement with Key Wrap, as described in
-   Section 8.5.5 of [RFC9052], and specifies a method for constructing a
-   COSE_Recipient using HPKE.  In this construction, both key agreement
-   and key wrapping are performed within HPKE.
+   This mode specifies a method for constructing a COSE_Recipient using
+   HPKE.  In this construction, both key agreement and key wrapping are
+   performed within HPKE.
 
    A COSE_Encrypt structure is used with two logical layers:
 
