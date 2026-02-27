@@ -142,7 +142,7 @@ It contains the encapsulated KEM shared secret.
 The value of this parameter MUST be the "enc" value output by the HPKE Seal() operation, as defined in {{Section 6.1 of I-D.ietf-hpke-hpke}}.
 The "ek" header parameter MUST be encoded as a CBOR byte string.
 
-HPKE defines several authentication modes, as described in Table 1 of {{RFC9180}}.
+HPKE defines several authentication modes, as described in Table 1 of {{I-D.ietf-hpke-hpke}}.
 This specification uses both 'mode_base' and 'mode_psk'.
 The mode is 'mode_psk' if the "psk_id" header parameter is present; otherwise, the mode defaults to 'mode_base'.
 'mode_base' is described in {{Section 5.1.1 of I-D.ietf-hpke-hpke}}, which only enables encryption
