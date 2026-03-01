@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-26T02:28:05.633567+00:00",
+  "timestamp": "2026-03-01T02:41:14.263898+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -8431,24 +8431,26 @@
       "id": "PR_kwDOGr5frc7FtE8B",
       "title": "format parameter definitions with : like 9052 and 9053 do",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/130",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Addresses #118",
       "createdAt": "2026-02-23T17:17:05Z",
-      "updatedAt": "2026-02-23T21:18:04Z",
+      "updatedAt": "2026-02-27T16:44:53Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "a30a9623d3058737dc953265b64a8634bd8843a9",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "colon",
       "headRefOid": "9c0e3511cec9140b6fb418f2896ae187e8b84189",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-02-27T16:44:50Z",
+      "mergedAt": "2026-02-27T16:44:50Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "f008bc7505842b6b126cadf3ee60f5d6dba93faa"
+      },
       "comments": [],
       "reviews": [
         {
@@ -8478,7 +8480,7 @@
       "labels": [],
       "body": "Addresses #131 and #116\r\n\r\nThis is a normative change as it changes to use the aad parameter for Seal/Open instead of info.\r\n\r\nThis is because of the size limitation for the info parameter and the fact that all protected header parameters have to fit.\r\n\r\nThere is discussion on the mailing list that hasn't converged.",
       "createdAt": "2026-02-23T19:10:12Z",
-      "updatedAt": "2026-02-23T21:25:06Z",
+      "updatedAt": "2026-02-27T17:18:56Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "a30a9623d3058737dc953265b64a8634bd8843a9",
@@ -8489,7 +8491,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Um, doesn't seem right to run a WGLC and then say too late.\r\n\r\nI don't think the limit is removed in the new HPKE draft. I think it is made much less clear. Also, the new draft is supposed to be compatible with the old, which should include the limit. That limit matters to both HPKE libraries and users of HPKE libraries.\r\n\r\nI'm OK with whatever consensus comes here, but would like all the facts out in the open and a consensus decision on the list.",
+          "createdAt": "2026-02-27T17:18:56Z",
+          "updatedAt": "2026-02-27T17:18:56Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOGr5frc7lGOmM",
@@ -8503,6 +8513,19 @@
           "createdAt": "2026-02-23T21:25:06Z",
           "updatedAt": "2026-02-23T21:25:06Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7mjUs4",
+          "commit": {
+            "abbreviatedOid": "d9e5ab7"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "I agree with Mike that it is too late to make breaking changes to the info/aad processing given that the current version reflects the decisions from the working group. While there is a HPKE info size limit in RFC 9180, this limit has been removed in the new version. I therefore suggest to reference the new HPKE spec instead of changing the design again.",
+          "createdAt": "2026-02-27T16:59:56Z",
+          "updatedAt": "2026-02-27T16:59:56Z",
+          "comments": []
         }
       ]
     },
@@ -8511,24 +8534,26 @@
       "id": "PR_kwDOGr5frc7GA3LF",
       "title": "Reference section 8 of 9052...",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/133",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Address #119",
       "createdAt": "2026-02-24T18:44:18Z",
-      "updatedAt": "2026-02-24T18:55:31Z",
+      "updatedAt": "2026-02-27T16:53:18Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "a30a9623d3058737dc953265b64a8634bd8843a9",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "section8",
-      "headRefOid": "38465ebd697c1db92a617a7c0678b57372d6d6dd",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "33756ef57a18e1b57dad9831f34f96e9257be974",
+      "closedAt": "2026-02-27T16:53:15Z",
+      "mergedAt": "2026-02-27T16:53:15Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "a0fc66c79ea8d68e701413b839945251f69ed8a0"
+      },
       "comments": [],
       "reviews": [
         {
@@ -8543,6 +8568,46 @@
           "createdAt": "2026-02-24T18:55:31Z",
           "updatedAt": "2026-02-24T18:55:31Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7mjH6O",
+          "commit": {
+            "abbreviatedOid": "38465eb"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-27T16:48:43Z",
+          "updatedAt": "2026-02-27T16:48:44Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\nThis mode specifies a method for constructing a COSE_Recipient using HPKE.\n```",
+              "createdAt": "2026-02-27T16:48:44Z",
+              "updatedAt": "2026-02-27T16:48:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7mjJa0",
+          "commit": {
+            "abbreviatedOid": "38465eb"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-27T16:50:11Z",
+          "updatedAt": "2026-02-27T16:50:11Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "The mode actually doesn't correspond to Key Agreement with Key Wrap.  HPKE does something else.  Hannes' suggestion is correct.",
+              "createdAt": "2026-02-27T16:50:11Z",
+              "updatedAt": "2026-02-27T16:50:11Z"
+            }
+          ]
         }
       ]
     },
@@ -8551,24 +8616,26 @@
       "id": "PR_kwDOGr5frc7GA4tZ",
       "title": "Clarify COSE_Recipient construction",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/134",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Address #122\r\n\r\nI think this one is critical because the previous text missed a step. The input of the \"ek\" into the Open() call was not described.\r\n\r\nA lot of this was just re ordering, so it's not as extensive as it looks.\r\n",
       "createdAt": "2026-02-24T18:46:03Z",
-      "updatedAt": "2026-02-26T01:15:34Z",
+      "updatedAt": "2026-02-27T16:52:48Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "a30a9623d3058737dc953265b64a8634bd8843a9",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "construct",
       "headRefOid": "885b8abe6a44276c31187d0850176bed611ee16a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-02-27T16:52:45Z",
+      "mergedAt": "2026-02-27T16:52:45Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "5354d869d0ddca06914a6b02a3501c0d96faa4bc"
+      },
       "comments": [],
       "reviews": [
         {
@@ -8602,6 +8669,59 @@
           "body": "",
           "createdAt": "2026-02-24T18:58:36Z",
           "updatedAt": "2026-02-24T18:58:36Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 135,
+      "id": "PR_kwDOGr5frc7G7Wx7",
+      "title": "Change HPKE reference from RFC 9180 to draft-ietf-hpke-hpke",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/135",
+      "state": "OPEN",
+      "author": "selfissued",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This references draft-ietf-hpke-hpke, which removes the former size limitation of 64 bytes for the info parameter.  It replaces #132. \r\n\r\nThis parallels the same change already made in draft-ietf-jose-hpke-encrypt.\r\n\r\nFixes #131",
+      "createdAt": "2026-02-27T21:51:49Z",
+      "updatedAt": "2026-02-28T07:31:53Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "a0fc66c79ea8d68e701413b839945251f69ed8a0",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "mbj-hpke-hpke",
+      "headRefOid": "8adafb464605b1096d503206e114e049153435dc",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7mogh1",
+          "commit": {
+            "abbreviatedOid": "8adafb4"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-27T22:24:27Z",
+          "updatedAt": "2026-02-27T22:24:27Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7mrnYl",
+          "commit": {
+            "abbreviatedOid": "8adafb4"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for the PR. This makes sense.",
+          "createdAt": "2026-02-28T07:31:53Z",
+          "updatedAt": "2026-02-28T07:31:53Z",
           "comments": []
         }
       ]
