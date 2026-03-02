@@ -51,9 +51,9 @@ normative:
   RFC2119:
   RFC8174:
   RFC8949:
-  RFC9180:
   RFC9052:
   RFC9053:
+  I-D.ietf-hpke-hpke:
 
 informative:
   RFC8937:
@@ -86,14 +86,14 @@ variant of HPKE.
 
 #  Introduction
 
-Hybrid public-key encryption (HPKE) {{RFC9180}} is a scheme that
+Hybrid public-key encryption (HPKE) {{I-D.ietf-hpke-hpke}} is a scheme that
 provides public key encryption of arbitrary-sized plaintexts given a
 recipient's public key.
 
 This document defines the use of HPKE with COSE ({{RFC9052}}, {{RFC9053}})
-with the single-shot APIs defined in {{Section 6 of RFC9180}}. Multiple
+with the single-shot APIs defined in {{Section 6 of I-D.ietf-hpke-hpke}}. Multiple
 invocations of Open() / Seal() on the same context, as discussed in
-{{Section 9.7.1 of RFC9180}} are not supported.
+{{Section 9.7.1 of I-D.ietf-hpke-hpke}} are not supported.
 
 Algorithm identifiers follow a ciphersuite scheme in which a single COSE algorithm ID maps to the three algorithm IDs required for HPKE:
 the Key Encapsulation Mechanism (KEM), the Key Derivation Function (KDF), and the Authenticated Encryption with Associated Data (AEAD) algorithm.
@@ -107,14 +107,14 @@ when, and only when, they appear in all capitals, as shown here.
 
 This specification uses the following abbreviations and terms:
 
-- Content-encryption key (CEK), a described in {{Section 2 of RFC9052}}.
-- Hybrid Public Key Encryption (HPKE) is defined in {{RFC9180}}.
-- pkR is the public key of the recipient, as defined in {{RFC9180}}.
-- skR is the private key of the recipient, as defined in {{RFC9180}}.
-- Key Encapsulation Mechanism (KEM), see {{RFC9180}}.
-- Key Derivation Function (KDF), see {{RFC9180}}.
-- Authenticated Encryption with Associated Data (AEAD), see {{RFC9180}}.
-- Additional Authenticated Data (AAD), see {{RFC9180}}.
+- Content-encryption key (CEK), as described in {{Section 2 of RFC9052}}.
+- Hybrid Public Key Encryption (HPKE) as defined in {{I-D.ietf-hpke-hpke}}.
+- pkR is the public key of the recipient, as defined in {{I-D.ietf-hpke-hpke}}.
+- skR is the private key of the recipient, as defined in {{I-D.ietf-hpke-hpke}}.
+- Key Encapsulation Mechanism (KEM), see {{I-D.ietf-hpke-hpke}}.
+- Key Derivation Function (KDF), see {{I-D.ietf-hpke-hpke}}.
+- Authenticated Encryption with Associated Data (AEAD), see {{I-D.ietf-hpke-hpke}}.
+- Additional Authenticated Data (AAD), see {{I-D.ietf-hpke-hpke}}.
 
 # HPKE for COSE
 
@@ -139,14 +139,14 @@ that is specified for them.
 
 In both cases, the new COSE header parameter "ek" MUST be present.
 It contains the encapsulated KEM shared secret.
-The value of this parameter MUST be the "enc" value output by the HPKE Seal() operation, as defined in {{Section 6.1 of RFC9180}}.
+The value of this parameter MUST be the "enc" value output by the HPKE Seal() operation, as defined in {{Section 6.1 of I-D.ietf-hpke-hpke}}.
 The "ek" header parameter MUST be encoded as a CBOR byte string.
 
-HPKE defines several authentication modes, as described in Table 1 of {{RFC9180}}.
-In COSE HPKE, only 'mode_base' and 'mode_psk' are supported.
+HPKE defines several authentication modes, as described in Table 1 of {{I-D.ietf-hpke-hpke}}.
+This specification uses both 'mode_base' and 'mode_psk'.
 The mode is 'mode_psk' if the "psk_id" header parameter is present; otherwise, the mode defaults to 'mode_base'.
-'mode_base' is described in {{Section 5.1.1 of RFC9180}}, which only enables encryption
-to the holder of a given KEM private key. 'mode_psk' is described in {{Section 5.1.2 of RFC9180}},
+'mode_base' is described in {{Section 5.1.1 of I-D.ietf-hpke-hpke}}, which only enables encryption
+to the holder of a given KEM private key. 'mode_psk' is described in {{Section 5.1.2 of I-D.ietf-hpke-hpke}},
 which authenticates using a pre-shared key.
 
 ## HPKE Integrated Encryption Mode {#one-layer}
@@ -675,7 +675,7 @@ Examples of private and public KEM key representation are shown below.
 # Security Considerations {#sec-cons}
 
 This specification is based on HPKE and the security considerations of
-{{RFC9180}} are therefore applicable also to this specification.
+{{I-D.ietf-hpke-hpke}} are therefore applicable also to this specification.
 
 Both HPKE and HPKE COSE assume that the sender possesses the recipient's
 public key. Therefore, some form of public key distribution mechanism is
@@ -881,7 +881,7 @@ the 'COSE Header Parameters' registries.
 -  Value type: bstr
 -  Value Registry: N/A
 -  Description: A key identifier (kid) for the pre-shared key
-as defined in {{Section 5.1.2 of RFC9180}}
+as defined in {{Section 5.1.2 of I-D.ietf-hpke-hpke}}
 -  Reference: [[TBD: This RFC]]
 
 --- back
