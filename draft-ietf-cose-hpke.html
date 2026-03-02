@@ -1057,11 +1057,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">COSE HPKE</td>
-<td class="right">February 2026</td>
+<td class="right">March 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tschofenig, et al.</td>
-<td class="center">Expires 31 August 2026</td>
+<td class="center">Expires 3 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1074,12 +1074,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cose-hpke-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-02-27" class="published">27 February 2026</time>
+<time datetime="2026-03-02" class="published">2 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-08-31">31 August 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-03">3 September 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1149,7 +1149,7 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 31 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1361,13 +1361,13 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">Hybrid public-key encryption (HPKE) <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> is a scheme that
+<p id="section-1-1">Hybrid public-key encryption (HPKE) <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span> is a scheme that
 provides public key encryption of arbitrary-sized plaintexts given a
 recipient's public key.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">This document defines the use of HPKE with COSE (<span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>, <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span>)
-with the single-shot APIs defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-6" class="relref">Section 6</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>. Multiple
+with the single-shot APIs defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-02#section-6" class="relref">Section 6</a> of [<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>. Multiple
 invocations of Open() / Seal() on the same context, as discussed in
-<span><a href="https://rfc-editor.org/rfc/rfc9180#section-9.7.1" class="relref">Section 9.7.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> are not supported.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-02#section-9.7.1" class="relref">Section 9.7.1</a> of [<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span> are not supported.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">Algorithm identifiers follow a ciphersuite scheme in which a single COSE algorithm ID maps to the three algorithm IDs required for HPKE:
 the Key Encapsulation Mechanism (KEM), the Key Derivation Function (KDF), and the Authenticated Encryption with Associated Data (AEAD) algorithm.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
@@ -1384,28 +1384,28 @@ when, and only when, they appear in all capitals, as shown here.<a href="#sectio
 <p id="section-2-2">This specification uses the following abbreviations and terms:<a href="#section-2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-3.1">
-          <p id="section-2-3.1.1">Content-encryption key (CEK), a described in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-2" class="relref">Section 2</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-3.1.1">Content-encryption key (CEK), as described in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-2" class="relref">Section 2</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.2">
-          <p id="section-2-3.2.1">Hybrid Public Key Encryption (HPKE) is defined in <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-3.2.1">Hybrid Public Key Encryption (HPKE) as defined in <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.3">
-          <p id="section-2-3.3.1">pkR is the public key of the recipient, as defined in <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.3.1" class="pilcrow">¶</a></p>
+          <p id="section-2-3.3.1">pkR is the public key of the recipient, as defined in <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.<a href="#section-2-3.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.4">
-          <p id="section-2-3.4.1">skR is the private key of the recipient, as defined in <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.4.1" class="pilcrow">¶</a></p>
+          <p id="section-2-3.4.1">skR is the private key of the recipient, as defined in <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.<a href="#section-2-3.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.5">
-          <p id="section-2-3.5.1">Key Encapsulation Mechanism (KEM), see <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.5.1" class="pilcrow">¶</a></p>
+          <p id="section-2-3.5.1">Key Encapsulation Mechanism (KEM), see <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.<a href="#section-2-3.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.6">
-          <p id="section-2-3.6.1">Key Derivation Function (KDF), see <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.6.1" class="pilcrow">¶</a></p>
+          <p id="section-2-3.6.1">Key Derivation Function (KDF), see <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.<a href="#section-2-3.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.7">
-          <p id="section-2-3.7.1">Authenticated Encryption with Associated Data (AEAD), see <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.7.1" class="pilcrow">¶</a></p>
+          <p id="section-2-3.7.1">Authenticated Encryption with Associated Data (AEAD), see <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.<a href="#section-2-3.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.8">
-          <p id="section-2-3.8.1">Additional Authenticated Data (AAD), see <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.<a href="#section-2-3.8.1" class="pilcrow">¶</a></p>
+          <p id="section-2-3.8.1">Additional Authenticated Data (AAD), see <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.<a href="#section-2-3.8.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1441,13 +1441,13 @@ Algorithm identifiers MUST only be used in the COSE HPKE mode
 that is specified for them.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.1-4">In both cases, the new COSE header parameter "ek" MUST be present.
 It contains the encapsulated KEM shared secret.
-The value of this parameter MUST be the "enc" value output by the HPKE Seal() operation, as defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.
+The value of this parameter MUST be the "enc" value output by the HPKE Seal() operation, as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-02#section-6.1" class="relref">Section 6.1</a> of [<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.
 The "ek" header parameter MUST be encoded as a CBOR byte string.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.1-5">HPKE defines several authentication modes, as described in Table 1 of <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>.
-In COSE HPKE, only 'mode_base' and 'mode_psk' are supported.
+<p id="section-3.1-5">HPKE defines several authentication modes, as described in Table 1 of <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.
+This specification uses both 'mode_base' and 'mode_psk'.
 The mode is 'mode_psk' if the "psk_id" header parameter is present; otherwise, the mode defaults to 'mode_base'.
-'mode_base' is described in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.1" class="relref">Section 5.1.1</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>, which only enables encryption
-to the holder of a given KEM private key. 'mode_psk' is described in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>,
+'mode_base' is described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-02#section-5.1.1" class="relref">Section 5.1.1</a> of [<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>, which only enables encryption
+to the holder of a given KEM private key. 'mode_psk' is described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-02#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>,
 which authenticates using a pre-shared key.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2205,7 +2205,7 @@ content:<a href="#section-5.2-10" class="pilcrow">¶</a></p>
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-6-1">This specification is based on HPKE and the security considerations of
-<span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> are therefore applicable also to this specification.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span> are therefore applicable also to this specification.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">Both HPKE and HPKE COSE assume that the sender possesses the recipient's
 public key. Therefore, some form of public key distribution mechanism is
 assumed to exist, but this is outside the scope of this document.<a href="#section-6-2" class="pilcrow">¶</a></p>
@@ -2769,7 +2769,7 @@ the 'COSE Header Parameters' registries.<a href="#section-7-1" class="pilcrow">�
 </li>
             <li class="normal" id="section-7.2.2-1.5">
               <p id="section-7.2.2-1.5.1">Description: A key identifier (kid) for the pre-shared key
-as defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#RFC9180" class="cite xref">RFC9180</a>]</span><a href="#section-7.2.2-1.5.1" class="pilcrow">¶</a></p>
+as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-02#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span><a href="#section-7.2.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.2.2-1.6">
               <p id="section-7.2.2-1.6.1">Reference: [[TBD: This RFC]]<a href="#section-7.2.2-1.6.1" class="pilcrow">¶</a></p>
@@ -2792,6 +2792,10 @@ as defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.2" c
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.ietf-hpke-hpke">[I-D.ietf-hpke-hpke]</dt>
+        <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-hpke-hpke-02</span>, <time datetime="2025-11-04" class="refDate">4 November 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-02">https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-02</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
@@ -2809,12 +2813,8 @@ as defined in <span><a href="https://rfc-editor.org/rfc/rfc9180#section-5.1.2" c
 <span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Structures and Process"</span>, <span class="seriesInfo">STD 96</span>, <span class="seriesInfo">RFC 9052</span>, <span class="seriesInfo">DOI 10.17487/RFC9052</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9052">https://www.rfc-editor.org/rfc/rfc9052</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9053">[RFC9053]</dt>
-        <dd>
-<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Initial Algorithms"</span>, <span class="seriesInfo">RFC 9053</span>, <span class="seriesInfo">DOI 10.17487/RFC9053</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9053">https://www.rfc-editor.org/rfc/rfc9053</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC9180">[RFC9180]</dt>
       <dd>
-<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Initial Algorithms"</span>, <span class="seriesInfo">RFC 9053</span>, <span class="seriesInfo">DOI 10.17487/RFC9053</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9053">https://www.rfc-editor.org/rfc/rfc9053</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
