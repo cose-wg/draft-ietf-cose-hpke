@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-01T02:41:14.263898+00:00",
+  "timestamp": "2026-03-03T02:32:42.519784+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1768,15 +1768,15 @@
       "id": "I_kwDOGr5frc7tLyKC",
       "title": "Use HPKE \"aad\" input param instead of \"info\" for Recipient_structure",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/131",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The \"info\" parameter is limited in size in some circumstances while the \"aad\" parameter is not. Recipient_structure contains all the header parameters and shouldn't be limited.\n\nSee: https://mailarchive.ietf.org/arch/msg/cose/tNK5knfVhU6sAoa7r7P_HembEDE/\n",
       "createdAt": "2026-02-23T17:20:22Z",
-      "updatedAt": "2026-02-23T17:20:22Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-02T23:16:10Z",
+      "closedAt": "2026-03-02T23:16:10Z",
       "comments": []
     }
   ],
@@ -8473,21 +8473,21 @@
       "id": "PR_kwDOGr5frc7Fukhc",
       "title": "Seal/Open info and aad, receipient_info",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/132",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Addresses #131 and #116\r\n\r\nThis is a normative change as it changes to use the aad parameter for Seal/Open instead of info.\r\n\r\nThis is because of the size limitation for the info parameter and the fact that all protected header parameters have to fit.\r\n\r\nThere is discussion on the mailing list that hasn't converged.",
       "createdAt": "2026-02-23T19:10:12Z",
-      "updatedAt": "2026-02-27T17:18:56Z",
+      "updatedAt": "2026-03-02T23:26:30Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "a30a9623d3058737dc953265b64a8634bd8843a9",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "info_aad",
       "headRefOid": "d9e5ab733dbbec115f5a58b2ae98a3a382d57b3b",
-      "closedAt": null,
+      "closedAt": "2026-03-02T23:26:29Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -8498,6 +8498,13 @@
           "body": "Um, doesn't seem right to run a WGLC and then say too late.\r\n\r\nI don't think the limit is removed in the new HPKE draft. I think it is made much less clear. Also, the new draft is supposed to be compatible with the old, which should include the limit. That limit matters to both HPKE libraries and users of HPKE libraries.\r\n\r\nI'm OK with whatever consensus comes here, but would like all the facts out in the open and a consensus decision on the list.",
           "createdAt": "2026-02-27T17:18:56Z",
           "updatedAt": "2026-02-27T17:18:56Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Replaced by #135",
+          "createdAt": "2026-03-02T23:26:29Z",
+          "updatedAt": "2026-03-02T23:26:29Z"
         }
       ],
       "reviews": [
@@ -8678,25 +8685,49 @@
       "id": "PR_kwDOGr5frc7G7Wx7",
       "title": "Change HPKE reference from RFC 9180 to draft-ietf-hpke-hpke",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/135",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "selfissued",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "This references draft-ietf-hpke-hpke, which removes the former size limitation of 64 bytes for the info parameter.  It replaces #132. \r\n\r\nThis parallels the same change already made in draft-ietf-jose-hpke-encrypt.\r\n\r\nFixes #131",
       "createdAt": "2026-02-27T21:51:49Z",
-      "updatedAt": "2026-02-28T07:31:53Z",
+      "updatedAt": "2026-03-02T23:16:09Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "a0fc66c79ea8d68e701413b839945251f69ed8a0",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "mbj-hpke-hpke",
       "headRefOid": "8adafb464605b1096d503206e114e049153435dc",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2026-03-02T23:16:09Z",
+      "mergedAt": "2026-03-02T23:16:09Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "778e214dad68e40f000e52402854ebe6c6358c14"
+      },
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm skeptical:\r\n- I don't think draft-hpke-hkpe clearly removes the 64 byte limit; section 7.2.1 is very unclear IMO\r\n- I'm not sure about draft-hpke-hpke actually progressing very fast. Drafts have been slow. I couldn't find a GitHub repo for it. Also, maybe just me, but couldn't find a WG that owned in data tracker.\r\n- So far no responses to my comments on the HPKE list\r\n- Incurs a normative dependency to a slowly progressing draft\r\n\r\nI think the info parameter probably needs to be resolved on some other basis. I don't think this addresses #131 or #132.",
+          "createdAt": "2026-03-01T19:57:21Z",
+          "updatedAt": "2026-03-01T19:57:21Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> I couldn't find a GitHub repo for it.\r\n\r\nThe repository https://github.com/hpkewg/hpke is listed in the [Discussion Venues](https://www.ietf.org/archive/id/draft-ietf-hpke-hpke-02.html#name-discussion-venues) section of the draft right after the Abstract.\r\n\r\n> ... couldn't find a WG that owned in data tracker.\r\n\r\nThe [Datatracker entry for the draft](https://datatracker.ietf.org/doc/draft-ietf-hpke-hpke/) specifies that the draft is in the [hpke WG](https://datatracker.ietf.org/wg/hpke/about/).\r\n\r\n> I'm not sure about draft-hpke-hpke actually progressing very fast.\r\n\r\nProvided the working group decouples its progress from [draft-ietf-hpke-pq](https://datatracker.ietf.org/doc/draft-ietf-hpke-pq/) as the chair and author @martinthomson appears to have agreed to do, the draft is ready for the shepherd review and requested publication - having completed WGLC months ago.\r\n\r\n> So far no responses to my comments on the HPKE list\r\n\r\nMartin responded to my request to the list to progress hpke-hpke by saying \"it seems like that the CFRG work isn't moving as quickly as that, so we'll move ahead shortly.\"\r\n\r\n> Incurs a normative dependency to a slowly progressing draft\r\n\r\nYes, the same normative dependency that the parallel [draft-ietf-jose-hpke-encrypt](https://datatracker.ietf.org/doc/draft-ietf-jose-hpke-encrypt/) draft purposefully took.  The updated HPKE draft removes unused options and therefore removes ambiguity for implementers.\r\n\r\n> I don't think draft-hpke-hkpe clearly removes the 64 byte limit; section 7.2.1 is very unclear IMO\r\n\r\nI agree that the new hpke-hpke text is currently ambiguous.  You and I have both asked on-list for it to be made unambiguous.\r\n\r\nThat said RFC 9180's 64-byte recommendation is unambiguous, and thereby unsuitable for COSE HPKE.  Therefore, referencing hpke-hpke makes things no worse and is likely to make them better.\r\n\r\nFor that reason, @laurencelundblade, I respectfully request that you remove your change request before the publication deadline tomorrow and thereby enable us to publish a draft before the deadline that improves the situation.  Yes, changing the reference is a tactical move and will still require clarifications on the part of the HPKE working group.  But it will change the situation from untenable - due to the RFC 9180 64-bit limit - to plausible - since it is within the power of the HPKE working group to unambiguously fix the limit.\r\n\r\nYour co-authors @hannestschofenig, @OR13, and @selfissued have already approved this PR and would appreciate your likewise approval.  Thank you.",
+          "createdAt": "2026-03-02T00:05:30Z",
+          "updatedAt": "2026-03-02T00:05:30Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "A further relevant development:  Publication was just requested for JOSE HPKE, per https://datatracker.ietf.org/doc/draft-ietf-jose-hpke-encrypt/.  Like in COSE HPKE, that draft says:\r\n\r\n>The HPKE info parameter is set to the value of the Recipient_structure\r\n\r\nTo stay parallel to JOSE HPKE, we must do the same.  Therefore, we must close #132 without merging it and we must merge this PR.",
+          "createdAt": "2026-03-02T03:45:25Z",
+          "updatedAt": "2026-03-02T03:45:25Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOGr5frc7mogh1",
@@ -8722,6 +8753,19 @@
           "body": "Thanks for the PR. This makes sense.",
           "createdAt": "2026-02-28T07:31:53Z",
           "updatedAt": "2026-02-28T07:31:53Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7m3lE0",
+          "commit": {
+            "abbreviatedOid": "8adafb4"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "I don't see this as the approach to resolve #131 and #132, particularly because section 7.2.1 of the hpke draft is unclear",
+          "createdAt": "2026-03-01T20:00:15Z",
+          "updatedAt": "2026-03-01T20:00:15Z",
           "comments": []
         }
       ]
