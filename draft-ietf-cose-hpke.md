@@ -254,8 +254,7 @@ This value MUST match the "alg" parameter in the next lower COSE layer.
 : The protected header parameters from the COSE_recipient.
 
 "recipient_extra_info":
-: Any additional context the application wishes to include in
-the key derivation via the HPKE info parameter. If none, it is a zero-length string.
+: Defaults to empty byte string. See {{AddInfo}}.
 
 The Recipient_structure MUST be serialized deterministically in accordance with the Core Deterministic Encoding Requirements defined in {{Section 4.2.1 of RFC8949}}.
 This requirement applies only to the Recipient_structure itself &mdash; the array and its four members.
@@ -272,8 +271,8 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - kdf_id: From the ciphersuite. See {{ciphersuite}}.
 - aead_id: From the ciphersuite. See {{ciphersuite}}.
 - pkR: The recipient public key, converted into HPKE public key.
-- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
+- info: Deterministic encoding of the Recipient_structure.
+- aad: SHOULD be empty. See {{AddInfo}}.
 - pt: The CEK.
 
 The outputs are put in the COSE_Recipient as follows:
@@ -298,17 +297,11 @@ When decrypting, the inputs to the HPKE Open operation are as follows:
 - kem_id: From the "alg" parameter ciphersuite. See {{ciphersuite}}.
 - enc: From the "ek" parameter in the COSE_Recipient headers.
 - skR: The recipient private key, converted into an HPKE private key.
-- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
+- info: Deterministic encoding of the Recipient_structure.
+- aad: SHOULD be empty. See {{AddInfo}}.
 - ct: The contents of the COSE_Recipient ciphertext field.
 
 The plaintext output is the CEK.
-
-It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
-attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
-may still utilize recipient_aad for other purposes as needed; however, it is generally
-intended for small values such as identifiers, contextual information, or secrets. It is
-not designed for protecting large or bulk external data.
 
 Any bulk external data that requires protection should be handled at layer 0 using external_aad.
 
@@ -338,6 +331,26 @@ The "next_layer_alg" member of the Recipient_structure mitigates this attack by 
 The "next_layer_alg" member is explicitly defined to identify the algorithm for the immediately following COSE layer.
 Such explicit layering semantics were not provided for the AlgorithmID field in COSE_KDF_Context, where the intended interpretation was ambiguous.
 
+
+### COSE_Recipient Header Parameters and the HPKE KDF {#AddInfo}
+
+COSE HPKE is secure without additional header parameters or inputs to the HPKE KDF, though options for these exist if needed.
+
+All header parameters in the protected bucket of the COSE_Recipient are protected by feeding then into the HPKE KDF via the Recipient_structure and the Seal/Open info parameter.
+If any headers are tampered with, the KDF will produce the wrong key and HPKE integrity checks will fail.
+
+In most cases, additional header parameters carry supplementary data, such as a "kid".
+If a use case requires binding public information to the KDF, placing it in a header parameter is a straightforward approach: the value will be conveyed to the recipient and processed automatically.
+
+If a use case requires binding secret information to the KDF, it can be supplied via the "recipient_extra_info" field in the Recipient_structure — this is its primary purpose.
+It is the responsibility of the use case to ensure that both sender and receiver possess this secret information.
+
+There are minor size considerations to keep in mind.
+HPKE guarantees acceptance of at least 64 bytes for the info parameter, and implementations are expected to accept up to 16,384 bytes.
+This imposes a size limit on the COSE_Recipient protected header parameters and the "recipient_extra_info" field, though this is unlikely to be an issue except for HPKE libraries running in highly constrained environments with use cases that include large header parameters.
+
+Use of the HPKE Open/Seal aad parameter is not recommended with COSE HPKE.
+It is available for special cases and has no practical size limit.
 
 
 ## Key Representation {#key-representation}
