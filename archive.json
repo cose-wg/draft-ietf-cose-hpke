@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-03T02:32:42.519784+00:00",
+  "timestamp": "2026-03-05T02:28:01.475486+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1672,16 +1672,24 @@
       "id": "I_kwDOGr5frc7pheou",
       "title": "Use <field> \u201c:\u201d <description> in describing Recipient_structure",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/118",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Use a colon rather than a sentence to be consistent with 9052 and to be more clear\n",
       "createdAt": "2026-02-09T19:56:00Z",
-      "updatedAt": "2026-02-09T19:56:00Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-03-04T17:36:28Z",
+      "closedAt": "2026-03-04T17:36:28Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fixed in draft 23",
+          "createdAt": "2026-03-04T17:36:28Z",
+          "updatedAt": "2026-03-04T17:36:28Z"
+        }
+      ]
     },
     {
       "number": 119,
@@ -8766,6 +8774,46 @@
           "body": "I don't see this as the approach to resolve #131 and #132, particularly because section 7.2.1 of the hpke draft is unclear",
           "createdAt": "2026-03-01T20:00:15Z",
           "updatedAt": "2026-03-01T20:00:15Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 136,
+      "id": "PR_kwDOGr5frc7H9D0Y",
+      "title": "Headers, recipient_aad and HPKE info/KDF",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/136",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Now that the info size parameter limitation is resolved and we know we're feeding Recipient_structure into the Seal/Open info parameter, related text and the recipient_aad issue can be resolved.\r\n\r\nThis addresses #116\r\n\r\n",
+      "createdAt": "2026-03-04T18:33:55Z",
+      "updatedAt": "2026-03-04T19:18:50Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "n_r_aad",
+      "headRefOid": "9d4b39ad0a8992db11fb38cda6fa52260fe4590e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7n8xpl",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "This mostly looks good.  I'm curious though, why the discussion of recipient_aad was removed?  That text still seems accurate and relevant.",
+          "createdAt": "2026-03-04T19:18:50Z",
+          "updatedAt": "2026-03-04T19:18:50Z",
           "comments": []
         }
       ]
