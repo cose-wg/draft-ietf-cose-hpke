@@ -226,15 +226,12 @@ Layer 1 may also contain other COSE_Recipients using other content key distribut
 
 ### Recipient_structure
 
-This section defines the Recipient_structure, which is used in place of COSE_KDF_Context
-for COSE-HPKE recipients. It MUST be used for COSE-HPKE recipients, as it provides
-integrity protection for recipient-protected header parameters.
+When constructing a COSE_Recipient for COSE-HPKE, the Recipient_structure defined here is used in place of COSE_KDF_Context to aggregate the items that require protection.
+COSE-HPKE does not use the COSE_KDF_Context in any way.
 
-The Recipient_structure is modeled after the Enc_structure defined in {{RFC9052}},
-but is specific to COSE_recipient structures and MUST NOT be used with COSE_Encrypt.
-
-Furthermore, the use of COSE_KDF_Context is prohibited in COSE-HPKE; it MUST NOT be
-used.
+The Recipient_structure works akin to Sig_structure and Enc_structure defined in {{RFC9052}}.
+It is constructed independently by the sender and the receiver only as an input to the cryptographic algorithms.
+It is not actually conveyed in the COSE message.
 
 ~~~
 Recipient_structure = [
@@ -265,21 +262,19 @@ It does not extend into the byte-string wrapped protected headers.
 ### COSE-HPKE Recipient Construction
 
 This section gives the steps for constructing a COSE_Recipient using HPKE.
+Implementations may perform operations in this section in whichever order they choose, so long as the same bytes are produced as a result.
 
-When encrypting, the inputs to the HPKE Seal operation are set as follows:
+First, the CEK is generated, usually using a high-quality random number generator.
 
-- kem_id: From the ciphersuite. See {{ciphersuite}}.
-- kdf_id: From the ciphersuite. See {{ciphersuite}}.
-- aead_id: From the ciphersuite. See {{ciphersuite}}.
-- pkR: The recipient public key, converted into HPKE public key.
-- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
-- aad: Defaults to the empty string; externally provided information MAY be used instead.
-- pt: The CEK.
+The CEK is used to encrypt the content.
+When encrypting the content at layer 0, the instructions in {{Section 5.3
+of RFC9052}} MUST be followed, including the calculation of the
+authenticated data structure.
 
-The outputs are put in the COSE_Recipient as follows:
+Any bulk external data that requires protection should be handled at layer 0 using external_aad.
 
-- enc: MUST be placed into the "ek" (encapsulated key) header parameter in the unprotected bucket.
-- ct: MUST be placed in the ciphertext field.
+Next, assemble the protected headers.
+Note that they will be wrapped in a byte string.
 
 While the "alg" header parameter is not strictly required in the COSE_Recipient, if present, it must be the ciphersuite used to specify the HPKE algorithms.
 See {{ciphersuite}}.
@@ -290,6 +285,27 @@ public key that the sender used. Use of the "kid" parameter is RECOMMENDED
 to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
 key derivation function of HPKE.
+
+Next, construct a Recipeint_structure as described above.
+
+Next, the HPKE Seal operation is invoked with the following inputs:
+
+- kem_id: From the ciphersuite. See {{ciphersuite}}.
+- kdf_id: From the ciphersuite. See {{ciphersuite}}.
+- aead_id: From the ciphersuite. See {{ciphersuite}}.
+- pkR: The recipient public key, converted into HPKE public key.
+- info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.
+- aad: Defaults to the empty string; externally provided information MAY be used instead.
+- pt: The CEK.
+
+The outputs go into the COSE_Recipient as follows:
+
+- enc: MUST be placed into the "ek" (encapsulated key) header parameter in the unprotected bucket.
+- ct: MUST be placed in the ciphertext field.
+
+The COSE_recipient structure is computed for each recipient.
+
+Decrypting is largely the inverse of encrypting.
 
 When decrypting, the inputs to the HPKE Open operation are as follows:
 
@@ -302,21 +318,13 @@ When decrypting, the inputs to the HPKE Open operation are as follows:
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
 - ct: The contents of the COSE_Recipient ciphertext field.
 
-The plaintext output is the CEK.
+The plaintext output from the HPKE Open is the CEK.
 
 It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
 attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
 may still utilize recipient_aad for other purposes as needed; however, it is generally
 intended for small values such as identifiers, contextual information, or secrets. It is
 not designed for protecting large or bulk external data.
-
-Any bulk external data that requires protection should be handled at layer 0 using external_aad.
-
-The COSE_recipient structure is computed for each recipient.
-
-When encrypting the content at layer 0, the instructions in {{Section 5.3
-of RFC9052}} MUST be followed, including the calculation of the
-authenticated data structure.
 
 An example is shown in {{two-layer-example}}.
 
