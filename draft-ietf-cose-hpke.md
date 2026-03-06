@@ -230,7 +230,7 @@ When constructing a COSE_Recipient for COSE-HPKE, the Recipient_structure define
 COSE-HPKE does not use the COSE_KDF_Context in any way.
 
 The Recipient_structure works akin to Sig_structure and Enc_structure defined in {{RFC9052}}.
-It is constructed independently by the sender and the receiver as only an input to the cryptographic algorithms.
+It is constructed independently by the sender and the receiver only as an input to the cryptographic algorithms.
 It is not actually conveyed in the COSE message.
 
 ~~~
