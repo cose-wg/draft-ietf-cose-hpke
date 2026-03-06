@@ -1613,7 +1613,7 @@ It does not extend into the byte-string wrapped protected headers.<a href="#sect
 <a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-cose-hpke-recipient-constru" class="section-name selfRef">COSE-HPKE Recipient Construction</a>
           </h4>
 <p id="section-3.3.2-1">This section gives the steps for constructing a COSE_Recipient using HPKE.
-It is a normative specification, but doesn't dictate the actual order that an implementation must use.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+Implementations may perform operations in this section in whichever order they choose, so long as the same bytes are produced as a result.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.3.2-2">First, the CEK is generated, usually using a high-quality random number generator.<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
 <p id="section-3.3.2-3">The CEK is used to encrypt the content.
 When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
