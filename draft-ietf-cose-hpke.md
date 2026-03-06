@@ -262,7 +262,7 @@ It does not extend into the byte-string wrapped protected headers.
 ### COSE-HPKE Recipient Construction
 
 This section gives the steps for constructing a COSE_Recipient using HPKE.
-It is a normative specification, but doesn't dictate the actual order that an implementation must use.
+Implementations may perform operations in this section in whichever order they choose, so long as the same bytes are produced as a result.
 
 First, the CEK is generated, usually using a high-quality random number generator.
 
