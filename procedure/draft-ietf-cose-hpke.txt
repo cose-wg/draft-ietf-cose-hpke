@@ -342,7 +342,7 @@ Table of Contents
 
    The Recipient_structure works akin to Sig_structure and Enc_structure
    defined in [RFC9052].  It is constructed independently by the sender
-   and the receiver as only an input to the cryptographic algorithms.
+   and the receiver only as an input to the cryptographic algorithms.
    It is not actually conveyed in the COSE message.
 
    Recipient_structure = [
