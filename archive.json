@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-05T02:28:01.475486+00:00",
+  "timestamp": "2026-03-08T02:31:22.623806+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1744,16 +1744,24 @@
       "id": "I_kwDOGr5frc7piZf2",
       "title": "Reorient 3.1.2.2. COSE-HPKE Recipient Construction around COSE_Recipient",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/122",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "COSE HPKE Key encryption is a Content Key Distribution Method per section 8 or 9052. All of these define how to construct a COSE_Recipient and say so very clearly. The text in 3.1.2.2 is about filling in a COSE_Recipient, but it doesn't provide any intro or framing that this is what it is doing. It just starts talking about parameters, not even mentioning that they are COSE_Recipient parameters.",
       "createdAt": "2026-02-09T20:54:01Z",
-      "updatedAt": "2026-02-09T20:54:01Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-03-05T16:04:16Z",
+      "closedAt": "2026-03-05T16:04:15Z",
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fixed with #134",
+          "createdAt": "2026-03-05T16:04:16Z",
+          "updatedAt": "2026-03-05T16:04:16Z"
+        }
+      ]
     },
     {
       "number": 123,
@@ -8790,7 +8798,7 @@
       "labels": [],
       "body": "Now that the info size parameter limitation is resolved and we know we're feeding Recipient_structure into the Seal/Open info parameter, related text and the recipient_aad issue can be resolved.\r\n\r\nThis addresses #116\r\n\r\n",
       "createdAt": "2026-03-04T18:33:55Z",
-      "updatedAt": "2026-03-04T19:18:50Z",
+      "updatedAt": "2026-03-06T22:27:56Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
@@ -8801,7 +8809,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> This mostly looks good. I'm curious though, why the discussion of recipient_aad was removed? That text still seems accurate and relevant.\r\n\r\n\"recipient_aad\" looks like a field in a structure or a parameter name, but it is not. There's no definition of \"recipient_aad\" anywhere -- like any where on the whole Internet.\r\n\r\nI think what is meant is the aad parameter to the HPKE Open and Seal functions.\r\n\r\nSeems like the text I have there covers what's needed, but maybe a little more could be added.\r\n\r\n\r\n",
+          "createdAt": "2026-03-06T20:34:12Z",
+          "updatedAt": "2026-03-06T20:34:12Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOGr5frc7n8xpl",
@@ -8814,6 +8830,178 @@
           "body": "This mostly looks good.  I'm curious though, why the discussion of recipient_aad was removed?  That text still seems accurate and relevant.",
           "createdAt": "2026-03-04T19:18:50Z",
           "updatedAt": "2026-03-04T19:18:50Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7oxeK9",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-06T18:23:59Z",
+          "updatedAt": "2026-03-06T18:23:59Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7o1lf9",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-06T22:27:56Z",
+          "updatedAt": "2026-03-06T22:27:56Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 137,
+      "id": "PR_kwDOGr5frc7IQCJw",
+      "title": "Reference 8.5.5 of 8052 (missed in previous PR)",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/137",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Addresses #119",
+      "createdAt": "2026-03-05T16:02:42Z",
+      "updatedAt": "2026-03-06T22:29:18Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "section8again",
+      "headRefOid": "f7096f0f3d2981389bb22c4872a9bbf1185ac7e7",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7oxavQ",
+          "commit": {
+            "abbreviatedOid": "f7096f0"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-06T18:21:09Z",
+          "updatedAt": "2026-03-06T18:21:09Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7o1mTb",
+          "commit": {
+            "abbreviatedOid": "f7096f0"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-06T22:29:18Z",
+          "updatedAt": "2026-03-06T22:29:18Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 138,
+      "id": "PR_kwDOGr5frc7Ij4Bm",
+      "title": "Describe message construction procedure in detail",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/138",
+      "state": "OPEN",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Address #123\r\n\r\nThis makes the construction of a message and COSE_Recipient procedure much more detailed, closer to the level of details that RFC 9052 provides for similar.",
+      "createdAt": "2026-03-06T17:37:26Z",
+      "updatedAt": "2026-03-06T23:24:34Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "procedure",
+      "headRefOid": "53071df2356142cebd1dc36e4ee872e8bc4c6dbc",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7oxfHO",
+          "commit": {
+            "abbreviatedOid": "fd11bc0"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-06T18:25:00Z",
+          "updatedAt": "2026-03-06T18:25:00Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "```suggestion\nIt is constructed independently by the sender and the receiver only as an input to the cryptographic algorithms.\n```",
+              "createdAt": "2026-03-06T18:25:00Z",
+              "updatedAt": "2026-03-06T18:25:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7oxiKP",
+          "commit": {
+            "abbreviatedOid": "fd11bc0"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-06T18:28:12Z",
+          "updatedAt": "2026-03-06T18:28:12Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "```suggestion\nImplementations may perform operations in this section in whichever order they choose, so long as the same bytes are produced as a result.\n```",
+              "createdAt": "2026-03-06T18:28:12Z",
+              "updatedAt": "2026-03-06T18:28:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7oxkOh",
+          "commit": {
+            "abbreviatedOid": "fd11bc0"
+          },
+          "author": "OR13",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-06T18:30:07Z",
+          "updatedAt": "2026-03-06T18:30:07Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7o2ZBq",
+          "commit": {
+            "abbreviatedOid": "53071df"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-06T23:24:34Z",
+          "updatedAt": "2026-03-06T23:24:34Z",
           "comments": []
         }
       ]
