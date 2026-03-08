@@ -206,8 +206,10 @@ An example is shown in {{one-layer-example}}.
 
 ## HPKE Key Encryption Mode {#two-layer}
 
-This mode corresponds to Key Agreement with Key Wrap, as described in {{Section 8.5.5 of RFC9052}}, and specifies a method for constructing a COSE_Recipient using HPKE.
-In this construction, both key agreement and key wrapping are performed within HPKE.
+This mode is a Content Key Distribution mode like those in {{Section 8 of RFC9052}}.
+It uses HPKE to protect the CEK.
+Conceptually, it is most closely aligned with the Key Agreement with Key Wrap method defined in {{Section 8.5.5 of RFC9052}}.
+Internally, HPKE performs a key agreement to derive a shared secret and then uses that secret to wrap the CEK.
 
 A COSE_Encrypt structure is used with two logical layers:
 
