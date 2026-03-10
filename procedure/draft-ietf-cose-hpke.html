@@ -1624,7 +1624,7 @@ Note that they will be wrapped in a byte string.<a href="#section-3.3.2-5" class
 <p id="section-3.3.2-6">While the "alg" header parameter is not strictly required in the COSE_Recipient, if present, it must be the ciphersuite used to specify the HPKE algorithms.
 See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.
 If the "alg" header parameter is present, it MUST be a protected header parameter.<a href="#section-3.3.2-6" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-7">The protected header MAY contain the "kid" parameter to identify the static recipient
+<p id="section-3.3.2-7">The protected header parameters MAY contain the "kid" header parameter to identify the static recipient
 public key that the sender used. Use of the "kid" parameter is RECOMMENDED
 to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
