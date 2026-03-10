@@ -336,7 +336,7 @@ Such explicit layering semantics were not provided for the AlgorithmID field in 
 
 COSE HPKE is secure without additional header parameters or inputs to the HPKE KDF, though options for these exist if needed.
 
-All header parameters in the protected bucket of the COSE_Recipient are protected by feeding then into the HPKE KDF via the Recipient_structure and the Seal/Open info parameter.
+All header parameters in the protected bucket of the COSE_Recipient are protected by feeding them into the HPKE KDF via the Recipient_structure and the Seal/Open info parameter.
 If any headers are tampered with, the KDF will produce the wrong key and HPKE integrity checks will fail.
 
 In most cases, additional header parameters carry supplementary data, such as a "kid".
