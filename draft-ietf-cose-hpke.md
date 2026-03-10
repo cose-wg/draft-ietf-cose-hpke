@@ -340,7 +340,7 @@ All header parameters in the protected bucket of the COSE_Recipient are protecte
 If any headers are tampered with, the KDF will produce the wrong key and HPKE integrity checks will fail.
 
 In most cases, additional header parameters carry supplementary data, such as a "kid".
-If a use case requires binding public information to the KDF, placing it in a header parameter is a straightforward approach: the value will be conveyed to the recipient and processed automatically.
+If a use case requires binding public information to the KDF, placing it in the protected header parameters is a straightforward approach: the value will be conveyed to the recipient and processed automatically.
 
 If a use case requires binding secret information to the KDF, it can be supplied via the "recipient_extra_info" field in the Recipient_structure — this is its primary purpose.
 It is the responsibility of the use case to ensure that both sender and receiver possess this secret information.
