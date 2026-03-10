@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 9 September 2026                                   Tradeverifyd
+Expires: 11 September 2026                                  Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                            8 March 2026
+                                                           10 March 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 September 2026.
+   This Internet-Draft will expire on 11 September 2026.
 
 Copyright Notice
 
@@ -311,12 +311,12 @@ Table of Contents
 
 3.3.  HPKE Key Encryption Mode
 
-   This mode is a Content Key Distribution mode like those in Section 8
-   of [RFC9052].  It uses HPKE to protect the CEK.  Conceptually, it is
-   most closely aligned with the Key Agreement with Key Wrap method
-   defined in Section 8.5.5 of [RFC9052].  Internally, HPKE performs a
-   key agreement to derive a shared secret and then uses that secret to
-   wrap the CEK.
+   This mode is a Content Key Distribution Method like those specified
+   in Section 8.5 of [RFC9052].  It uses HPKE to protect the CEK.
+   Conceptually, it is most closely aligned with the Key Agreement with
+   Key Wrap method defined in Section 8.5.5 of [RFC9052].  Internally,
+   HPKE performs a key agreement to derive a shared secret and then uses
+   that secret to wrap the CEK.
 
    A COSE_Encrypt structure is used with two logical layers:
 
