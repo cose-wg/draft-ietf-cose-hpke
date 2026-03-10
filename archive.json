@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-08T02:31:22.623806+00:00",
+  "timestamp": "2026-03-10T02:24:19.230831+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -8798,7 +8798,7 @@
       "labels": [],
       "body": "Now that the info size parameter limitation is resolved and we know we're feeding Recipient_structure into the Seal/Open info parameter, related text and the recipient_aad issue can be resolved.\r\n\r\nThis addresses #116\r\n\r\n",
       "createdAt": "2026-03-04T18:33:55Z",
-      "updatedAt": "2026-03-06T22:27:56Z",
+      "updatedAt": "2026-03-08T20:43:53Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
@@ -8816,6 +8816,20 @@
           "body": "> This mostly looks good. I'm curious though, why the discussion of recipient_aad was removed? That text still seems accurate and relevant.\r\n\r\n\"recipient_aad\" looks like a field in a structure or a parameter name, but it is not. There's no definition of \"recipient_aad\" anywhere -- like any where on the whole Internet.\r\n\r\nI think what is meant is the aad parameter to the HPKE Open and Seal functions.\r\n\r\nSeems like the text I have there covers what's needed, but maybe a little more could be added.\r\n\r\n\r\n",
           "createdAt": "2026-03-06T20:34:12Z",
           "updatedAt": "2026-03-06T20:34:12Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I don't have time to comment on this thread today, but will defend my text tomorrow.",
+          "createdAt": "2026-03-08T20:33:33Z",
+          "updatedAt": "2026-03-08T20:33:33Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "For what it's worth, most of my suggested changes are terminology corrections - for instance, using the correct term \"header parameter\" rather than \"header\" and a spelling correction.  I don't think there's much that you should feel the need to defend.",
+          "createdAt": "2026-03-08T20:43:53Z",
+          "updatedAt": "2026-03-08T20:43:53Z"
         }
       ],
       "reviews": [
@@ -8857,6 +8871,259 @@
           "createdAt": "2026-03-06T22:27:56Z",
           "updatedAt": "2026-03-06T22:27:56Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pJVzU",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T14:46:12Z",
+          "updatedAt": "2026-03-08T14:46:12Z",
+          "comments": [
+            {
+              "originalPosition": 63,
+              "body": "I disagree with the statement that it is not recommended without saying why. What is the problem with using the aad parameter, if a use case requires it.",
+              "createdAt": "2026-03-08T14:46:12Z",
+              "updatedAt": "2026-03-08T14:46:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pJWMW",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T14:48:08Z",
+          "updatedAt": "2026-03-08T14:48:08Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "I think we are loosing information by deleting this sentence. There is nothing incorrect with it. ",
+              "createdAt": "2026-03-08T14:48:08Z",
+              "updatedAt": "2026-03-08T14:53:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pJWUh",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T14:48:48Z",
+          "updatedAt": "2026-03-08T14:48:49Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "I am not sure that it is useful to state that COSE HPKE is \"secure\" when you do not provide a proof. I would delete this sentence since it currently provides no value.",
+              "createdAt": "2026-03-08T14:48:49Z",
+              "updatedAt": "2026-03-08T14:48:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pJWhW",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T14:49:59Z",
+          "updatedAt": "2026-03-08T14:49:59Z",
+          "comments": [
+            {
+              "originalPosition": 54,
+              "body": "This statement is only true if a protected header parameter is used. ",
+              "createdAt": "2026-03-08T14:49:59Z",
+              "updatedAt": "2026-03-08T14:49:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pJWva",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T14:51:19Z",
+          "updatedAt": "2026-03-08T14:51:19Z",
+          "comments": [
+            {
+              "originalPosition": 56,
+              "body": "I do not believe \"secret\" is the correct term here. It could also be information from other layers in the protocol stack, information that is published in a spec, or information sent in earlier protocol messages. ",
+              "createdAt": "2026-03-08T14:51:19Z",
+              "updatedAt": "2026-03-08T14:51:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK3ql",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T19:50:05Z",
+          "updatedAt": "2026-03-08T19:50:05Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "I agree with @hannestschofenig.  Please restore the deleted sentence.",
+              "createdAt": "2026-03-08T19:50:05Z",
+              "updatedAt": "2026-03-08T19:50:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK39j",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T19:51:57Z",
+          "updatedAt": "2026-03-08T19:51:57Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "I agree with @hannestschofenig that this statement doesn't add anything actionable to the specification.  Please delete it here.\n\n@laurencelundblade if you want to cover this ground, it seems like its treatment should go into the Security Considerations section.",
+              "createdAt": "2026-03-08T19:51:57Z",
+              "updatedAt": "2026-03-08T19:51:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK4CF",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T19:52:20Z",
+          "updatedAt": "2026-03-08T19:52:21Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "```suggestion\n```",
+              "createdAt": "2026-03-08T19:52:21Z",
+              "updatedAt": "2026-03-08T19:52:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK4GL",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T19:52:40Z",
+          "updatedAt": "2026-03-08T19:52:41Z",
+          "comments": [
+            {
+              "originalPosition": 50,
+              "body": "```suggestion\nAll header parameters in the protected bucket of the COSE_Recipient are protected by feeding them into the HPKE KDF via the Recipient_structure and the Seal/Open info parameter.\n```",
+              "createdAt": "2026-03-08T19:52:41Z",
+              "updatedAt": "2026-03-08T19:52:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK4Qm",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T19:53:36Z",
+          "updatedAt": "2026-03-08T19:53:37Z",
+          "comments": [
+            {
+              "originalPosition": 54,
+              "body": "```suggestion\nIf a use case requires binding public information to the KDF, placing it in the protected header parameters is a straightforward approach: the value will be conveyed to the recipient and processed automatically.\n```",
+              "createdAt": "2026-03-08T19:53:36Z",
+              "updatedAt": "2026-03-08T19:53:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK4ZJ",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T19:54:25Z",
+          "updatedAt": "2026-03-08T19:54:25Z",
+          "comments": [
+            {
+              "originalPosition": 56,
+              "body": "```suggestion\nIf a use case requires binding additional information to the KDF, it can be supplied via the \"recipient_extra_info\" field in the Recipient_structure \u2014 this is its primary purpose.\n```",
+              "createdAt": "2026-03-08T19:54:25Z",
+              "updatedAt": "2026-03-08T19:54:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK4o9",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T19:55:42Z",
+          "updatedAt": "2026-03-08T19:55:42Z",
+          "comments": [
+            {
+              "originalPosition": 64,
+              "body": "```suggestion\n```\n\nDeleting this unexplained proposed statement, per @hannestschofenig's suggestion.",
+              "createdAt": "2026-03-08T19:55:42Z",
+              "updatedAt": "2026-03-08T19:55:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK40q",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Please apply my change suggestions.  Then I plan to approve.",
+          "createdAt": "2026-03-08T19:56:13Z",
+          "updatedAt": "2026-03-08T19:56:13Z",
+          "comments": []
         }
       ]
     },
@@ -8872,18 +9139,26 @@
       "labels": [],
       "body": "Addresses #119",
       "createdAt": "2026-03-05T16:02:42Z",
-      "updatedAt": "2026-03-06T22:29:18Z",
+      "updatedAt": "2026-03-08T20:36:42Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "section8again",
-      "headRefOid": "f7096f0f3d2981389bb22c4872a9bbf1185ac7e7",
+      "headRefOid": "f4d6f0d076642c73d67431a66ac5b0b82b911a7e",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I've reworked this to address the comments.\r\n\r\nIt's pretty important to me that there is a linkage back go Section 8 or 9052, which I believe is THE taxonomy of Content Key Distribution methods to help people make sense of this. I think it is fairly complex and hard to make sense of, so the help is useful.",
+          "createdAt": "2026-03-08T20:30:25Z",
+          "updatedAt": "2026-03-08T20:30:25Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOGr5frc7oxavQ",
@@ -8910,6 +9185,85 @@
           "createdAt": "2026-03-06T22:29:18Z",
           "updatedAt": "2026-03-06T22:29:18Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pJUKk",
+          "commit": {
+            "abbreviatedOid": "f7096f0"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "I suggest to drop this PR since the reference to Section 8.5.5 regarding key wrap is inappropriate here. Key Wrap, as described in RFC 8052, has a very specific meaning in context of AES-KW (and the reference is actually provided there). HPKE does not use AES-KW. As such, a reference to that section is not correct.",
+          "createdAt": "2026-03-08T14:39:07Z",
+          "updatedAt": "2026-03-08T14:39:07Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK3cd",
+          "commit": {
+            "abbreviatedOid": "f7096f0"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Thanks for pointing this out, @hannestschofenig:\n> I suggest to drop this PR since the reference to Section 8.5.5 regarding key wrap is inappropriate here. Key Wrap, as described in RFC 8052, has a very specific meaning in context of AES-KW (and the reference is actually provided there). HPKE does not use AES-KW. As such, a reference to that section is not correct.\n\nLet's close this one without merging it.",
+          "createdAt": "2026-03-08T19:48:43Z",
+          "updatedAt": "2026-03-08T19:48:43Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pLFfG",
+          "commit": {
+            "abbreviatedOid": "f4d6f0d"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T20:34:51Z",
+          "updatedAt": "2026-03-08T20:34:51Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "```suggestion\nThis mode is a Content Key Distribution Method like those specified in {{Section 8.5 of RFC9052}}.\n```",
+              "createdAt": "2026-03-08T20:34:51Z",
+              "updatedAt": "2026-03-08T20:34:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pLFo4",
+          "commit": {
+            "abbreviatedOid": "f4d6f0d"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T20:35:39Z",
+          "updatedAt": "2026-03-08T20:35:40Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "```suggestion\nIt is similar to the Key Agreement with Key Wrap method defined in {{Section 8.5.5 of RFC9052}}.\n```",
+              "createdAt": "2026-03-08T20:35:39Z",
+              "updatedAt": "2026-03-08T20:35:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pLF1N",
+          "commit": {
+            "abbreviatedOid": "f4d6f0d"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Thanks for the updates correcting the PR, @laurencelundblade.  I plan to approve after my proposed edits are applied.",
+          "createdAt": "2026-03-08T20:36:42Z",
+          "updatedAt": "2026-03-08T20:36:42Z",
+          "comments": []
         }
       ]
     },
@@ -8925,7 +9279,7 @@
       "labels": [],
       "body": "Address #123\r\n\r\nThis makes the construction of a message and COSE_Recipient procedure much more detailed, closer to the level of details that RFC 9052 provides for similar.",
       "createdAt": "2026-03-06T17:37:26Z",
-      "updatedAt": "2026-03-06T23:24:34Z",
+      "updatedAt": "2026-03-08T20:02:23Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
@@ -9003,6 +9357,79 @@
           "createdAt": "2026-03-06T23:24:34Z",
           "updatedAt": "2026-03-06T23:24:34Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pJU5V",
+          "commit": {
+            "abbreviatedOid": "53071df"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "There is no additional detail in this PR - just reshuffling. I doubt that this will help any reader but I still approve it, if this helps towards completing the document.",
+          "createdAt": "2026-03-08T14:42:03Z",
+          "updatedAt": "2026-03-08T14:42:03Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK60F",
+          "commit": {
+            "abbreviatedOid": "53071df"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T20:00:43Z",
+          "updatedAt": "2026-03-08T20:00:44Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "```suggestion\nIf the \"alg\" header parameter is present, it MUST be a protected header parameter.\n```",
+              "createdAt": "2026-03-08T20:00:43Z",
+              "updatedAt": "2026-03-08T20:00:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK6-J",
+          "commit": {
+            "abbreviatedOid": "53071df"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T20:01:20Z",
+          "updatedAt": "2026-03-08T20:01:21Z",
+          "comments": [
+            {
+              "originalPosition": 44,
+              "body": "```suggestion\nThe protected header parameters MAY contain the \"kid\" header parameter to identify the static recipient\n```",
+              "createdAt": "2026-03-08T20:01:21Z",
+              "updatedAt": "2026-03-08T20:01:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7pK7Pk",
+          "commit": {
+            "abbreviatedOid": "53071df"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-08T20:02:23Z",
+          "updatedAt": "2026-03-08T20:02:23Z",
+          "comments": [
+            {
+              "originalPosition": 85,
+              "body": "```suggestion\nThe plaintext output from the HPKE Open operation is the CEK.\n```",
+              "createdAt": "2026-03-08T20:02:23Z",
+              "updatedAt": "2026-03-08T20:02:23Z"
+            }
+          ]
         }
       ]
     }
