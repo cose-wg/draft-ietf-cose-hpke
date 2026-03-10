@@ -1730,7 +1730,7 @@ Such explicit layering semantics were not provided for the AlgorithmID field in 
 <p id="section-3.3.4-2">All header parameters in the protected bucket of the COSE_Recipient are protected by feeding them into the HPKE KDF via the Recipient_structure and the Seal/Open info parameter.
 If any headers are tampered with, the KDF will produce the wrong key and HPKE integrity checks will fail.<a href="#section-3.3.4-2" class="pilcrow">¶</a></p>
 <p id="section-3.3.4-3">In most cases, additional header parameters carry supplementary data, such as a "kid".
-If a use case requires binding public information to the KDF, placing it in a header parameter is a straightforward approach: the value will be conveyed to the recipient and processed automatically.<a href="#section-3.3.4-3" class="pilcrow">¶</a></p>
+If a use case requires binding public information to the KDF, placing it in the protected header parameters is a straightforward approach: the value will be conveyed to the recipient and processed automatically.<a href="#section-3.3.4-3" class="pilcrow">¶</a></p>
 <p id="section-3.3.4-4">If a use case requires binding secret information to the KDF, it can be supplied via the "recipient_extra_info" field in the Recipient_structure — this is its primary purpose.
 It is the responsibility of the use case to ensure that both sender and receiver possess this secret information.<a href="#section-3.3.4-4" class="pilcrow">¶</a></p>
 <p id="section-3.3.4-5">There are minor size considerations to keep in mind.
