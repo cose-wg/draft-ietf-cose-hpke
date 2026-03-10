@@ -1545,7 +1545,7 @@ If 'mode_base' has been chosen, then the "psk_id" parameter MUST NOT be present.
         </h3>
 <p id="section-3.3-1">This mode is a Content Key Distribution Method like those specified in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-8.5" class="relref">Section 8.5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.
 It uses HPKE to protect the CEK.
-Conceptually, it is most closely aligned with the Key Agreement with Key Wrap method defined in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-8.5.5" class="relref">Section 8.5.5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.
+It is similar to the Key Agreement with Key Wrap method defined in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-8.5.5" class="relref">Section 8.5.5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.
 Internally, HPKE performs a key agreement to derive a shared secret and then uses that secret to wrap the CEK.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">A COSE_Encrypt structure is used with two logical layers:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
