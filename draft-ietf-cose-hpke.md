@@ -278,7 +278,7 @@ Note that they will be wrapped in a byte string.
 
 While the "alg" header parameter is not strictly required in the COSE_Recipient, if present, it must be the ciphersuite used to specify the HPKE algorithms.
 See {{ciphersuite}}.
-If the "alg" parameter is present it MUST be a protected header parameter.
+If the "alg" header parameter is present, it MUST be a protected header parameter.
 
 The protected header MAY contain the "kid" parameter to identify the static recipient
 public key that the sender used. Use of the "kid" parameter is RECOMMENDED
