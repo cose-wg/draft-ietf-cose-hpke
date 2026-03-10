@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 5 September 2026                                   Tradeverifyd
+Expires: 11 September 2026                                  Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                            4 March 2026
+                                                           10 March 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 September 2026.
+   This Internet-Draft will expire on 11 September 2026.
 
 Copyright Notice
 
@@ -487,7 +487,7 @@ Table of Contents
    the HPKE KDF, though options for these exist if needed.
 
    All header parameters in the protected bucket of the COSE_Recipient
-   are protected by feeding then into the HPKE KDF via the
+   are protected by feeding them into the HPKE KDF via the
    Recipient_structure and the Seal/Open info parameter.  If any headers
    are tampered with, the KDF will produce the wrong key and HPKE
    integrity checks will fail.
