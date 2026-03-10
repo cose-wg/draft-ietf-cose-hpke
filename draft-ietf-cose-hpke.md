@@ -280,7 +280,7 @@ While the "alg" header parameter is not strictly required in the COSE_Recipient,
 See {{ciphersuite}}.
 If the "alg" header parameter is present, it MUST be a protected header parameter.
 
-The protected header MAY contain the "kid" parameter to identify the static recipient
+The protected header parameters MAY contain the "kid" header parameter to identify the static recipient
 public key that the sender used. Use of the "kid" parameter is RECOMMENDED
 to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
