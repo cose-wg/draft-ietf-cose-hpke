@@ -318,7 +318,7 @@ When decrypting, the inputs to the HPKE Open operation are as follows:
 - aad: Defaults to the empty string; externally provided information MAY be used instead.
 - ct: The contents of the COSE_Recipient ciphertext field.
 
-The plaintext output from the HPKE Open is the CEK.
+The plaintext output from the HPKE Open operation is the CEK.
 
 It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
 attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
