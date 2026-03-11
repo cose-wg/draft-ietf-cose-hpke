@@ -1061,7 +1061,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tschofenig, et al.</td>
-<td class="center">Expires 11 September 2026</td>
+<td class="center">Expires 12 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1074,12 +1074,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cose-hpke-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-10" class="published">10 March 2026</time>
+<time datetime="2026-03-11" class="published">11 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-11">11 September 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-12">12 September 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1149,7 +1149,7 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1218,7 +1218,7 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
                     <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-security-design-rationale" class="internal xref">Security Design Rationale</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.4">
-                    <p id="section-toc.1-1.3.2.3.2.4.1"><a href="#section-3.3.4" class="auto internal xref">3.3.4</a>.  <a href="#name-cose_recipient-header-param" class="internal xref">COSE_Recipient Header Parameters and the HPKE KDF</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.4.1"><a href="#section-3.3.4" class="auto internal xref">3.3.4</a>.  <a href="#name-context-binding-and-additio" class="internal xref">Context Binding and Additional Information</a></p>
 </li>
                 </ul>
 </li>
@@ -1723,21 +1723,24 @@ Such explicit layering semantics were not provided for the AlgorithmID field in 
 </div>
 <div id="AddInfo">
 <section id="section-3.3.4">
-          <h4 id="name-cose_recipient-header-param">
-<a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-cose_recipient-header-param" class="section-name selfRef">COSE_Recipient Header Parameters and the HPKE KDF</a>
+          <h4 id="name-context-binding-and-additio">
+<a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-context-binding-and-additio" class="section-name selfRef">Context Binding and Additional Information</a>
           </h4>
-<p id="section-3.3.4-1">COSE HPKE is secure without additional header parameters or inputs to the HPKE KDF, though options for these exist if needed.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.3.4-2">All header parameters in the protected bucket of the COSE_Recipient are protected by feeding them into the HPKE KDF via the Recipient_structure and the Seal/Open info parameter.
-If any headers are tampered with, the KDF will produce the wrong key and HPKE integrity checks will fail.<a href="#section-3.3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.3.4-3">In most cases, additional header parameters carry supplementary data, such as a "kid".
-If a use case requires binding public information to the KDF, placing it in the protected header parameters is a straightforward approach: the value will be conveyed to the recipient and processed automatically.<a href="#section-3.3.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.3.4-4">If a use case requires binding secret information to the KDF, it can be supplied via the "recipient_extra_info" field in the Recipient_structure — this is its primary purpose.
-It is the responsibility of the use case to ensure that both sender and receiver possess this secret information.<a href="#section-3.3.4-4" class="pilcrow">¶</a></p>
-<p id="section-3.3.4-5">There are minor size considerations to keep in mind.
-HPKE guarantees acceptance of at least 64 bytes for the info parameter, and implementations are expected to accept up to 16,384 bytes.
-This imposes a size limit on the COSE_Recipient protected header parameters and the "recipient_extra_info" field, though this is unlikely to be an issue except for HPKE libraries running in highly constrained environments with use cases that include large header parameters.<a href="#section-3.3.4-5" class="pilcrow">¶</a></p>
-<p id="section-3.3.4-6">Use of the HPKE Open/Seal aad parameter is not recommended with COSE HPKE.
-It is available for special cases and has no practical size limit.<a href="#section-3.3.4-6" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-1">All header parameters in the protected bucket of the COSE_Recipient are incorporated into the HPKE Seal/Open info parameter via the Recipient_structure.
+As a result, these parameters are both integrity-protected and bound to the HPKE key schedule, since they influence the internal HPKE key setup.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-2">In most cases, additional header parameters carry supplementary data such as a "kid".
+If a use case requires binding the encryption context to public information, placing that information in the protected header parameters is a straightforward approach: the value will be transmitted to the recipient and automatically incorporated into the HPKE key schedule.
+For example, a new header parameter identifying the application-level protocol that uses COSE-HPKE could be defined.
+Its value would be authenticated and would also influence the HPKE key setup.<a href="#section-3.3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-3">Because all header parameters are transmitted in the clear, they cannot be used to bind information that must remain secret.
+The "recipient_extra_info" field in the Recipient_structure is also included in the HPKE Seal/Open info parameter, but unlike header parameters it is not transmitted.
+This makes it suitable for binding secret context information. It is the responsibility of the specific use case to ensure that both sender and receiver possess this secret value.<a href="#section-3.3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-4">There are minor size considerations.
+HPKE guarantees support for at least 64 bytes in the info parameter, and implementations are expected to support up to 16,384 bytes.
+This indirectly imposes a size limit on the COSE_Recipient protected header parameters and the "recipient_extra_info" field.
+In practice, this limit is unlikely to pose problems except in highly constrained environments or in use cases with unusually large header parameters.<a href="#section-3.3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-5">Protection and binding of auxiliary information can generally be achieved using protected header parameters together with the "recipient_extra_info" field, so use of the Seal/Open aad parameter is rarely necessary.
+However, it remains available for special cases and has no practical size limit.<a href="#section-3.3.4-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

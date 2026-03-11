@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 11 September 2026                                  Tradeverifyd
+Expires: 12 September 2026                                  Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                           10 March 2026
+                                                           11 March 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 September 2026.
+   This Internet-Draft will expire on 12 September 2026.
 
 Copyright Notice
 
@@ -99,7 +99,7 @@ Table of Contents
        3.3.1.  Recipient_structure
        3.3.2.  COSE-HPKE Recipient Construction
        3.3.3.  Security Design Rationale
-       3.3.4.  COSE_Recipient Header Parameters and the HPKE KDF
+       3.3.4.  Context Binding and Additional Information
      3.4.  Key Representation
    4.  Ciphersuite Registration
      4.1.  COSE_Keys for COSE-HPKE Ciphersuites
@@ -481,41 +481,46 @@ Table of Contents
    provided for the AlgorithmID field in COSE_KDF_Context, where the
    intended interpretation was ambiguous.
 
-3.3.4.  COSE_Recipient Header Parameters and the HPKE KDF
-
-   COSE HPKE is secure without additional header parameters or inputs to
-   the HPKE KDF, though options for these exist if needed.
+3.3.4.  Context Binding and Additional Information
 
    All header parameters in the protected bucket of the COSE_Recipient
-   are protected by feeding them into the HPKE KDF via the
-   Recipient_structure and the Seal/Open info parameter.  If any headers
-   are tampered with, the KDF will produce the wrong key and HPKE
-   integrity checks will fail.
+   are incorporated into the HPKE Seal/Open info parameter via the
+   Recipient_structure.  As a result, these parameters are both
+   integrity-protected and bound to the HPKE key schedule, since they
+   influence the internal HPKE key setup.
 
-   In most cases, additional header parameters carry supplementary data,
-   such as a "kid".  If a use case requires binding public information
-   to the KDF, placing it in the protected header parameters is a
-   straightforward approach: the value will be conveyed to the recipient
-   and processed automatically.
+   In most cases, additional header parameters carry supplementary data
+   such as a "kid".  If a use case requires binding the encryption
+   context to public information, placing that information in the
+   protected header parameters is a straightforward approach: the value
+   will be transmitted to the recipient and automatically incorporated
+   into the HPKE key schedule.  For example, a new header parameter
+   identifying the application-level protocol that uses COSE-HPKE could
+   be defined.  Its value would be authenticated and would also
+   influence the HPKE key setup.
 
-   If a use case requires binding secret information to the KDF, it can
-   be supplied via the "recipient_extra_info" field in the
-   Recipient_structure — this is its primary purpose.  It is the
-   responsibility of the use case to ensure that both sender and
-   receiver possess this secret information.
+   Because all header parameters are transmitted in the clear, they
+   cannot be used to bind information that must remain secret.  The
+   "recipient_extra_info" field in the Recipient_structure is also
+   included in the HPKE Seal/Open info parameter, but unlike header
+   parameters it is not transmitted.  This makes it suitable for binding
+   secret context information.  It is the responsibility of the specific
+   use case to ensure that both sender and receiver possess this secret
+   value.
 
-   There are minor size considerations to keep in mind.  HPKE guarantees
-   acceptance of at least 64 bytes for the info parameter, and
-   implementations are expected to accept up to 16,384 bytes.  This
-   imposes a size limit on the COSE_Recipient protected header
-   parameters and the "recipient_extra_info" field, though this is
-   unlikely to be an issue except for HPKE libraries running in highly
-   constrained environments with use cases that include large header
-   parameters.
+   There are minor size considerations.  HPKE guarantees support for at
+   least 64 bytes in the info parameter, and implementations are
+   expected to support up to 16,384 bytes.  This indirectly imposes a
+   size limit on the COSE_Recipient protected header parameters and the
+   "recipient_extra_info" field.  In practice, this limit is unlikely to
+   pose problems except in highly constrained environments or in use
+   cases with unusually large header parameters.
 
-   Use of the HPKE Open/Seal aad parameter is not recommended with COSE
-   HPKE.  It is available for special cases and has no practical size
-   limit.
+   Protection and binding of auxiliary information can generally be
+   achieved using protected header parameters together with the
+   "recipient_extra_info" field, so use of the Seal/Open aad parameter
+   is rarely necessary.  However, it remains available for special cases
+   and has no practical size limit.
 
 3.4.  Key Representation
 
