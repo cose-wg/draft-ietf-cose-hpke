@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-10T02:24:19.230831+00:00",
+  "timestamp": "2026-03-12T02:29:52.460736+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -8798,13 +8798,13 @@
       "labels": [],
       "body": "Now that the info size parameter limitation is resolved and we know we're feeding Recipient_structure into the Seal/Open info parameter, related text and the recipient_aad issue can be resolved.\r\n\r\nThis addresses #116\r\n\r\n",
       "createdAt": "2026-03-04T18:33:55Z",
-      "updatedAt": "2026-03-08T20:43:53Z",
+      "updatedAt": "2026-03-11T18:41:20Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "n_r_aad",
-      "headRefOid": "9d4b39ad0a8992db11fb38cda6fa52260fe4590e",
+      "headRefOid": "3fb35a7f5961c63dda5fc93baba3c18ea82cf275",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -8830,6 +8830,20 @@
           "body": "For what it's worth, most of my suggested changes are terminology corrections - for instance, using the correct term \"header parameter\" rather than \"header\" and a spelling correction.  I don't think there's much that you should feel the need to defend.",
           "createdAt": "2026-03-08T20:43:53Z",
           "updatedAt": "2026-03-08T20:43:53Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Planning an update to this PR tomorrow.",
+          "createdAt": "2026-03-10T20:00:09Z",
+          "updatedAt": "2026-03-10T20:00:09Z"
+        },
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Please see substantial rework in latest commit. Also see discussion on HPKE list:  https://mailarchive.ietf.org/arch/msg/hpke/5TZhttM8Xw_Q_M3kvwrZyJ2mGp4/",
+          "createdAt": "2026-03-11T18:41:20Z",
+          "updatedAt": "2026-03-11T18:41:20Z"
         }
       ],
       "reviews": [
@@ -9124,6 +9138,106 @@
           "createdAt": "2026-03-08T19:56:13Z",
           "updatedAt": "2026-03-08T19:56:13Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7p8xaK",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-10T19:53:08Z",
+          "updatedAt": "2026-03-10T19:53:09Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "This explanation is provided elsewhere with larger and more useful context. Removing it here keeps bullet list short and to the point.\r\n\r\nI also dislike parenthetical text, with or without \"()\". I think it's hard on the reader.",
+              "createdAt": "2026-03-10T19:53:09Z",
+              "updatedAt": "2026-03-10T19:53:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7p80Hu",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-10T19:54:55Z",
+          "updatedAt": "2026-03-10T19:54:55Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "See https://mailarchive.ietf.org/arch/msg/hpke/5TZhttM8Xw_Q_M3kvwrZyJ2mGp4/\r\n\r\nI agree this needs better wording.",
+              "createdAt": "2026-03-10T19:54:55Z",
+              "updatedAt": "2026-03-10T19:54:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7p80xM",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-10T19:55:14Z",
+          "updatedAt": "2026-03-10T19:55:14Z",
+          "comments": [
+            {
+              "originalPosition": 54,
+              "body": "Agreed\r\n",
+              "createdAt": "2026-03-10T19:55:14Z",
+              "updatedAt": "2026-03-10T19:55:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7p832b",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-10T19:57:27Z",
+          "updatedAt": "2026-03-10T19:57:27Z",
+          "comments": [
+            {
+              "originalPosition": 56,
+              "body": "Maybe there can be better wording as it doesn't have to be secret, but there has to be a way to provide secret info and this is it.",
+              "createdAt": "2026-03-10T19:57:27Z",
+              "updatedAt": "2026-03-10T19:57:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7p844q",
+          "commit": {
+            "abbreviatedOid": "9d4b39a"
+          },
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-10T19:58:11Z",
+          "updatedAt": "2026-03-10T19:58:11Z",
+          "comments": [
+            {
+              "originalPosition": 63,
+              "body": "It's fine to use it. This doesn't say SHOULD NOT or MUST NOT.\r\n\r\nMy intent is to steer all usage to the info parameter and COSE header parameters which provide equivalent functionality. This is to make it simpler to figure out and to align with the recommendation in cose-hpke-hpke.\r\n\r\nMaybe I can find better wording.",
+              "createdAt": "2026-03-10T19:58:11Z",
+              "updatedAt": "2026-03-10T19:58:12Z"
+            }
+          ]
         }
       ]
     },
@@ -9139,13 +9253,13 @@
       "labels": [],
       "body": "Addresses #119",
       "createdAt": "2026-03-05T16:02:42Z",
-      "updatedAt": "2026-03-08T20:36:42Z",
+      "updatedAt": "2026-03-10T20:01:31Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "section8again",
-      "headRefOid": "f4d6f0d076642c73d67431a66ac5b0b82b911a7e",
+      "headRefOid": "2aa85aa395aaef7ebc38913737fbe7ec4bac94f0",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -9279,13 +9393,13 @@
       "labels": [],
       "body": "Address #123\r\n\r\nThis makes the construction of a message and COSE_Recipient procedure much more detailed, closer to the level of details that RFC 9052 provides for similar.",
       "createdAt": "2026-03-06T17:37:26Z",
-      "updatedAt": "2026-03-08T20:02:23Z",
+      "updatedAt": "2026-03-10T20:03:47Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "procedure",
-      "headRefOid": "53071df2356142cebd1dc36e4ee872e8bc4c6dbc",
+      "headRefOid": "cc89c8f6104961c42a73cbb1303c9930e083cdb2",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
