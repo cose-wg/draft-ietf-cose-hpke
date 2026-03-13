@@ -344,7 +344,7 @@ Its value would be authenticated and would also influence the HPKE key setup.
 
 Because all header parameters are transmitted in the clear, they cannot be used to bind information that must remain secret.
 The "recipient_extra_info" field in the Recipient_structure is also included in the HPKE Seal/Open info parameter, but unlike header parameters it is not transmitted.
-This makes it suitable for binding secret context information. It is the responsibility of the specific use case to ensure that both sender and receiver possess this secret value.
+This makes it suitable for binding context information that is, for example, provided in other layers of the protocol stack or via out-of-band means. It is the responsibility of the specific use case to ensure that both sender and receiver possess this context information.
 
 There are minor size considerations.
 HPKE guarantees support for at least 64 bytes in the info parameter, and implementations are expected to support up to 16,384 bytes.
