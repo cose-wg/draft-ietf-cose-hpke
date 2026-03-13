@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 12 September 2026                                  Tradeverifyd
+Expires: 14 September 2026                                  Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                           11 March 2026
+                                                           13 March 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 September 2026.
+   This Internet-Draft will expire on 14 September 2026.
 
 Copyright Notice
 
@@ -504,9 +504,10 @@ Table of Contents
    "recipient_extra_info" field in the Recipient_structure is also
    included in the HPKE Seal/Open info parameter, but unlike header
    parameters it is not transmitted.  This makes it suitable for binding
-   secret context information.  It is the responsibility of the specific
-   use case to ensure that both sender and receiver possess this secret
-   value.
+   context information that is, for example, provided in other layers of
+   the protocol stack or via out-of-band means.  It is the
+   responsibility of the specific use case to ensure that both sender
+   and receiver possess this context information.
 
    There are minor size considerations.  HPKE guarantees support for at
    least 64 bytes in the info parameter, and implementations are
