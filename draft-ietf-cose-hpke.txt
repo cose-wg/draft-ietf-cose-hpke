@@ -311,9 +311,12 @@ Table of Contents
 
 3.3.  HPKE Key Encryption Mode
 
-   This mode specifies a method for constructing a COSE_Recipient using
-   HPKE.  In this construction, both key agreement and key wrapping are
-   performed within HPKE.
+   This mode is a Content Key Distribution Method like those specified
+   in Section 8.5 of [RFC9052].  It uses HPKE to protect the CEK.  It is
+   similar to the Key Agreement with Key Wrap method defined in
+   Section 8.5.5 of [RFC9052].  Internally, HPKE performs a key
+   agreement to derive a shared secret and then uses that secret to wrap
+   the CEK.
 
    A COSE_Encrypt structure is used with two logical layers:
 
