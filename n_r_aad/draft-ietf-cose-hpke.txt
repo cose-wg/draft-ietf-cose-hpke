@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                     H-BRS
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 14 September 2026                                  Tradeverifyd
+Expires: 15 September 2026                                  Tradeverifyd
                                                               D. Ajitomi
                                                                  bibital
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                           13 March 2026
+                                                           14 March 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 September 2026.
+   This Internet-Draft will expire on 15 September 2026.
 
 Copyright Notice
 
@@ -427,7 +427,8 @@ Table of Contents
    *  skR: The recipient private key, converted into an HPKE private
       key.
 
-   *  info: Deterministic encoding of the Recipient_structure.
+   *  info: Deterministic encoding of the Recipient_structure.  See
+      Section 3.3.4.
 
    *  aad: SHOULD be empty.  See Section 3.3.4.
 
