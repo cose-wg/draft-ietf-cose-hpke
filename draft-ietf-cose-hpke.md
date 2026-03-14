@@ -16,10 +16,13 @@ author:
 -
   ins: H. Tschofenig
   name: Hannes Tschofenig
-  email: hannes.tschofenig@gmx.net
-  abbrev: H-BRS
-  organization: University of Applied Sciences Bonn-Rhein-Sieg
+  organization: University of the Bundeswehr Munich
+  abbrev: UniBw M.
+  city: Neubiberg
+  region: Bavaria
   country: Germany
+  code: 85577
+  email: hannes.tschofenig@gmx.net
 -
   ins: O. Steele
   name: Orie Steele
