@@ -1217,6 +1217,9 @@ variant of HPKE.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.3">
                     <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-security-design-rationale" class="internal xref">Security Design Rationale</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.4">
+                    <p id="section-toc.1-1.3.2.3.2.4.1"><a href="#section-3.3.4" class="auto internal xref">3.3.4</a>.  <a href="#name-context-binding-and-additio" class="internal xref">Context Binding and Additional Information</a></p>
+</li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
@@ -1599,8 +1602,7 @@ This value MUST match the "alg" parameter in the next lower COSE layer.<a href="
             <dd class="break"></dd>
 <dt id="section-3.3.1-4.5">"recipient_extra_info":</dt>
             <dd style="margin-left: 1.5em" id="section-3.3.1-4.6">
-              <p id="section-3.3.1-4.6.1">Any additional context the application wishes to include in
-the key derivation via the HPKE info parameter. If none, it is a zero-length string.<a href="#section-3.3.1-4.6.1" class="pilcrow">¶</a></p>
+              <p id="section-3.3.1-4.6.1">Defaults to empty byte string. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.1-4.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -1647,10 +1649,10 @@ key derivation function of HPKE.<a href="#section-3.3.2-7" class="pilcrow">¶</a
               <p id="section-3.3.2-10.4.1">pkR: The recipient public key, converted into HPKE public key.<a href="#section-3.3.2-10.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-3.3.2-10.5">
-              <p id="section-3.3.2-10.5.1">info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.<a href="#section-3.3.2-10.5.1" class="pilcrow">¶</a></p>
+              <p id="section-3.3.2-10.5.1">info: Deterministic encoding of the Recipient_structure. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-10.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-3.3.2-10.6">
-              <p id="section-3.3.2-10.6.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-10.6.1" class="pilcrow">¶</a></p>
+              <p id="section-3.3.2-10.6.1">aad: SHOULD be empty. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-10.6.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-3.3.2-10.7">
               <p id="section-3.3.2-10.7.1">pt: The CEK.<a href="#section-3.3.2-10.7.1" class="pilcrow">¶</a></p>
@@ -1685,22 +1687,26 @@ key derivation function of HPKE.<a href="#section-3.3.2-7" class="pilcrow">¶</a
               <p id="section-3.3.2-16.5.1">skR: The recipient private key, converted into an HPKE private key.<a href="#section-3.3.2-16.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-3.3.2-16.6">
-              <p id="section-3.3.2-16.6.1">info: Deterministic encoding of the Recipient_structure. Externally provided context information MAY be provided and MUST be passed into the Recipient_structure via the recipient_extra_info field.<a href="#section-3.3.2-16.6.1" class="pilcrow">¶</a></p>
+              <p id="section-3.3.2-16.6.1">info: Deterministic encoding of the Recipient_structure. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-16.6.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-3.3.2-16.7">
-              <p id="section-3.3.2-16.7.1">aad: Defaults to the empty string; externally provided information MAY be used instead.<a href="#section-3.3.2-16.7.1" class="pilcrow">¶</a></p>
+              <p id="section-3.3.2-16.7.1">aad: SHOULD be empty. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-16.7.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-3.3.2-16.8">
               <p id="section-3.3.2-16.8.1">ct: The contents of the COSE_Recipient ciphertext field.<a href="#section-3.3.2-16.8.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-3.3.2-17">The plaintext output from the HPKE Open operation is the CEK.<a href="#section-3.3.2-17" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-18">It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
+<p id="section-3.3.2-18">Any bulk external data that requires protection should be handled at layer 0 using external_aad.<a href="#section-3.3.2-18" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-19">The COSE_recipient structure is computed for each recipient.<a href="#section-3.3.2-19" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-20">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
+authenticated data structure.<a href="#section-3.3.2-20" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-21">It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
 attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
 may still utilize recipient_aad for other purposes as needed; however, it is generally
 intended for small values such as identifiers, contextual information, or secrets. It is
-not designed for protecting large or bulk external data.<a href="#section-3.3.2-18" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-19">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-19" class="pilcrow">¶</a></p>
+not designed for protecting large or bulk external data.<a href="#section-3.3.2-21" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-22">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-22" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-design-rationale">
@@ -1729,6 +1735,28 @@ This class of attack has been demonstrated against CMS; a corresponding mitigati
 <p id="section-3.3.3-4">The "next_layer_alg" member of the Recipient_structure mitigates this attack by explicitly binding the bulk content encryption algorithm identifier with the COSE_Recipient.
 The "next_layer_alg" member is explicitly defined to identify the algorithm for the immediately following COSE layer.
 Such explicit layering semantics were not provided for the AlgorithmID field in COSE_KDF_Context, where the intended interpretation was ambiguous.<a href="#section-3.3.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="AddInfo">
+<section id="section-3.3.4">
+          <h4 id="name-context-binding-and-additio">
+<a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-context-binding-and-additio" class="section-name selfRef">Context Binding and Additional Information</a>
+          </h4>
+<p id="section-3.3.4-1">All header parameters in the protected bucket of the COSE_Recipient are incorporated into the HPKE Seal/Open info parameter via the Recipient_structure.
+As a result, these parameters are both integrity-protected and bound to the HPKE key schedule, since they influence the internal HPKE key setup.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-2">In most cases, additional header parameters carry supplementary data such as a "kid".
+If a use case requires binding the encryption context to public information, placing that information in the protected header parameters is a straightforward approach: the value will be transmitted to the recipient and automatically incorporated into the HPKE key schedule.
+For example, a new header parameter identifying the application-level protocol that uses COSE-HPKE could be defined.
+Its value would be authenticated and would also influence the HPKE key setup.<a href="#section-3.3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-3">Because all header parameters are transmitted in the clear, they cannot be used to bind information that must remain secret.
+The "recipient_extra_info" field in the Recipient_structure is also included in the HPKE Seal/Open info parameter, but unlike header parameters it is not transmitted.
+This makes it suitable for binding context information that is, for example, provided in other layers of the protocol stack or via out-of-band means. It is the responsibility of the specific use case to ensure that both sender and receiver possess this context information.<a href="#section-3.3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-4">There are minor size considerations.
+HPKE guarantees support for at least 64 bytes in the info parameter, and implementations are expected to support up to 16,384 bytes.
+This indirectly imposes a size limit on the COSE_Recipient protected header parameters and the "recipient_extra_info" field.
+In practice, this limit is unlikely to pose problems except in highly constrained environments or in use cases with unusually large header parameters.<a href="#section-3.3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-5">Protection and binding of auxiliary information can generally be achieved using protected header parameters together with the "recipient_extra_info" field, so use of the Seal/Open aad parameter is rarely necessary.
+However, it remains available for special cases and has no practical size limit.<a href="#section-3.3.4-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
