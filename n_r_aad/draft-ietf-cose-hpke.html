@@ -1546,8 +1546,10 @@ If 'mode_base' has been chosen, then the "psk_id" parameter MUST NOT be present.
         <h3 id="name-hpke-key-encryption-mode">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-hpke-key-encryption-mode" class="section-name selfRef">HPKE Key Encryption Mode</a>
         </h3>
-<p id="section-3.3-1">This mode specifies a method for constructing a COSE_Recipient using HPKE.
-In this construction, both key agreement and key wrapping are performed within HPKE.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">This mode is a Content Key Distribution Method like those specified in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-8.5" class="relref">Section 8.5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.
+It uses HPKE to protect the CEK.
+It is similar to the Key Agreement with Key Wrap method defined in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-8.5.5" class="relref">Section 8.5.5</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.
+Internally, HPKE performs a key agreement to derive a shared secret and then uses that secret to wrap the CEK.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">A COSE_Encrypt structure is used with two logical layers:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-3.1">
@@ -1570,14 +1572,12 @@ Layer 1 may also contain other COSE_Recipients using other content key distribut
           <h4 id="name-recipient_structure">
 <a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-recipient_structure" class="section-name selfRef">Recipient_structure</a>
           </h4>
-<p id="section-3.3.1-1">This section defines the Recipient_structure, which is used in place of COSE_KDF_Context
-for COSE-HPKE recipients. It MUST be used for COSE-HPKE recipients, as it provides
-integrity protection for recipient-protected header parameters.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.3.1-2">The Recipient_structure is modeled after the Enc_structure defined in <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>,
-but is specific to COSE_recipient structures and MUST NOT be used with COSE_Encrypt.<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.3.1-3">Furthermore, the use of COSE_KDF_Context is prohibited in COSE-HPKE; it MUST NOT be
-used.<a href="#section-3.3.1-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.3.1-4">
+<p id="section-3.3.1-1">When constructing a COSE_Recipient for COSE-HPKE, the Recipient_structure defined here is used in place of COSE_KDF_Context to aggregate the items that require protection.
+COSE-HPKE does not use the COSE_KDF_Context in any way.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-2">The Recipient_structure works akin to Sig_structure and Enc_structure defined in <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>.
+It is constructed independently by the sender and the receiver only as an input to the cryptographic algorithms.
+It is not actually conveyed in the COSE message.<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3.1-3">
 <pre>
 Recipient_structure = [
     context: "HPKE Recipient",
@@ -1585,30 +1585,30 @@ Recipient_structure = [
     recipient_protected_header: empty_or_serialized_map,
     recipient_extra_info: bstr
 ]
-</pre><a href="#section-3.3.1-4" class="pilcrow">¶</a>
+</pre><a href="#section-3.3.1-3" class="pilcrow">¶</a>
 </div>
-<span class="break"></span><dl class="dlParallel" id="section-3.3.1-5">
-            <dt id="section-3.3.1-5.1">"next_layer_alg":</dt>
-            <dd style="margin-left: 1.5em" id="section-3.3.1-5.2">
-              <p id="section-3.3.1-5.2.1">The algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
+<span class="break"></span><dl class="dlParallel" id="section-3.3.1-4">
+            <dt id="section-3.3.1-4.1">"next_layer_alg":</dt>
+            <dd style="margin-left: 1.5em" id="section-3.3.1-4.2">
+              <p id="section-3.3.1-4.2.1">The algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
 It is the algorithm that the key MUST be used with.
-This value MUST match the "alg" parameter in the next lower COSE layer.<a href="#section-3.3.1-5.2.1" class="pilcrow">¶</a></p>
+This value MUST match the "alg" parameter in the next lower COSE layer.<a href="#section-3.3.1-4.2.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-3.3.1-5.3">"recipient_protected_header":</dt>
-            <dd style="margin-left: 1.5em" id="section-3.3.1-5.4">
-              <p id="section-3.3.1-5.4.1">The protected header parameters from the COSE_recipient.<a href="#section-3.3.1-5.4.1" class="pilcrow">¶</a></p>
+<dt id="section-3.3.1-4.3">"recipient_protected_header":</dt>
+            <dd style="margin-left: 1.5em" id="section-3.3.1-4.4">
+              <p id="section-3.3.1-4.4.1">The protected header parameters from the COSE_recipient.<a href="#section-3.3.1-4.4.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
-<dt id="section-3.3.1-5.5">"recipient_extra_info":</dt>
-            <dd style="margin-left: 1.5em" id="section-3.3.1-5.6">
-              <p id="section-3.3.1-5.6.1">Defaults to empty byte string. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.1-5.6.1" class="pilcrow">¶</a></p>
+<dt id="section-3.3.1-4.5">"recipient_extra_info":</dt>
+            <dd style="margin-left: 1.5em" id="section-3.3.1-4.6">
+              <p id="section-3.3.1-4.6.1">Defaults to empty byte string. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.1-4.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 </dl>
-<p id="section-3.3.1-6">The Recipient_structure MUST be serialized deterministically in accordance with the Core Deterministic Encoding Requirements defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
+<p id="section-3.3.1-5">The Recipient_structure MUST be serialized deterministically in accordance with the Core Deterministic Encoding Requirements defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-4.2.1" class="relref">Section 4.2.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.
 This requirement applies only to the Recipient_structure itself — the array and its four members.
-It does not extend into the byte-string wrapped protected headers.<a href="#section-3.3.1-6" class="pilcrow">¶</a></p>
+It does not extend into the byte-string wrapped protected headers.<a href="#section-3.3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="cose-hpke-recipient-construction">
@@ -1616,81 +1616,97 @@ It does not extend into the byte-string wrapped protected headers.<a href="#sect
           <h4 id="name-cose-hpke-recipient-constru">
 <a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-cose-hpke-recipient-constru" class="section-name selfRef">COSE-HPKE Recipient Construction</a>
           </h4>
-<p id="section-3.3.2-1">This section gives the steps for constructing a COSE_Recipient using HPKE.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-2">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3.2-3.1">
-              <p id="section-3.3.2-3.1.1">kem_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-3.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-3.2">
-              <p id="section-3.3.2-3.2.1">kdf_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-3.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-3.3">
-              <p id="section-3.3.2-3.3.1">aead_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-3.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-3.4">
-              <p id="section-3.3.2-3.4.1">pkR: The recipient public key, converted into HPKE public key.<a href="#section-3.3.2-3.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-3.5">
-              <p id="section-3.3.2-3.5.1">info: Deterministic encoding of the Recipient_structure. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-3.5.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-3.6">
-              <p id="section-3.3.2-3.6.1">aad: SHOULD be empty. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-3.6.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-3.7">
-              <p id="section-3.3.2-3.7.1">pt: The CEK.<a href="#section-3.3.2-3.7.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-3.3.2-4">The outputs are put in the COSE_Recipient as follows:<a href="#section-3.3.2-4" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3.2-5.1">
-              <p id="section-3.3.2-5.1.1">enc: MUST be placed into the "ek" (encapsulated key) header parameter in the unprotected bucket.<a href="#section-3.3.2-5.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-5.2">
-              <p id="section-3.3.2-5.2.1">ct: MUST be placed in the ciphertext field.<a href="#section-3.3.2-5.2.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
+<p id="section-3.3.2-1">This section gives the steps for constructing a COSE_Recipient using HPKE.
+Implementations may perform operations in this section in whichever order they choose, so long as the same bytes are produced as a result.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-2">First, the CEK is generated, usually using a high-quality random number generator.<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-3">The CEK is used to encrypt the content.
+When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
+authenticated data structure.<a href="#section-3.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-4">Any bulk external data that requires protection should be handled at layer 0 using external_aad.<a href="#section-3.3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-5">Next, assemble the protected headers.
+Note that they will be wrapped in a byte string.<a href="#section-3.3.2-5" class="pilcrow">¶</a></p>
 <p id="section-3.3.2-6">While the "alg" header parameter is not strictly required in the COSE_Recipient, if present, it must be the ciphersuite used to specify the HPKE algorithms.
 See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.
-If the "alg" parameter is present it MUST be a protected header parameter.<a href="#section-3.3.2-6" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-7">The protected header MAY contain the "kid" parameter to identify the static recipient
+If the "alg" header parameter is present, it MUST be a protected header parameter.<a href="#section-3.3.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-7">The protected header parameters MAY contain the "kid" header parameter to identify the static recipient
 public key that the sender used. Use of the "kid" parameter is RECOMMENDED
 to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
 key derivation function of HPKE.<a href="#section-3.3.2-7" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-8">When decrypting, the inputs to the HPKE Open operation are as follows:<a href="#section-3.3.2-8" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-8">Next, construct a Recipeint_structure as described above.<a href="#section-3.3.2-8" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-9">Next, the HPKE Seal operation is invoked with the following inputs:<a href="#section-3.3.2-9" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.3.2-9.1">
-              <p id="section-3.3.2-9.1.1">kdf_id: From the "alg" parameter ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-9.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.3.2-10.1">
+              <p id="section-3.3.2-10.1.1">kem_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-10.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-9.2">
-              <p id="section-3.3.2-9.2.1">aead_id: From the "alg" parameter ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-9.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-10.2">
+              <p id="section-3.3.2-10.2.1">kdf_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-10.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-9.3">
-              <p id="section-3.3.2-9.3.1">kem_id: From the "alg" parameter ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-9.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-10.3">
+              <p id="section-3.3.2-10.3.1">aead_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-10.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-9.4">
-              <p id="section-3.3.2-9.4.1">enc: From the "ek" parameter in the COSE_Recipient headers.<a href="#section-3.3.2-9.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-10.4">
+              <p id="section-3.3.2-10.4.1">pkR: The recipient public key, converted into HPKE public key.<a href="#section-3.3.2-10.4.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-9.5">
-              <p id="section-3.3.2-9.5.1">skR: The recipient private key, converted into an HPKE private key.<a href="#section-3.3.2-9.5.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-10.5">
+              <p id="section-3.3.2-10.5.1">info: Deterministic encoding of the Recipient_structure. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-10.5.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-9.6">
-              <p id="section-3.3.2-9.6.1">info: Deterministic encoding of the Recipient_structure. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-9.6.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-10.6">
+              <p id="section-3.3.2-10.6.1">aad: SHOULD be empty. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-10.6.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-3.3.2-9.7">
-              <p id="section-3.3.2-9.7.1">aad: SHOULD be empty. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-9.7.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.2-9.8">
-              <p id="section-3.3.2-9.8.1">ct: The contents of the COSE_Recipient ciphertext field.<a href="#section-3.3.2-9.8.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-3.3.2-10.7">
+              <p id="section-3.3.2-10.7.1">pt: The CEK.<a href="#section-3.3.2-10.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-3.3.2-10">The plaintext output is the CEK.<a href="#section-3.3.2-10" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-11">Any bulk external data that requires protection should be handled at layer 0 using external_aad.<a href="#section-3.3.2-11" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-12">The COSE_recipient structure is computed for each recipient.<a href="#section-3.3.2-12" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-13">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
-authenticated data structure.<a href="#section-3.3.2-13" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-14">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-14" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-11">The outputs go into the COSE_Recipient as follows:<a href="#section-3.3.2-11" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3.2-12.1">
+              <p id="section-3.3.2-12.1.1">enc: MUST be placed into the "ek" (encapsulated key) header parameter in the unprotected bucket.<a href="#section-3.3.2-12.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-12.2">
+              <p id="section-3.3.2-12.2.1">ct: MUST be placed in the ciphertext field.<a href="#section-3.3.2-12.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-3.3.2-13">The COSE_recipient structure is computed for each recipient.<a href="#section-3.3.2-13" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-14">Decrypting is largely the inverse of encrypting.<a href="#section-3.3.2-14" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-15">When decrypting, the inputs to the HPKE Open operation are as follows:<a href="#section-3.3.2-15" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3.2-16.1">
+              <p id="section-3.3.2-16.1.1">kdf_id: From the "alg" parameter ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-16.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-16.2">
+              <p id="section-3.3.2-16.2.1">aead_id: From the "alg" parameter ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-16.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-16.3">
+              <p id="section-3.3.2-16.3.1">kem_id: From the "alg" parameter ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-16.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-16.4">
+              <p id="section-3.3.2-16.4.1">enc: From the "ek" parameter in the COSE_Recipient headers.<a href="#section-3.3.2-16.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-16.5">
+              <p id="section-3.3.2-16.5.1">skR: The recipient private key, converted into an HPKE private key.<a href="#section-3.3.2-16.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-16.6">
+              <p id="section-3.3.2-16.6.1">info: Deterministic encoding of the Recipient_structure. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-16.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-16.7">
+              <p id="section-3.3.2-16.7.1">aad: SHOULD be empty. See <a href="#AddInfo" class="auto internal xref">Section 3.3.4</a>.<a href="#section-3.3.2-16.7.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-3.3.2-16.8">
+              <p id="section-3.3.2-16.8.1">ct: The contents of the COSE_Recipient ciphertext field.<a href="#section-3.3.2-16.8.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-3.3.2-17">The plaintext output from the HPKE Open operation is the CEK.<a href="#section-3.3.2-17" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-18">Any bulk external data that requires protection should be handled at layer 0 using external_aad.<a href="#section-3.3.2-18" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-19">The COSE_recipient structure is computed for each recipient.<a href="#section-3.3.2-19" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-20">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
+authenticated data structure.<a href="#section-3.3.2-20" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-21">It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
+attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
+may still utilize recipient_aad for other purposes as needed; however, it is generally
+intended for small values such as identifiers, contextual information, or secrets. It is
+not designed for protecting large or bulk external data.<a href="#section-3.3.2-21" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-22">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-22" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-design-rationale">
@@ -3446,97 +3462,97 @@ b3191ea896162718d2ddbc97097e235838785cb877d73f034edaaa14d66dc3e10bc2\
 HPKE-5-KE with default aad, default info, default hpke aad
 
 Ciphertext: \
-d8608443a10103a10558204ff93b1cf652bd6b3a78aa66aff3cf0763c4607fec098d\
-0ca74a6036f299ebb2582146d06eb19d65874a09970bcd52bca5d1ae70aef68302b9\
-5771ca57914b3100bcd4818353a2011833044d626f622d68706b655f355f6b65a123\
-58384099e311ea6ecb8c1bb579b3192634863e32c15374551b7cd76f38278cb25065\
-4fc7bd8d5d10d3bf020f5338fc89cb27b1be472ef2687617583092b0973eecebaefc\
-480ad5e606d6def1e78d22ee546831e49df7b91382b5d34e41e9262303525bbbe921\
-                                                         afce1d3b4c25
+d8608443a10103a10558205972218d130ebd50902f975638867f4393a02ad5fec6ac\
+ea3b5acc14b99e7d6f5821e0d433a3f90df4a6bf252d8375c02ed940ae6321ac1168\
+65e8a698e3e9826ae00e818353a2011833044d626f622d68706b655f355f6b65a123\
+5838a5617b199ab5a27633ca063f171039bbbbe50e1563630270f5608b1c80b3add4\
+658ee958f71bef28abe39e20231df1b2a5fdc6e5c7cd4c4258302f8f8d8b1f3bc43d\
+53dbb260c3930310300d4ed07d04702c4e2114e7fcbc27cffe87c754455bb52c2e0d\
+                                                         77ffc49f3424
 
 
 HPKE-5-KE with default aad, default info, external hpke aad
 
 Ciphertext: \
-d8608443a10103a1055820ee0407489df27075ea6c15d2c798ea0610e969b18d3d30\
-1867abfc60d14c571f582102485c143d33f60e3e3e6bf52e24a317991ef505085bee\
-6b593d85bfd763dc7593818353a2011833044d626f622d68706b655f355f6b65a123\
-58381e027e0f01b9ce80513f2945e81582922f593186a4ba6f015bea962a5856e321\
-00552f29a141e7ea288f379a2a3e6a6204ee5cbc37970c955830082a8b17e3e65548\
-20c31107b8b50d97caca42f6fde213a4c7494257d019e7d3bb00410301d3113d8114\
-                                                         6f64b1d649f7
+d8608443a10103a10558200ea58687a765e595948d0a4f863ffe895ed35afcc292f8\
+e5f09a59666c018f87582153e80b1f3f78c46d298c2d969bb438269f56fb0db3f8b0\
+dfbc3ce64d9bdb910905818353a2011833044d626f622d68706b655f355f6b65a123\
+5838d9d4ce1da2bb47ce71c092855f2982a108793dad43b58ad4f378c35e50ae9601\
+24ec906f02e959783559b189d73b4245bf6d12a291a66f2b5830816961b03ac6df31\
+f593d4e3b8cca193e330d5ad273cd8e4fe1355c685c0b2a804fd8b5871346c3a640d\
+                                                         f51e2885aafb
 
 
 HPKE-5-KE with external aad, default info, default hpke aad
 
 Ciphertext: \
-d8608443a10103a1055820add0563a9487a69fd84c520c1b403ca469bfd31b3888a7\
-badf1ace338489cc9e5821e5f53fb6e1baeb79c1e42bc88e414d25bb0deecb3fb75b\
-5e5ccc71a5c514b1b33c818353a2011833044d626f622d68706b655f355f6b65a123\
-5838a1cb8855ddead0ae82b4e87df4b399b7197b2f06d5ba0f4b053b104b760db9e9\
-b2d53d924d403bb243cc2fa51d9d0eabf20150db69ad419b583014330834835b5951\
-ee83fd58ebea9bb375ec5df0b373eec65c15a1f59ae7fddc8d16eaf11f67d98dcf4a\
-                                                         b833b21e2669
+d8608443a10103a1055820febe825f97612663cb5b37322f6d27a4a69cfb984b7703\
+91db1ddd4351c565ea582163f837fa3fc30525c6dcd8fd38b0fdf4cb0732726d4e48\
+479faf4cd19c106cb61d818353a2011833044d626f622d68706b655f355f6b65a123\
+58386d8ab86baef7eb8b1b4b9812b8ee20de9bb7665db246a4058d557ef7b5a17537\
+8825d6c3878cfe4cded34a63cd3f23b0c0a486fd742824af5830a5ff5e55b20975bf\
+b4288eed91aae3181599c9444f56bd7d845e537f75e0001b860939ff406e3de872af\
+                                                         20939444fb97
 
 
 HPKE-5-KE with external aad, default info, external hpke aad
 
 Ciphertext: \
-d8608443a10103a10558204427ccf295f6163509a646b90fd9c40ed7a0fe9384cb10\
-36a17b813b237524f2582103723c06533e16224e98d151063d708c7dc4c09b53b872\
-346c6083adee8b2fb43f818353a2011833044d626f622d68706b655f355f6b65a123\
-5838d6b7013b4c9f9b44ea55d9edaec03be7591cda435670066f3878c89ea5d49005\
-f683d0dc1a8c85dddd9a79c8ff5993876b25dbc5e1231b275830ddafd2a0712a6845\
-f11970adaf619f844eff75c8a381f80533c393fc5dc114b83a902c672af3d5390a4e\
-                                                         478ec6897ede
+d8608443a10103a1055820e651daaf30ef27e8898bd2f0f71eb81105a65ca9d625de\
+ba0ff73efa5518a0fe58216f7ed02b0a8c3be5f2e2d15bd58c357c65b688cace33d2\
+e50e7a5e48a20b1612f2818353a2011833044d626f622d68706b655f355f6b65a123\
+58380f782ab1db5dbdff4310356362f1fd48c0cce05f4cf5f10ed17dd4ef5489513a\
+63d3f357875f8d4f80c8c44afcb46897b623ef3909a043e358304fdb1f7cc531e49f\
+f9d6fb934a0a56b0c39fb161802304ee2d6aa2e038b7a1f604c643cfd3ba046f8557\
+                                                         9e06ad7e58db
 
 
 HPKE-5-KE with default aad, external info, default hpke aad
 
 Ciphertext: \
-d8608443a10103a10558208919fd6f31b0cbbdda4875af585af67e0c0823cef6d0be\
-cd6802ea3ecef0c9a55821fb88175fd00fdda16def7f4110899c4f9017c63ec4b375\
-73f0dc4a97b6d9527b22818353a2011833044d626f622d68706b655f355f6b65a123\
-5838203f42bbdb8cfeb59f7c05a1580a885554f5ef8848c76a04a011b2b9521f08a4\
-bf7d159b8f01762ab304ff57637400acc22d62746a942ffa5830ad7cb3c1c79711a1\
-1aff71f09a29228341485376d569fae65673c5a0ba0a4dbd5b7904ad2cea0ce1aa2d\
-                                                         af37adc25e73
+d8608443a10103a1055820bc667687a2c9ba3a67811138b684871cc443c3a656602b\
+8c7fa229e73fd873f358218bf0c9204e988d76554b1195baee96da10ac58867a1daa\
+775eefe9710307bc4cec818353a2011833044d626f622d68706b655f355f6b65a123\
+58380e5096bad10fa4fcdd440552c14da49d819eb5fb2dd333ee59cfa845f51406d7\
+cab97f61a5c852b3312fddbdf347cdd66d0ac3fd6aeba8825830a961291467b70f5b\
+a8e1c02417d0048f3f2000ac4dc11722d8cd88b75e0dbf7c084740adacb62fb7b10b\
+                                                         8b15649dba17
 
 
 HPKE-5-KE with default aad, external info, external hpke aad
 
 Ciphertext: \
-d8608443a10103a105582085aa9e38bdbf1f258426becc819a929c55e719cc75227b\
-a515ae09a8267bf4925821f5d3bd70c82cdcd96595efbc671919c2698af5ef96667a\
-b16894f6dd7ec5dc6a95818353a2011833044d626f622d68706b655f355f6b65a123\
-58384d97b5bc0f662d782b9122f113ca655d156674d3381b45f61a55f6f670771bba\
-eff2187824469740f49ed0ec5bcebcf991851bd41fa95d5858306e0bd0c92cd5e4f6\
-c74a34319a4738051e96cc3ddb69b6ef8dc0710918d02940c10688cd828b303b4b35\
-                                                         95d8bf2c0056
+d8608443a10103a1055820330886cc981a8fc93e5f508127f1adfc8d4db541d3618c\
+887ddc4f8ac952b78c5821652e76d1029e9749fdc28bea647b1e3e3d62bd57676cfb\
+e857b84703a1c5a07b15818353a2011833044d626f622d68706b655f355f6b65a123\
+583846c302c3731504388199bc3e885b9fac2171f59c1f9cafd8b909f6b5f7d3360f\
+261101400b33c8c10b5be896d2b2bf2dc324018be31a46175830b11375f3eac8a4f5\
+69ea3e6c31f8a27deeb029d54597496db6fbd2e853b59e1ef1fc30c312e7d0b6f482\
+                                                         558d95f9bb5c
 
 
 HPKE-5-KE with external aad, external info, default hpke aad
 
 Ciphertext: \
-d8608443a10103a10558201806b9f94e356ed2f2c10b0822ff35b1504dba0b5a1db8\
-af9b8e0d5c3792068058210a5eabd5d60b81eeff382c7598898e4fca0efcad5b27b3\
-cdc05ae412b771495d4f818353a2011833044d626f622d68706b655f355f6b65a123\
-5838e3fbd237c85215a1d247176714e27f198a0f7a76e83f5116c97b218b5204c300\
-06dd08abf94892a44bf00a358f67822d3bf92d331b6430ba58307fd5803d162ea9ea\
-adb8fc37b327d6b4a526a07ce4a13697195579ba6d7230f444568d1b731443f3bf6f\
-                                                         f5d4f2c4e375
+d8608443a10103a1055820968e5870eb26e9e8777dafb83becedb4c9ee1ac75e57b9\
+635739e7ba96925d7c5821d65d8d5bb8922d7e16a6ec3a0a2c7b6432c569510a9469\
+53c891442704e3dbba78818353a2011833044d626f622d68706b655f355f6b65a123\
+58385545cbe1853c1c43e456f5fefd73004bb1d21684970adf8f8fbaa9681b835767\
+80d138948bb82b1094fdbac6c3388cd8247acf1493e969f458306c2f2c32734dd4f6\
+af964e9546d0a642107831b5c4bbf0b8edb87e38e3755e2da85b1e8f14097d51159b\
+                                                         7df7cafc34f8
 
 
 HPKE-5-KE with external aad, external info, external hpke aad
 
 Ciphertext: \
-d8608443a10103a1055820de43c2aa8af6fcaf531231f6403cee6800fe1e3d0fc614\
-7e090c1595fe8467ae5821f29e9f566935b3ef34e043891c935094dc1fe4984dd30a\
-ac5877f98b0759055303818353a2011833044d626f622d68706b655f355f6b65a123\
-583803884f02e4d336a193959844a73db0b95f2511121886dc7bf82b945f8337c025\
-56efa96811b63cba029b13c60e9581a38366d6366177db4e5830eb8e0f189adaaf28\
-7119963680320da63ee1dc219982e7145cbef6437472b977344bdf141ceac4c4521b\
-                                                         cd971c154ee1
+d8608443a10103a105582012c4b7c5277a67a1f0cd348eaead14678fbb47428daebc\
+43426b5630bbc08bbc58217d6af626389f2eecf2cdcff8d3716033aab7a922a1b3e6\
+ac66edead54f7c451284818353a2011833044d626f622d68706b655f355f6b65a123\
+583840a712d7894f87c5c5dd263a97bafb6fcf06e22e9ed801a1034aada201fe9c1a\
+49e8e073746f6c713306f00c4335ebe8c9159910c659610c58303b5eefa35efee50c\
+73134120b7f24bfe68936b628c782912086087441754d408fa877cf15e4374a8c3af\
+                                                         19a048df2896
 
 
 HPKE-6-KE COSE_Key:: \
@@ -3550,89 +3566,97 @@ ee2633926596788a41b5ff5368733b7d9499c391b08ed7c1c3d750c4c5af2ff03a44\
 HPKE-6-KE with default aad, default info, default hpke aad
 
 Ciphertext: \
-d8608444a1011818a1054cdc91705d85a0564634c28b9458210a72029b5ce3c44b85\
-28862f5f5764e438c7d723cd412bf65f681f7382b2084ecc818353a2011834044d62\
-6f622d68706b655f365f6b65a1235838e2d1ffe83d043f7fde6f14658e6ea3827e57\
-8bd060def6491ada7311a260c4b3f0734b97d3c3b8cd50c6f667df518c3d6a9d60c1\
-d2563e8058300dc6bf0ce7314032e954f5eac21d5646b3d8a0f50a1beb3414da3e60\
-                             333d15b9edc7b8f9615bbb411b053268968b0be3
+d8608443a10103a10558202b413539e41b5be049097d8c7336c564da6910493f34ca\
+c7be758d9be0bbc2a45821895a2fe91419e7f4e56cdad089d97b4313fd4d64b50751\
+aa35b8ae2a5a1f0f49c0818353a2011834044d626f622d68706b655f365f6b65a123\
+58389e4bc52535fd7d7de199cd9d3bc1ead38132ce559491daa8291ae62e27a305cf\
+a0e5301c44ada163e8c6d003cc201d84d6e56a0fbbff09aa5830386b65b7d4658bb2\
+cc1cb93e05d94685cceec0f155d39f46b74fd67db0ede3aaf653f5d44a79b2bc0b5c\
+                                                         5c186f42a0e4
 
 
 HPKE-6-KE with default aad, default info, external hpke aad
 
 Ciphertext: \
-d8608444a1011818a1054c161f8d0c535147d452345f7b582105686a0762c213b2ab\
-775b71f5752e91a14ea742afc9be7d4dcef77408cbb3b474818353a2011834044d62\
-6f622d68706b655f365f6b65a1235838a06b9b5d98702887a49304d2cd174da29014\
-08c3a012cbc97c8548afd5e113a8fbbafa02df731f4f9ec314aacb389766defccbe5\
-087da31d5830395054dceb31dbac2381c37bf04f1db0f79b184482fba8f92a7ce31c\
-                             b4fae7ebd9c4f52a1730ca3cb76695af047ff6cc
+d8608443a10103a1055820c38056dd0acc795392719d75883a9efa306688289e317f\
+bcaa907a593ef7fbd058211d3a68fca3448e77c0350164e7ccef263ddf6e52c00b5d\
+7467137987d9322b0edd818353a2011834044d626f622d68706b655f365f6b65a123\
+583873272b13d50c86ade06ad70f4067d8b9dd546dea6699cb8937b79106a2d178c6\
+e3dab8b403b60a05efa417ddeb14e97dcb8b46c866ec027458302ac2d004b9a0a638\
+932cb41dfcf2980e731dc1e164e78755e54be305f821130e25bfd8f9e423132f9984\
+                                                         e587ff58aea0
 
 
 HPKE-6-KE with external aad, default info, default hpke aad
 
 Ciphertext: \
-d8608444a1011818a1054c2eaa13b8a25bf8e0971fbaaa5821abe79da1ef9aa997ec\
-00bcfbad70283b1c82874557c74f6d411742f0f35534c232818353a2011834044d62\
-6f622d68706b655f365f6b65a1235838c88eb6e1e4a8901cdda6340b0f6f0a22aef1\
-eb93b8c9b0396e0390e4e11ceace150773c38614076b4a65890cfd87376117e92925\
-80ce9ba55830a1fc1274c68b001884bcc2c0bacfcd1c16ae3bd12366edf28da11adc\
-                             ede0a5ba7b02550ac305f74e0c2e6993eb980617
+d8608443a10103a105582054037148342b2929d4126a1daa1a5cf49963f07f4bcfc6\
+b125cc9569315d428158212c12be5f1b14cb0be9cbc7f89e7d17cf6332f978ed3ff2\
+8e6ecf4177b439911f1f818353a2011834044d626f622d68706b655f365f6b65a123\
+5838fe5677121bc5b939bd1f3183d63ca7a1eb9834655073980f22463e0f4347c823\
+ae7fbcb106311bfe1862b5d8fb09be30222d73a1aec51a6d583092c3aeb223577ce7\
+0c4eb6d3fbdde2507ab0eb66684450f313a6098782bc2b7042880301438d9d3b1a8f\
+                                                         65b8103a611c
 
 
 HPKE-6-KE with external aad, default info, external hpke aad
 
 Ciphertext: \
-d8608444a1011818a1054c777589e4029d40667c3f5113582178d2b8e3a9b4b7a676\
-0a5d442476370bb171134189415ce45957c2325ad5e6e8fa818353a2011834044d62\
-6f622d68706b655f365f6b65a123583805ab0e5f240b5a0add796adcf658a865eac3\
-b661b19b45ec84d19d87eb4ce789f11e51a6641907d71a79a7e9e00372f8b03185a0\
-aaafc23158303e0e1cf5cbe04cd7c99c804ab120374f4a53aa31cf867cdc6222e1c3\
-                             3329e271e2b10723e09c3e58e0d5440ff1674877
+d8608443a10103a10558204717640f13442de964fe2df975d1f5b9049338cdc79914\
+3725983f3aac5e3bc45821c259895cb58581bcccb17204a6b99ea05cb1c556420025\
+c4487f7df0d1a7ca89db818353a2011834044d626f622d68706b655f365f6b65a123\
+583835b83dad83bce401ecbc78215d29c362be31727d86d14d1a983ee709f9cf23b4\
+4d1be7146c2ebab629d5e9d3a78e7ddc3b2ae9490ffedb355830652b1c2e54232fd6\
+7da865383a4196b3081d6af8f3dce4cfb2cbf74cb631df27c4180e081c4456df72e3\
+                                                         06b033871415
 
 
 HPKE-6-KE with default aad, external info, default hpke aad
 
 Ciphertext: \
-d8608444a1011818a1054c79c3898eee0f5d0c139ea9d1582122c443c0fb066dddd0\
-05678ab35d2409e37145f3a2c660212b307c567107d481e8818353a2011834044d62\
-6f622d68706b655f365f6b65a1235838c0d3df69fd572cc5b4ea701c50d3251b9aa2\
-8620a0885b9377b2287c52ac6a25381921c735c82f0d471ccf8eff4f7096336db9d7\
-6231c8fd5830152b3a5f3833c4aed2d9d5a8e15b782543dc84709ac4706379eee3e5\
-                             e334b0b9f56aec8770765c7b26bde266af673208
+d8608443a10103a1055820cf185363d088aa84b66d952d905d67801aac1692a51fd7\
+0c5198bfec655cc17958219df95a1b0832f6ba161f831da0511904d075628c42d88b\
+d96c6d051edd67d7082f818353a2011834044d626f622d68706b655f365f6b65a123\
+58385148182fcb71312bda648d9a7a4c4dd74ae840a0f0617f2d4b89c834eaa55b4e\
+9636334a53bb1821e0fa15c38590c75fd2e09a5c678c6f0758306a9450456cd531a0\
+b2d8215f7c6f67b8d8fee596d5093f9ae8e3d0fa4d606c6b9c06fbe22cc186807e20\
+                                                         816d411a3c8c
 
 
 HPKE-6-KE with default aad, external info, external hpke aad
 
 Ciphertext: \
-d8608444a1011818a1054c342275d497bd01b56282649c58219cedf5c89b5f3e1bca\
-d64725c0d90a2184eedd1e8b7138b80d8c0f5cc1abf89e33818353a2011834044d62\
-6f622d68706b655f365f6b65a12358386e741c2825336f78c666cc7ad296920b25c1\
-1b6d482b235ad243172ce301dcbcaee23a076beabc6c282f2ba757d50fec9c6af0d0\
-706d98275830e89f61c2fbdafb5573cfd12220dbd4545fa54b4d1412833db1b56ab4\
-                             84f486164138d9b84a2b16bdba3c7993ed8bd4a6
+d8608443a10103a1055820561f96247e2ea00c85aac63bbeb1ee480f21ab3e9ebf2d\
+fc54c324e1440b8da158216ec7606341f7ca01b47a12f96b14b592a19acec35fc857\
+5a14e77c1120f62a9ace818353a2011834044d626f622d68706b655f365f6b65a123\
+5838f60e9ef789715248f9f31fb9436aecee7a2fea8799fe436a97b5ad25b5dfbb69\
+7f9965e6f446e91fcffc3ff5e682fcb4e7a4bffa596f0a395830dee903c258f9be6e\
+9019e2663c97b5912bac14ec09f814b9501dcc29c7211a60b0b15ecb21ea434c38dd\
+                                                         8363d2783e3e
 
 
 HPKE-6-KE with external aad, external info, default hpke aad
 
 Ciphertext: \
-d8608444a1011818a1054ca9fa34a4e5f1846e9afeb0a258219e4b6d9512d4d4fde5\
-c5ca94d3babd478132a1ba3f92448fd25dcd26a483c2cb25818353a2011834044d62\
-6f622d68706b655f365f6b65a1235838a23c08691c61200eb23cf535ba0f0252f7f0\
-09f9ce24f7df7ad71a974536a01ff52d2ba12345d74bf751fd5382166aed53b2a786\
-35d4aa7d5830691f2d587f1748e87ba11dc1c10dd7602712789e85eaf63990d36a00\
-                             5ceb9041c119c8629d0cb366a8aafe0473a56b4f
+d8608443a10103a1055820dc036988cb1a9f5c3c2ab7320fd3a38bacb9c23b034172\
+c59fbeb026dc9f744658210c6ba63dfb087141b507a55070900ea3ae097aaacd3a40\
+0c83148f55e85134032c818353a2011834044d626f622d68706b655f365f6b65a123\
+5838bdc971ce40e3e124a0145a622e1ec19182bfdc0cd66fbf8f6ff8fe7b43af1363\
+c26be033563da00e96c8008f8804884dff825beacc89f63858305a3af658bcc81a61\
+5f025485efd9925e243d9d3331f0a0fd1a65fc6f28a0895bc30eabac5cdb11e6cf82\
+                                                         204d096e7489
 
 
 HPKE-6-KE with external aad, external info, external hpke aad
 
 Ciphertext: \
-d8608444a1011818a1054c226a8d618d7ce2f1a116e7a8582120c2989b87f908e508\
-443d80c3c7d35c3860da0fdf77edd51846874e38153d9b43818353a2011834044d62\
-6f622d68706b655f365f6b65a1235838ae833f2ab29229c1fe66f025d30facde2e87\
-71940275f0b67934cad41822a7325ae9669f3cf8dc11c034c9105d67188a40d0343b\
-ce70bcdd58301e78d4468b91719a6f1e6f6a2e98efa55f92a0713984e4fa677f44f3\
-                             9acacf65559af142b5216786588123e8fa3d73d8
+d8608443a10103a10558209bedce93fc7ff55e06af978546a3b48e5a4c46caf3c1dc\
+d70e14529d98c0278a582144091e536a28a763f4441b7432ea884c7ec2ac0b68e938\
+c8de8c05c5009e82d6e2818353a2011834044d626f622d68706b655f365f6b65a123\
+5838ed5e7fdd82a824dc43c87a72f84943d3d7ea70331dc513ebaa11136fce401eee\
+755106b7498ba2dcbf6180677b735796bd9ed654c23ac2215830802d61870ffd8238\
+13b63c670db3319374b040e6de9a9b14015d2d2de1601f13ddfb6e054c78e4bb3512\
+                                                         7be2bb775803
 
 
 HPKE-7-KE COSE_Key:: \
@@ -3971,37 +3995,37 @@ fe79f6fdb9f49910274aa184855b67850ab2a53b39b131d07bc3d4e80a4f83b1c9f8\
 HPKE-5 Encrypt0 with default aad and default info
 
 Ciphertext: \
-d08344a101182ba2044e626f622d68706b655f352d696e74235838a7887685085eef\
-bcf8230ce60ab6d18c01044807413f38ef1203b73b8083d37c3474fe2e822945c77f\
-a011a4c808f55fbed005c8e90a90e4582101dd9b944c4e051fa9214aa99296a83f81\
-                                     c04642f1f6aecd6f9304bbe5a92954f8
+d08344a101182ba2044e626f622d68706b655f352d696e742358388f5af58e1f0db4\
+43f7404b1ede00a32b977cd3a699b46928f5c571c306deed1f2d859381c0b6b6f666\
+a78514b5041fb2e7f694d5692598ec58216a365c1bdcac86157cbacf68ac46d89597\
+                                     440a775607af455e754d42f98b197336
 
 
 HPKE-5 Encrypt0 with external aad and default info
 
 Ciphertext: \
-d08344a101182ba2044e626f622d68706b655f352d696e742358388cde9ba79de945\
-37b33e121f3c8d3c5a720c9d3e5eaad0f0e0f84e323d592d20afa87a09657765d5ea\
-57b27659366cfde26a80d817e5b6ed58213794aa4fbbc9807f953c23eed30e575d16\
-                                     e83b488a521b03a7e737ce9a6f7e90e4
+d08344a101182ba2044e626f622d68706b655f352d696e74235838981878c54475dc\
+1e97661abdb4189c05b5063564297b3e6ac252412720eaf098cf854555ac70003537\
+4a0cba8abc3bdcb70e42d202f55410582139fece2ab3dd76bb900ebec9c8436ff8b4\
+                                     e129499e10c703fce9099b962a2baf2e
 
 
 HPKE-5 Encrypt0 with default aad and external info
 
 Ciphertext: \
-d08344a101182ba2044e626f622d68706b655f352d696e74235838ca713a0271741c\
-ac564ae35b5278b343ce9b3f0f2a5379a0f20f6f759b682ad9884926185e7f2fb9db\
-a541bc2a41034392e430c3f429f16a58211b393d9ba77bf79efa231d87033cf8a407\
-                                     ba249891c098abf834b63e222aa744b3
+d08344a101182ba2044e626f622d68706b655f352d696e74235838cfc56e2a7bc6e0\
+968b29a13c995a2f1d6c14096facae8f6c4de89e5f59baf0c25dd5547034c2cb157b\
+275b0f7dc74837b65f4092bc6bbfbf582162df9346e36efb8d4a3b55dff58ab2095a\
+                                     31b5de9973dd51f9c8859902566c345d
 
 
 HPKE-5 Encrypt0 with external aad and external info
 
 Ciphertext: \
-d08344a101182ba2044e626f622d68706b655f352d696e742358388c4b45493d8b3a\
-5cd88bb3022e3e0a3777ac3b5f480e448b509089bb801608654a984e85200a70476f\
-206b0bdf045063a57f472d63c69b1a58212a35247d2dd06d3bcdf02f6d26e751420e\
-                                     a966907612e4431f44d7f792e91818a2
+d08344a101182ba2044e626f622d68706b655f352d696e74235838e7bfbb375d9d1e\
+c703b8333d50f5bb62e5a8ebe093e207cc7f65b102f03706bce492b83be7d86b61c0\
+0863e96edff00888dad9ba39e60143582112636db0edaa6c58de1b9029084a0dfb8c\
+                                     26b09f3e7bd8d0f962a1e8bac74f71cc
 
 
 HPKE-6 COSE_Key: \
@@ -4015,37 +4039,37 @@ b03564a2672e12496f0f7a0d0576fbbdfb287b5a868e5b569a55b7d3765e5685feb7\
 HPKE-6 Encrypt0 with default aad and default info
 
 Ciphertext: \
-d08344a101182ca2044e626f622d68706b655f362d696e74235838a17baa842458b4\
-d082f042e5598e072bbe19b9970963ca0428a577add73c7a8d275e63f53971f4ba96\
-bf842201d1c4776122dfffbc04e6cc582157e46f77fd6c2f2cab3d0810d67b7eac73\
-                                     41c0726ebaf978a8fafda78f295fad0e
+d08344a101182ca2044e626f622d68706b655f362d696e7423583805b7dc9742e800\
+cda70b5bf55e2cfafb1414b630dca621999897a223c6564295328f4d913deff488d7\
+a5ac70b089679e808b1b9ecf18e43458217bba22205a379a6af9cbc37dc608d0571c\
+                                     a8f0146e4ddbe0bcacb5ffc259a3325f
 
 
 HPKE-6 Encrypt0 with external aad and default info
 
 Ciphertext: \
-d08344a101182ca2044e626f622d68706b655f362d696e7423583851e914d34210e5\
-fe233283c2755b6a42cfb1ada1139d9ece7664e57336b03892bdc67cec396c13dae4\
-37801cca5c885901fb616a96166ce75821fb3979eea60600d09bb76b4f3a5596ad5b\
-                                     194b21e713070fe7b0fa1443b809f65d
+d08344a101182ca2044e626f622d68706b655f362d696e742358385b964c5c2e9a12\
+226b649ceaf964a4e50a8fe428fb288756c59cb92bd03d4c0eaa8c2104907cb8fe74\
+87c14e4ef7ce11f39cd4d1f1b209d1582151c6acdfdc65920d6d047a7d47acdab642\
+                                     493698a89444c5f32e6888047611c48b
 
 
 HPKE-6 Encrypt0 with default aad and external info
 
 Ciphertext: \
-d08344a101182ca2044e626f622d68706b655f362d696e7423583842ad024c1f764c\
-bb797b3558d9c8ed9c3559c65870620c7b56f3367fdc65bc7b696d96411b57cd47a1\
-56fb945a939aca63f1a168f1a7d96a582197c449697f868ac6a708a8f9a1b1c32537\
-                                     2edf6333c87e8d5f1853e8599a7848d2
+d08344a101182ca2044e626f622d68706b655f362d696e74235838f601104f623603\
+38e929527dba71011acc9ea59ec3fe3fb5cc338a3ce03b75664111ac030a6260091a\
+80a4926447010c97b6079bd6cd33b75821fb8851b4c848830717589eedf46fc7dcd2\
+                                     3af1de491a4c2273918bb78e7d8e232c
 
 
 HPKE-6 Encrypt0 with external aad and external info
 
 Ciphertext: \
-d08344a101182ca2044e626f622d68706b655f362d696e742358380a100686fd1f04\
-0155a64da572a9e9109487a55c7fed63c68c7bb38311a7b9c48d1555e006f0db2884\
-bb4306703a9c5cb7c4a0e4afd1297b582199c40b5fcba3fa474ebd9f44326e308b46\
-                                     2a2171a5c50294329284f0e333ed5f15
+d08344a101182ca2044e626f622d68706b655f362d696e7423583869e66f4b70a130\
+6856a7f09e5d8b41fb808786c30a54e1627f2f65c33ce66212f0c2e5bf769391b7fd\
+7d691f1dfe7c8b131793e9727314f658216df8f6658779fc5f234cd58e6049f67955\
+                                     24f9ba00549772ca617d6262b230b81d
 
 
 HPKE-7 COSE_Key: \
@@ -5247,7 +5271,6 @@ d08344a101182da2044e626f622d68706b655f372d696e7423584104f62055c9d997\
 d492879363ee13e4cdf676172c7cdf24d27e18befab5886fe93228306646f05a06c7\
 ac2d807301ea997374a3aee90b4c12c8dca348ea93fae5425821e831f27b7d99e448\
                    97f409648e54594cc5f3ff1fb184979d97a5af5799b6c0ca64
-
 </pre><a href="#appendix-C-4" class="pilcrow">¶</a>
 </div>
 </section>
