@@ -388,7 +388,8 @@ Table of Contents
 
    *  pkR: The recipient public key, converted into HPKE public key.
 
-   *  info: Deterministic encoding of the Recipient_structure.
+   *  info: Deterministic encoding of the Recipient_structure.  See
+      Section 3.3.4.
 
    *  aad: SHOULD be empty.  See Section 3.3.4.
 
