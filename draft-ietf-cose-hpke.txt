@@ -3,7 +3,7 @@
 
 
 COSE                                                       H. Tschofenig
-Internet-Draft                                                     H-BRS
+Internet-Draft                                                  UniBw M.
 Intended status: Standards Track                          O. Steele, Ed.
 Expires: 15 September 2026                                  Tradeverifyd
                                                               D. Ajitomi
@@ -3691,7 +3691,8 @@ Appendix C.  Testvectors
 Authors' Addresses
 
    Hannes Tschofenig
-   University of Applied Sciences Bonn-Rhein-Sieg
+   University of the Bundeswehr Munich
+   85577 Neubiberg
    Germany
    Email: hannes.tschofenig@gmx.net
 
