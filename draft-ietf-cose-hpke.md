@@ -271,7 +271,7 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - kdf_id: From the ciphersuite. See {{ciphersuite}}.
 - aead_id: From the ciphersuite. See {{ciphersuite}}.
 - pkR: The recipient public key, converted into HPKE public key.
-- info: Deterministic encoding of the Recipient_structure.
+- info: Deterministic encoding of the Recipient_structure. See {{AddInfo}}.
 - aad: SHOULD be empty. See {{AddInfo}}.
 - pt: The CEK.
 
