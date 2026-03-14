@@ -297,7 +297,7 @@ When decrypting, the inputs to the HPKE Open operation are as follows:
 - kem_id: From the "alg" parameter ciphersuite. See {{ciphersuite}}.
 - enc: From the "ek" parameter in the COSE_Recipient headers.
 - skR: The recipient private key, converted into an HPKE private key.
-- info: Deterministic encoding of the Recipient_structure.
+- info: Deterministic encoding of the Recipient_structure. See {{AddInfo}}.
 - aad: SHOULD be empty. See {{AddInfo}}.
 - ct: The contents of the COSE_Recipient ciphertext field.
 
