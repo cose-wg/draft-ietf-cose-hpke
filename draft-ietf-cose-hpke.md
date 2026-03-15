@@ -142,7 +142,7 @@ that is specified for them.
 
 In both cases, the new COSE header parameter "ek" MUST be present.
 It contains the encapsulated KEM shared secret.
-The value of this parameter MUST be the "enc" value output by the HPKE Seal() operation, as defined in {{Section 6.1 of I-D.ietf-hpke-hpke}}.
+The value of this parameter MUST be the "enc" value output by the HPKE Seal() Single-Shot operation, as defined in {{Section 6.1 of I-D.ietf-hpke-hpke}}.
 The "ek" header parameter MUST be encoded as a CBOR byte string.
 
 HPKE defines several authentication modes, as described in Table 1 of {{I-D.ietf-hpke-hpke}}.
@@ -166,7 +166,7 @@ discouraged by RFC 9052, this document RECOMMENDS the use of the "kid" parameter
 used by the sender. If the COSE_Encrypt0 structure includes a "kid" parameter, the
 recipient MAY use it to select the corresponding private key.
 
-When encrypting, the inputs to the HPKE Seal operation are set as follows:
+When encrypting, the inputs to the HPKE Seal Single-Shot operation are set as follows:
 
 - kem_id: From the ciphersuite. See {{ciphersuite}}.
 - pkR: The recipient public key, converted into an HPKE public key.
@@ -292,7 +292,7 @@ key derivation function of HPKE.
 
 Next, construct a Recipeint_structure as described above.
 
-Next, the HPKE Seal operation is invoked with the following inputs:
+Next, the HPKE Seal Single-Shot operation is invoked with the following inputs:
 
 - kem_id: From the ciphersuite. See {{ciphersuite}}.
 - kdf_id: From the ciphersuite. See {{ciphersuite}}.
@@ -355,7 +355,7 @@ Such explicit layering semantics were not provided for the AlgorithmID field in 
 
 ### Context Binding and Additional Information {#AddInfo}
 
-All header parameters in the protected bucket of the COSE_Recipient are incorporated into the HPKE Seal/Open info parameter via the Recipient_structure.
+All header parameters in the protected bucket of the COSE_Recipient are incorporated into the HPKE Single-Shot Seal/Open info parameter via the Recipient_structure.
 As a result, these parameters are both integrity-protected and bound to the HPKE key schedule, since they influence the internal HPKE key setup.
 
 In most cases, additional header parameters carry supplementary data such as a "kid".
@@ -364,7 +364,7 @@ For example, a new header parameter identifying the application-level protocol t
 Its value would be authenticated and would also influence the HPKE key setup.
 
 Because all header parameters are transmitted in the clear, they cannot be used to bind information that must remain secret.
-The "recipient_extra_info" field in the Recipient_structure is also included in the HPKE Seal/Open info parameter, but unlike header parameters it is not transmitted.
+The "recipient_extra_info" field in the Recipient_structure is also included in the HPKE Single-Shot Seal/Open info parameter, but unlike header parameters it is not transmitted.
 This makes it suitable for binding context information that is, for example, provided in other layers of the protocol stack or via out-of-band means. It is the responsibility of the specific use case to ensure that both sender and receiver possess this context information.
 
 There are minor size considerations.
@@ -372,7 +372,7 @@ HPKE guarantees support for at least 64 bytes in the info parameter, and impleme
 This indirectly imposes a size limit on the COSE_Recipient protected header parameters and the "recipient_extra_info" field.
 In practice, this limit is unlikely to pose problems except in highly constrained environments or in use cases with unusually large header parameters.
 
-Protection and binding of auxiliary information can generally be achieved using protected header parameters together with the "recipient_extra_info" field, so use of the Seal/Open aad parameter is rarely necessary.
+Protection and binding of auxiliary information can generally be achieved using protected header parameters together with the "recipient_extra_info" field, so use of the Single-Shot Seal/Open aad parameter is rarely necessary.
 However, it remains available for special cases and has no practical size limit.
 
 
