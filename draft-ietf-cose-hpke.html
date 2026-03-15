@@ -1701,12 +1701,7 @@ key derivation function of HPKE.<a href="#section-3.3.2-7" class="pilcrow">¶</a
 <p id="section-3.3.2-19">The COSE_recipient structure is computed for each recipient.<a href="#section-3.3.2-19" class="pilcrow">¶</a></p>
 <p id="section-3.3.2-20">When encrypting the content at layer 0, the instructions in <span><a href="https://rfc-editor.org/rfc/rfc9052#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> MUST be followed, including the calculation of the
 authenticated data structure.<a href="#section-3.3.2-20" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-21">It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
-attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
-may still utilize recipient_aad for other purposes as needed; however, it is generally
-intended for small values such as identifiers, contextual information, or secrets. It is
-not designed for protecting large or bulk external data.<a href="#section-3.3.2-21" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-22">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-22" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-21">An example is shown in <a href="#two-layer-example" class="auto internal xref">Section 5.2</a>.<a href="#section-3.3.2-21" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-design-rationale">
