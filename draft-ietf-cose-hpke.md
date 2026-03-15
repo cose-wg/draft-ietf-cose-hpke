@@ -24,9 +24,16 @@ author:
   code: 85577
   email: hannes.tschofenig@gmx.net
 -
+  ins: M. Jones
+  name: Michael B. Jones
+  role: editor
+  organization: Self-Issued Consulting
+  email: michael_b_jones@hotmail.com
+  uri: https://self-issued.info/
+  country: United States
+-
   ins: O. Steele
   name: Orie Steele
-  role: editor
   organization: Tradeverifyd
   email: orie@or13.io
   country: United States
@@ -41,13 +48,6 @@ author:
   name: Laurence Lundblade
   organization: Security Theory LLC
   email: lgl@securitytheory.com
-  country: United States
--
-  ins: M. Jones
-  name: Michael B. Jones
-  organization: Self-Issued Consulting
-  email: michael_b_jones@hotmail.com
-  uri: https://self-issued.info/
   country: United States
 
 normative:
