@@ -33,7 +33,7 @@ author:
 -
   ins: D. Ajitomi
   name: Daisuke Ajitomi
-  organization: bibital
+  organization: bibital LLC
   email: dajiaji@gmail.com
   country: Japan
 -
