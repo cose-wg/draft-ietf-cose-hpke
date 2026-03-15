@@ -1444,7 +1444,7 @@ Algorithm identifiers MUST only be used in the COSE HPKE mode
 that is specified for them.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.1-4">In both cases, the new COSE header parameter "ek" MUST be present.
 It contains the encapsulated KEM shared secret.
-The value of this parameter MUST be the "enc" value output by the HPKE Seal() operation, as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-03#section-6.1" class="relref">Section 6.1</a> of [<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.
+The value of this parameter MUST be the "enc" value output by the HPKE Seal() Single-Shot operation, as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-03#section-6.1" class="relref">Section 6.1</a> of [<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.
 The "ek" header parameter MUST be encoded as a CBOR byte string.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 <p id="section-3.1-5">HPKE defines several authentication modes, as described in Table 1 of <span>[<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>.
 This specification uses both 'mode_base' and 'mode_psk'.
@@ -1468,7 +1468,7 @@ discouraged by RFC 9052, this document RECOMMENDS the use of the "kid" parameter
 (or other parameters) to explicitly identify the static recipient public key
 used by the sender. If the COSE_Encrypt0 structure includes a "kid" parameter, the
 recipient MAY use it to select the corresponding private key.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">When encrypting, the inputs to the HPKE Seal operation are set as follows:<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">When encrypting, the inputs to the HPKE Seal Single-Shot operation are set as follows:<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-5.1">
             <p id="section-3.2-5.1.1">kem_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.2-5.1.1" class="pilcrow">¶</a></p>
@@ -1634,7 +1634,7 @@ to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
 key derivation function of HPKE.<a href="#section-3.3.2-7" class="pilcrow">¶</a></p>
 <p id="section-3.3.2-8">Next, construct a Recipeint_structure as described above.<a href="#section-3.3.2-8" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-9">Next, the HPKE Seal operation is invoked with the following inputs:<a href="#section-3.3.2-9" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-9">Next, the HPKE Seal Single-Shot operation is invoked with the following inputs:<a href="#section-3.3.2-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3.2-10.1">
               <p id="section-3.3.2-10.1.1">kem_id: From the ciphersuite. See <a href="#ciphersuite" class="auto internal xref">Section 4</a>.<a href="#section-3.3.2-10.1.1" class="pilcrow">¶</a></p>
@@ -1737,20 +1737,20 @@ Such explicit layering semantics were not provided for the AlgorithmID field in 
           <h4 id="name-context-binding-and-additio">
 <a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-context-binding-and-additio" class="section-name selfRef">Context Binding and Additional Information</a>
           </h4>
-<p id="section-3.3.4-1">All header parameters in the protected bucket of the COSE_Recipient are incorporated into the HPKE Seal/Open info parameter via the Recipient_structure.
+<p id="section-3.3.4-1">All header parameters in the protected bucket of the COSE_Recipient are incorporated into the HPKE Single-Shot Seal/Open info parameter via the Recipient_structure.
 As a result, these parameters are both integrity-protected and bound to the HPKE key schedule, since they influence the internal HPKE key setup.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
 <p id="section-3.3.4-2">In most cases, additional header parameters carry supplementary data such as a "kid".
 If a use case requires binding the encryption context to public information, placing that information in the protected header parameters is a straightforward approach: the value will be transmitted to the recipient and automatically incorporated into the HPKE key schedule.
 For example, a new header parameter identifying the application-level protocol that uses COSE-HPKE could be defined.
 Its value would be authenticated and would also influence the HPKE key setup.<a href="#section-3.3.4-2" class="pilcrow">¶</a></p>
 <p id="section-3.3.4-3">Because all header parameters are transmitted in the clear, they cannot be used to bind information that must remain secret.
-The "recipient_extra_info" field in the Recipient_structure is also included in the HPKE Seal/Open info parameter, but unlike header parameters it is not transmitted.
+The "recipient_extra_info" field in the Recipient_structure is also included in the HPKE Single-Shot Seal/Open info parameter, but unlike header parameters it is not transmitted.
 This makes it suitable for binding context information that is, for example, provided in other layers of the protocol stack or via out-of-band means. It is the responsibility of the specific use case to ensure that both sender and receiver possess this context information.<a href="#section-3.3.4-3" class="pilcrow">¶</a></p>
 <p id="section-3.3.4-4">There are minor size considerations.
 HPKE guarantees support for at least 64 bytes in the info parameter, and implementations are expected to support up to 16,384 bytes.
 This indirectly imposes a size limit on the COSE_Recipient protected header parameters and the "recipient_extra_info" field.
 In practice, this limit is unlikely to pose problems except in highly constrained environments or in use cases with unusually large header parameters.<a href="#section-3.3.4-4" class="pilcrow">¶</a></p>
-<p id="section-3.3.4-5">Protection and binding of auxiliary information can generally be achieved using protected header parameters together with the "recipient_extra_info" field, so use of the Seal/Open aad parameter is rarely necessary.
+<p id="section-3.3.4-5">Protection and binding of auxiliary information can generally be achieved using protected header parameters together with the "recipient_extra_info" field, so use of the Single-Shot Seal/Open aad parameter is rarely necessary.
 However, it remains available for special cases and has no practical size limit.<a href="#section-3.3.4-5" class="pilcrow">¶</a></p>
 </section>
 </div>

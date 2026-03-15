@@ -210,9 +210,9 @@ Table of Contents
 
    In both cases, the new COSE header parameter "ek" MUST be present.
    It contains the encapsulated KEM shared secret.  The value of this
-   parameter MUST be the "enc" value output by the HPKE Seal()
-   operation, as defined in Section 6.1 of [I-D.ietf-hpke-hpke].  The
-   "ek" header parameter MUST be encoded as a CBOR byte string.
+   parameter MUST be the "enc" value output by the HPKE Seal() Single-
+   Shot operation, as defined in Section 6.1 of [I-D.ietf-hpke-hpke].
+   The "ek" header parameter MUST be encoded as a CBOR byte string.
 
    HPKE defines several authentication modes, as described in Table 1 of
    [I-D.ietf-hpke-hpke].  This specification uses both 'mode_base' and
@@ -239,8 +239,8 @@ Table of Contents
    structure includes a "kid" parameter, the recipient MAY use it to
    select the corresponding private key.
 
-   When encrypting, the inputs to the HPKE Seal operation are set as
-   follows:
+   When encrypting, the inputs to the HPKE Seal Single-Shot operation
+   are set as follows:
 
    *  kem_id: From the ciphersuite.  See Section 4.
 
@@ -408,7 +408,8 @@ Table of Contents
 
    Next, construct a Recipeint_structure as described above.
 
-   Next, the HPKE Seal operation is invoked with the following inputs:
+   Next, the HPKE Seal Single-Shot operation is invoked with the
+   following inputs:
 
    *  kem_id: From the ciphersuite.  See Section 4.
 
@@ -508,8 +509,8 @@ Table of Contents
 3.3.4.  Context Binding and Additional Information
 
    All header parameters in the protected bucket of the COSE_Recipient
-   are incorporated into the HPKE Seal/Open info parameter via the
-   Recipient_structure.  As a result, these parameters are both
+   are incorporated into the HPKE Single-Shot Seal/Open info parameter
+   via the Recipient_structure.  As a result, these parameters are both
    integrity-protected and bound to the HPKE key schedule, since they
    influence the internal HPKE key setup.
 
@@ -526,10 +527,10 @@ Table of Contents
    Because all header parameters are transmitted in the clear, they
    cannot be used to bind information that must remain secret.  The
    "recipient_extra_info" field in the Recipient_structure is also
-   included in the HPKE Seal/Open info parameter, but unlike header
-   parameters it is not transmitted.  This makes it suitable for binding
-   context information that is, for example, provided in other layers of
-   the protocol stack or via out-of-band means.  It is the
+   included in the HPKE Single-Shot Seal/Open info parameter, but unlike
+   header parameters it is not transmitted.  This makes it suitable for
+   binding context information that is, for example, provided in other
+   layers of the protocol stack or via out-of-band means.  It is the
    responsibility of the specific use case to ensure that both sender
    and receiver possess this context information.
 
@@ -543,9 +544,9 @@ Table of Contents
 
    Protection and binding of auxiliary information can generally be
    achieved using protected header parameters together with the
-   "recipient_extra_info" field, so use of the Seal/Open aad parameter
-   is rarely necessary.  However, it remains available for special cases
-   and has no practical size limit.
+   "recipient_extra_info" field, so use of the Single-Shot Seal/Open aad
+   parameter is rarely necessary.  However, it remains available for
+   special cases and has no practical size limit.
 
 3.4.  Key Representation
 
