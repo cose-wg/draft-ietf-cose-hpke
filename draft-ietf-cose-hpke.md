@@ -349,8 +349,6 @@ When decrypting, the inputs to the HPKE Open operation are as follows:
 
 The plaintext output from the HPKE Open operation is the CEK.
 
-Any bulk external data that requires protection should be handled at layer 0 using external_aad.
-
 The COSE_recipient structure is computed for each recipient.
 
 When encrypting the content at layer 0, the instructions in {{Section 5.3
