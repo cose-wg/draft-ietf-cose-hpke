@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                  UniBw M.
 Intended status: Standards Track                          O. Steele, Ed.
-Expires: 15 September 2026                                  Tradeverifyd
+Expires: 16 September 2026                                  Tradeverifyd
                                                               D. Ajitomi
-                                                                 bibital
+                                                             bibital LLC
                                                             L. Lundblade
                                                      Security Theory LLC
                                                                 M. Jones
                                                   Self-Issued Consulting
-                                                           14 March 2026
+                                                           15 March 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 September 2026.
+   This Internet-Draft will expire on 16 September 2026.
 
 Copyright Notice
 
@@ -3704,7 +3704,7 @@ Authors' Addresses
 
 
    Daisuke Ajitomi
-   bibital
+   bibital LLC
    Japan
    Email: dajiaji@gmail.com
 
