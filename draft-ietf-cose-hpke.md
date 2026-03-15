@@ -949,9 +949,9 @@ the 'COSE Header Parameters' registries.
 -  Value Registry: N/A
 -  Description: A key identifier (kid) for the pre-shared key
 as defined in {{Section 5.1.2 of I-D.ietf-hpke-hpke}}
--  Usage: This parameter MUST be carried in the protected header bucket of
-   the COSE_Encrypt0 or COSE_Recipient structure associated with the HPKE
-   operation. It MUST NOT appear in an unprotected header bucket.
+-  Usage: This header parameter MUST be a protected header parameter of
+   the COSE_Encrypt0 or COSE_Recipient structure for the HPKE
+   operation. It MUST NOT be present as an unprotected header parameter.
 -  Reference: [[TBD: This RFC]]
 
 --- back
