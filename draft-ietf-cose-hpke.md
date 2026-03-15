@@ -151,8 +151,8 @@ The mode is 'mode_psk' if the "psk_id" header parameter is present; otherwise, t
 'mode_base' is described in {{Section 5.1.1 of I-D.ietf-hpke-hpke}}, which only enables encryption
 to the holder of a given KEM private key. 'mode_psk' is described in {{Section 5.1.2 of I-D.ietf-hpke-hpke}},
 which authenticates using a pre-shared key.
-The "psk_id" parameter MUST be carried in the protected header bucket of the
-COSE structure that drives the corresponding HPKE operation. The PSK value
+The "psk_id" header parameter, when present, MUST be a protected header parameter of the
+COSE structure of the corresponding HPKE operation. The PSK value
 itself is an external input to HPKE and MUST NOT be encoded in the COSE
 structure.
 
