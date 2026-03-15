@@ -953,6 +953,10 @@ The testvectors use the following input:
 - AAD: "external-aad"
 - Info: "external-info"
 - HPKE AAD: "external-hpke-aad"
+- PSK (for the PSK testvectors only):
+  h'0247fd33b913760fa1fa51e1892d9f307fbe65eb171e8132c2af18555a738b82'
+- PSK ID (for the PSK testvectors only):
+  h'456e6e796e20447572696e206172616e204d6f726961' (= "Ennyn Durin aran Moria")
 
 AAD is the COSE Enc_structure.external_aad. It is used as AAD for the
 COSE AEAD in Encrypt0/Encrypt (Layer 0). HPKE AAD is the HPKE AAD for
