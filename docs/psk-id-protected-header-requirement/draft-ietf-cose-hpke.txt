@@ -223,12 +223,9 @@ Table of Contents
    'mode_psk' is described in Section 5.1.2 of [I-D.ietf-hpke-hpke],
    which authenticates using a pre-shared key.  The "psk_id" parameter
    MUST be carried in the protected header bucket of the COSE structure
-   that drives the corresponding HPKE operation.  For COSE_Encrypt0,
-   this is the COSE_Encrypt0 protected header.  For a COSE_Recipient,
-   this is the COSE_Recipient protected header.  This ensures that the
-   "psk_id" value is authenticated as part of the corresponding HPKE
-   context.  The PSK value itself is an external input to HPKE and MUST
-   NOT be encoded in the COSE structure.
+   that drives the corresponding HPKE operation.  The PSK value itself
+   is an external input to HPKE and MUST NOT be encoded in the COSE
+   structure.
 
 3.2.  HPKE Integrated Encryption Mode
 

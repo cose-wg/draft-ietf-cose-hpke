@@ -1453,12 +1453,9 @@ The mode is 'mode_psk' if the "psk_id" header parameter is present; otherwise, t
 to the holder of a given KEM private key. 'mode_psk' is described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-hpke-hpke-03#section-5.1.2" class="relref">Section 5.1.2</a> of [<a href="#I-D.ietf-hpke-hpke" class="cite xref">I-D.ietf-hpke-hpke</a>]</span>,
 which authenticates using a pre-shared key.
 The "psk_id" parameter MUST be carried in the protected header bucket of the
-COSE structure that drives the corresponding HPKE operation. For
-COSE_Encrypt0, this is the COSE_Encrypt0 protected header. For a
-COSE_Recipient, this is the COSE_Recipient protected header. This ensures
-that the "psk_id" value is authenticated as part of the corresponding HPKE
-context. The PSK value itself is an external input to HPKE and MUST NOT be
-encoded in the COSE structure.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+COSE structure that drives the corresponding HPKE operation. The PSK value
+itself is an external input to HPKE and MUST NOT be encoded in the COSE
+structure.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="one-layer">
