@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-12T02:29:52.460736+00:00",
+  "timestamp": "2026-03-15T02:45:37.569026+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -813,7 +813,7 @@
       "id": "I_kwDOGr5frc5zOPRV",
       "title": "Provide official test vectors",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/38",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "dajiaji",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -822,8 +822,8 @@
       ],
       "body": "@hannestschofenig @selfissued @OR13 and other folks,\r\n\r\nI think Orie also mentioned this in another issur/PR, but how about providing test vectors in the COSE-HPKE spec?\r\n\r\nSince the COSE specs are referred by many IETF WGs such as SUTE, TEEP, RATS, SCITT, etc., I think it is better for the COSE WG to provide the official test vectors. \r\n\r\nHere are my suggestions:\r\n- Create a test-vectors repository under the cose-wg group on github (cose-wg/test-vectors).\r\n- Create comprehensive test-vectors for COSE-HPKE spec in this repository\r\n- Pick out a few typical ones from the repository's test-vectors and list them in the appendix in the COSE-HPKE spec with a link to the repository.\r\n\r\n[HPKE spec (RFC9180)](https://www.rfc-editor.org/rfc/rfc9180.html) also provides test vectors in the same manner.\r\n\r\nWhat do you think?",
       "createdAt": "2023-10-09T13:44:25Z",
-      "updatedAt": "2026-02-01T19:21:59Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-14T11:02:58Z",
+      "closedAt": "2026-03-14T11:02:58Z",
       "comments": [
         {
           "author": "OR13",
@@ -852,6 +852,13 @@
           "body": "Ilari, could you check my test vectors against your implementation?",
           "createdAt": "2026-02-01T19:21:59Z",
           "updatedAt": "2026-02-01T19:21:59Z"
+        },
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Now we have test vectors in the draft",
+          "createdAt": "2026-03-14T11:02:58Z",
+          "updatedAt": "2026-03-14T11:02:58Z"
         }
       ]
     },
@@ -1647,9 +1654,31 @@
       "labels": [],
       "body": "\u201cRecipient_aad\u201d is discussed as if it were a field in a structure. It\u2019s not a term of use in COSE or HPKE. There\u2019s a whole paragraph discussing \u201crecipient_aad\u201d that I find confusing.",
       "createdAt": "2026-02-09T19:55:09Z",
-      "updatedAt": "2026-02-09T19:55:09Z",
+      "updatedAt": "2026-03-14T23:49:44Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "laurencelundblade",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The mention of recipient_aad came back. Not sure if its restoration was intentional or not.\n\nIf it was intentional and the goal is to discuss the aad parameter to Seal/Open, I guess that's OK, but the identifier \"recipient_aad\" is not the right name for it.",
+          "createdAt": "2026-03-14T19:34:03Z",
+          "updatedAt": "2026-03-14T19:34:03Z"
+        },
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think you are talking about this parapraph:\n\n> It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of\n> attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases\n> may still utilize recipient_aad for other purposes as needed; however, it is generally\n> intended for small values such as identifiers, contextual information, or secrets. It is\n> not designed for protecting large or bulk external data.\n\nI am not sure who provided this text but we can delete it, if you want.",
+          "createdAt": "2026-03-14T19:46:16Z",
+          "updatedAt": "2026-03-14T19:46:16Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> The mention of recipient_aad came back. Not sure if its restoration was intentional or not.\n\nThis wasn't intentional.  I was a result of an incorrect resolution to a merge conflict.\n\n@laurencelundblade could you please create a new PR to restore the intent of your original PR?  Thanks.",
+          "createdAt": "2026-03-14T23:49:44Z",
+          "updatedAt": "2026-03-14T23:49:44Z"
+        }
+      ]
     },
     {
       "number": 117,
@@ -1696,15 +1725,15 @@
       "id": "I_kwDOGr5frc7phhLv",
       "title": "Link to RFC 9052 Content Key Distribution Methods",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/119",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Section 8 of RFC 9052 is THE taxonomy of Content Key Distribution methods. All the Content Key Distribution Methods in Section 6 of 9053 normatively link back to Section 8. I believe that\u2019s the way COSE specifications are supposed to work.\n\nCOSE-HPKE key encryption mode is a flavor of 8.5.5, Key Agreement with Key Wrap. The normative requirements it states largely apply to COSE-HPKE recipients.\n\nNote that it's possible for a COSE-HPKE recipient to sit next to an algorithm -29 recipient and both wrap the same CEK.",
       "createdAt": "2026-02-09T19:59:35Z",
-      "updatedAt": "2026-02-09T19:59:35Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-14T11:03:46Z",
+      "closedAt": "2026-03-14T11:03:46Z",
       "comments": []
     },
     {
@@ -1768,15 +1797,15 @@
       "id": "I_kwDOGr5frc7pih__",
       "title": "Move MUSTs to 3.1.1.2",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/123",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "3.1.1.2, titled \"COSE-HPKE Recipient Construction\" is the procedure for creating the needed COSE_Recipient. That's really where most of the MUSTS should be. Some of them can move from 3.1.1.1.\n\n3.1.1.2 would also be better if it were more stepwise and procedural.",
       "createdAt": "2026-02-09T21:02:20Z",
-      "updatedAt": "2026-02-09T21:02:20Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-14T11:03:57Z",
+      "closedAt": "2026-03-14T11:03:57Z",
       "comments": []
     },
     {
@@ -1794,6 +1823,98 @@
       "updatedAt": "2026-03-02T23:16:10Z",
       "closedAt": "2026-03-02T23:16:10Z",
       "comments": []
+    },
+    {
+      "number": 139,
+      "id": "I_kwDOGr5frc7yOcoU",
+      "title": "x448-related test vectors cannot be decrypted.",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/139",
+      "state": "CLOSED",
+      "author": "dajiaji",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "There is a possibility that my implementation is incorrect, but the COSE-HPKE implementation in python-cwt (with draft-23 support) fails to decrypt the x448-related test vectors.\n\nFor the x448 implementation, I am using the highly reliable pyca/cryptography library. The x25519 implementation also uses pyca/cryptography, and the test vectors for the latter can be decrypted successfully.",
+      "createdAt": "2026-03-12T11:07:07Z",
+      "updatedAt": "2026-03-12T15:30:27Z",
+      "closedAt": "2026-03-12T15:30:27Z",
+      "comments": []
+    },
+    {
+      "number": 141,
+      "id": "I_kwDOGr5frc7ySrqk",
+      "title": "The PSK test vectors do not include psk_id, etc.",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/141",
+      "state": "OPEN",
+      "author": "dajiaji",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It may be that the PSK-mode test vectors are only placeholders for now, but I wanted to point this out just in case.\n\n- The PSK-mode test vectors do not include psk_id. I assume it should be included in the protected header, but it is not present.\n- The input values for both psk_id and psk are not specified. Since they are not provided, the vectors cannot be tested.",
+      "createdAt": "2026-03-12T14:14:54Z",
+      "updatedAt": "2026-03-14T22:31:43Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I believe you are correct, Daisuke. I am going to track the issue down.",
+          "createdAt": "2026-03-14T11:24:52Z",
+          "updatedAt": "2026-03-14T11:24:52Z"
+        },
+        {
+          "author": "dajiaji",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@hannestschofenig  I\u2019m preparing a PR with the fixes on my side. I imagine you have a lot on your plate and more important things to focus on, so I\u2019ll take care of improving these test vectors myself. I\u2019d appreciate your review.",
+          "createdAt": "2026-03-14T12:22:47Z",
+          "updatedAt": "2026-03-14T12:22:47Z"
+        },
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "A note: The psk_id may either be placed in the protected or in the unprotected header. Currently, the draft does not mandate it to be in the protected header. In your code you do, however, assume so.",
+          "createdAt": "2026-03-14T19:01:06Z",
+          "updatedAt": "2026-03-14T19:01:06Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@dajiaji I will wait to publish then until you have completed the PR with the PSK test vectors.  If you could do that in the next day or so, that would be much appreciated.\n",
+          "createdAt": "2026-03-14T22:31:43Z",
+          "updatedAt": "2026-03-14T22:31:43Z"
+        }
+      ]
+    },
+    {
+      "number": 142,
+      "id": "I_kwDOGr5frc7yTCdJ",
+      "title": "Insufficient explanation of PSK mode.",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/142",
+      "state": "OPEN",
+      "author": "dajiaji",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I feel that the explanation of PSK mode is insufficient.\n\nIt seems that the required inputs for performing encryption and decryption in PSK mode are not fully documented, such as including psk_id in the protected header and passing psk_id and psk to open and seal.\n\nI\u2019m sorry if I\u2019m missing the current state of the discussion and this comment is off the mark.",
+      "createdAt": "2026-03-12T14:28:30Z",
+      "updatedAt": "2026-03-15T01:13:19Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "dajiaji",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@hannestschofenig @selfissued \n\n> ...such as including psk_id in the protected header...\n\nWhile I agree that allowing psk_id in the unprotected header would not create a very serious problem in practice, and I also understand that the current draft likely implies that either location is permitted, my view is that the specification is currently ambiguous on this point. Therefore, I would like to argue for clarifying it by restricting psk_id to the protected header only. I would not consider this a breaking change, although it may affect implementations that already accept psk_id in the unprotected header.\n\nMy reasons are as follows. I do not see a compelling reason to allow the unprotected header here.\n\n- (1) Since COSE-HPKE, in Key Encryption mode, is designed so that protected headers are fed into Recipient_structure and then into HPKE info as context-binding input, it seems most consistent to treat psk_id as part of that same context-binding pipeline.\n    - Of course, even if psk_id is placed in the unprotected header, it is still separately bound at the HPKE layer through the KeySchedule context, so this is not in itself a security problem.\n- (2) psk_id is also the parameter that determines the mode (base or psk). If it is placed in the unprotected header, it creates the appearance that the COSE-HPKE layer permits an unprotected mode-selection signal.\n    - In practice, this is still ultimately protected by the HPKE layer, but I do not think there is any need to allow the unprotected header here and introduce unnecessary confusion.\n- (3) There is also some alignment benefit with JOSE-HPKE.\n    - In JOSE-HPKE (draft-16), Integrated Encryption already treats psk_id as a protected header parameter (\u201cThe protected header parameter psk_id MAY be present.\u201d, Section 5). In Key Encryption (Section 6), psk_id may appear in either protected or unprotected form, but that seems to follow from the fact that the protected header is shared across multiple recipients in JOSE. In COSE, each recipient can have its own protected header, so the situation is different. For that reason, I think a protected-only rule, similar to JOSE-HPKE Integrated Encryption, can reasonably be adopted in COSE-HPKE.\n- (4) It also keeps implementations simpler.\n    - If both locations are allowed, then the specification would at least need to define what happens when psk_id appears in both, for example by saying that the protected value takes precedence. That adds unnecessary specification and implementation complexity. \n\nWhat do you think?\n\nFor my part, I do not intend to insist strongly on this point at the current stage, after WGLC. I think restricting it to the protected header is the better design, but if the conclusion is instead \u201callow both, but give precedence to the protected header,\u201d then I do not plan to press the point further.\n\nAs for the test vectors, I will submit them for now in a form that uses only the protected header.",
+          "createdAt": "2026-03-15T00:22:36Z",
+          "updatedAt": "2026-03-15T00:22:36Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@dajiaji Please create a PR adding a sentence saying that the psk_id must be a protected header parameter.  This will increase interoperability.",
+          "createdAt": "2026-03-15T01:13:19Z",
+          "updatedAt": "2026-03-15T01:13:19Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -8791,24 +8912,26 @@
       "id": "PR_kwDOGr5frc7H9D0Y",
       "title": "Headers, recipient_aad and HPKE info/KDF",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/136",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Now that the info size parameter limitation is resolved and we know we're feeding Recipient_structure into the Seal/Open info parameter, related text and the recipient_aad issue can be resolved.\r\n\r\nThis addresses #116\r\n\r\n",
       "createdAt": "2026-03-04T18:33:55Z",
-      "updatedAt": "2026-03-11T18:41:20Z",
+      "updatedAt": "2026-03-14T10:15:03Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
-      "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
+      "baseRefOid": "70ca4182416dd733d711d84e22582874b383ff03",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "n_r_aad",
-      "headRefOid": "3fb35a7f5961c63dda5fc93baba3c18ea82cf275",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "f82520f8117ac19848f57d57a87f62bedfbd442c",
+      "closedAt": "2026-03-14T10:15:00Z",
+      "mergedAt": "2026-03-14T10:15:00Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "f3c125a3991b38828c4c9c60fa729a934d3cf69e"
+      },
       "comments": [
         {
           "author": "laurencelundblade",
@@ -9238,6 +9361,99 @@
               "updatedAt": "2026-03-10T19:58:12Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7q-Pw5",
+          "commit": {
+            "abbreviatedOid": "3fb35a7"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-13T07:26:37Z",
+          "updatedAt": "2026-03-13T07:26:37Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "If the explanation is provided elsewhere then we should add a reference, as we do with the aad item below",
+              "createdAt": "2026-03-13T07:26:37Z",
+              "updatedAt": "2026-03-13T07:26:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7q-ROd",
+          "commit": {
+            "abbreviatedOid": "3fb35a7"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-13T07:27:48Z",
+          "updatedAt": "2026-03-13T07:27:49Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "```suggestion\nThis makes it suitable for binding context information that is, for example, provided in other layers of the protocol stack or via out-of-band means. It is the responsibility of the specific use case to ensure that both sender and receiver possess this context information.\n```",
+              "createdAt": "2026-03-13T07:27:48Z",
+              "updatedAt": "2026-03-13T07:27:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rEMEY",
+          "commit": {
+            "abbreviatedOid": "29f2fc6"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-13T12:36:21Z",
+          "updatedAt": "2026-03-13T12:36:21Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "```suggestion\n- info: Deterministic encoding of the Recipient_structure. See {{AddInfo}}.\n```",
+              "createdAt": "2026-03-13T12:36:21Z",
+              "updatedAt": "2026-03-13T12:36:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rEMUL",
+          "commit": {
+            "abbreviatedOid": "29f2fc6"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-13T12:36:35Z",
+          "updatedAt": "2026-03-13T12:36:35Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "```suggestion\n- info: Deterministic encoding of the Recipient_structure. See {{AddInfo}}.\n```",
+              "createdAt": "2026-03-13T12:36:35Z",
+              "updatedAt": "2026-03-13T12:36:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rUzK8",
+          "commit": {
+            "abbreviatedOid": "f82520f"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-14T04:28:53Z",
+          "updatedAt": "2026-03-14T04:28:53Z",
+          "comments": []
         }
       ]
     },
@@ -9246,24 +9462,26 @@
       "id": "PR_kwDOGr5frc7IQCJw",
       "title": "Reference 8.5.5 of 8052 (missed in previous PR)",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/137",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Addresses #119",
       "createdAt": "2026-03-05T16:02:42Z",
-      "updatedAt": "2026-03-10T20:01:31Z",
+      "updatedAt": "2026-03-14T04:18:11Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "section8again",
       "headRefOid": "2aa85aa395aaef7ebc38913737fbe7ec4bac94f0",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-03-14T04:18:11Z",
+      "mergedAt": "2026-03-14T04:18:11Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "70ca4182416dd733d711d84e22582874b383ff03"
+      },
       "comments": [
         {
           "author": "laurencelundblade",
@@ -9378,6 +9596,19 @@
           "createdAt": "2026-03-08T20:36:42Z",
           "updatedAt": "2026-03-08T20:36:42Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rUq55",
+          "commit": {
+            "abbreviatedOid": "2aa85aa"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-14T04:11:39Z",
+          "updatedAt": "2026-03-14T04:11:39Z",
+          "comments": []
         }
       ]
     },
@@ -9386,24 +9617,26 @@
       "id": "PR_kwDOGr5frc7Ij4Bm",
       "title": "Describe message construction procedure in detail",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/138",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Address #123\r\n\r\nThis makes the construction of a message and COSE_Recipient procedure much more detailed, closer to the level of details that RFC 9052 provides for similar.",
       "createdAt": "2026-03-06T17:37:26Z",
-      "updatedAt": "2026-03-10T20:03:47Z",
+      "updatedAt": "2026-03-14T04:14:36Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "procedure",
       "headRefOid": "cc89c8f6104961c42a73cbb1303c9930e083cdb2",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-03-14T04:14:36Z",
+      "mergedAt": "2026-03-14T04:14:36Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "03d9badd5b604ae7b5ec76c139e4c23263c79418"
+      },
       "comments": [],
       "reviews": [
         {
@@ -9544,8 +9777,119 @@
               "updatedAt": "2026-03-08T20:02:23Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rUri2",
+          "commit": {
+            "abbreviatedOid": "cc89c8f"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-14T04:14:23Z",
+          "updatedAt": "2026-03-14T04:14:23Z",
+          "comments": []
         }
       ]
+    },
+    {
+      "number": 140,
+      "id": "PR_kwDOGr5frc7KAb7x",
+      "title": "chore: update HPKE test vectors",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/140",
+      "state": "MERGED",
+      "author": "dajiaji",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Update HPKE-related ciphertext values in testvectors.txt to new expected values.\r\n\r\nAt least my implementation is able to decrypt these test vectors.\r\n\r\nCloses #139 ",
+      "createdAt": "2026-03-12T11:49:46Z",
+      "updatedAt": "2026-03-12T15:30:32Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "hpke-update-testvectors",
+      "headRefOid": "c5637d9f0a62230f898b88acf89ee09c7bad6bad",
+      "closedAt": "2026-03-12T15:30:25Z",
+      "mergedAt": "2026-03-12T15:30:25Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "dee60ebd54b02ff83603543d089174ad17c97347"
+      },
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I checked them against my implementation and they are good. Thanks, Daisuke!",
+          "createdAt": "2026-03-12T15:30:21Z",
+          "updatedAt": "2026-03-12T15:30:21Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 143,
+      "id": "PR_kwDOGr5frc7KFBCA",
+      "title": "New Testvectors",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/143",
+      "state": "CLOSED",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-03-12T15:29:32Z",
+      "updatedAt": "2026-03-12T15:29:54Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "778e214dad68e40f000e52402854ebe6c6358c14",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "new_testvectors",
+      "headRefOid": "83cd3ce621995b82429998e3301a80ab33eecfb2",
+      "closedAt": "2026-03-12T15:29:50Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Daisuke already provided testvectors.",
+          "createdAt": "2026-03-12T15:29:50Z",
+          "updatedAt": "2026-03-12T15:29:50Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 144,
+      "id": "PR_kwDOGr5frc7Kl9mx",
+      "title": "Affiliation Change",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/144",
+      "state": "MERGED",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-03-14T11:33:47Z",
+      "updatedAt": "2026-03-14T11:35:48Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "f3c125a3991b38828c4c9c60fa729a934d3cf69e",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "hannestschofenig-patch-17",
+      "headRefOid": "8c85fcde806f60b9f66b7bff6b7d839a6e93220a",
+      "closedAt": "2026-03-14T11:35:44Z",
+      "mergedAt": "2026-03-14T11:35:44Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "d8803101c38592ba3459c72960ebeebd2244d2b6"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
