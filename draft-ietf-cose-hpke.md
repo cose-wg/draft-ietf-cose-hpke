@@ -26,7 +26,7 @@ author:
 -
   ins: M. Jones
   name: Michael B. Jones
-  role: editor 
+  role: editor
   organization: Self-Issued Consulting
   email: michael_b_jones@hotmail.com
   uri: https://self-issued.info/
