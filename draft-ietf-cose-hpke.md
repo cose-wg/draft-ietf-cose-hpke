@@ -332,12 +332,6 @@ When encrypting the content at layer 0, the instructions in {{Section 5.3
 of RFC9052}} MUST be followed, including the calculation of the
 authenticated data structure.
 
-It is not necessary to populate recipient_aad, as HPKE inherently mitigates the classes of
-attacks that COSE_KDF_Context, and SP800-56A are designed to address. COSE-HPKE use cases
-may still utilize recipient_aad for other purposes as needed; however, it is generally
-intended for small values such as identifiers, contextual information, or secrets. It is
-not designed for protecting large or bulk external data.
-
 An example is shown in {{two-layer-example}}.
 
 ### Security Design Rationale
