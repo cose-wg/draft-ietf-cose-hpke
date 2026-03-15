@@ -151,6 +151,10 @@ The mode is 'mode_psk' if the "psk_id" header parameter is present; otherwise, t
 'mode_base' is described in {{Section 5.1.1 of I-D.ietf-hpke-hpke}}, which only enables encryption
 to the holder of a given KEM private key. 'mode_psk' is described in {{Section 5.1.2 of I-D.ietf-hpke-hpke}},
 which authenticates using a pre-shared key.
+The "psk_id" parameter MUST be carried in the protected header bucket of the
+COSE structure that drives the corresponding HPKE operation. The PSK value
+itself is an external input to HPKE and MUST NOT be encoded in the COSE
+structure.
 
 ## HPKE Integrated Encryption Mode {#one-layer}
 
@@ -171,6 +175,10 @@ When encrypting, the inputs to the HPKE Seal operation are set as follows:
 - kem_id: From the ciphersuite. See {{ciphersuite}}.
 - pkR: The recipient public key, converted into an HPKE public key.
 - kdf_id: From the ciphersuite. See {{ciphersuite}}.
+- psk: If 'mode_psk' has been selected, the externally supplied pre-shared
+  key. Otherwise, the empty string.
+- psk_id: If 'mode_psk' has been selected, the value of the protected
+  "psk_id" header parameter. Otherwise, the empty string.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
 - aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
 
@@ -196,6 +204,10 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - skR: The recipient private key, converted into an HPKE private key.
 - kdf_id: From the ciphersuite. See {{ciphersuite}}.
 - aead_id: From the ciphersuite. See {{ciphersuite}}.
+- psk: If 'mode_psk' has been selected, the externally supplied pre-shared
+  key. Otherwise, the empty string.
+- psk_id: If 'mode_psk' has been selected, the value of the protected
+  "psk_id" header parameter. Otherwise, the empty string.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
 - aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
 - enc: The contents of the layer "ek" parameter.
@@ -289,6 +301,9 @@ public key that the sender used. Use of the "kid" parameter is RECOMMENDED
 to explicitly identify the static recipient public key used by the sender.
 Including it in the protected header parameters ensures that it is input into the
 key derivation function of HPKE.
+If 'mode_psk' has been selected, then the protected header MUST also contain
+the "psk_id" parameter. If 'mode_base' has been chosen, then the protected
+header MUST NOT contain the "psk_id" parameter.
 
 Next, construct a Recipeint_structure as described above.
 
@@ -298,6 +313,11 @@ Next, the HPKE Seal operation is invoked with the following inputs:
 - kdf_id: From the ciphersuite. See {{ciphersuite}}.
 - aead_id: From the ciphersuite. See {{ciphersuite}}.
 - pkR: The recipient public key, converted into HPKE public key.
+- psk: If 'mode_psk' has been selected, the externally supplied pre-shared
+  key. Otherwise, the empty string.
+- psk_id: If 'mode_psk' has been selected, the value of the protected
+  "psk_id" header parameter in the COSE_Recipient. Otherwise, the empty
+  string.
 - info: Deterministic encoding of the Recipient_structure. See {{AddInfo}}.
 - aad: SHOULD be empty. See {{AddInfo}}.
 - pt: The CEK.
@@ -318,6 +338,11 @@ When decrypting, the inputs to the HPKE Open operation are as follows:
 - kem_id: From the "alg" parameter ciphersuite. See {{ciphersuite}}.
 - enc: From the "ek" parameter in the COSE_Recipient headers.
 - skR: The recipient private key, converted into an HPKE private key.
+- psk: If 'mode_psk' has been selected, the externally supplied pre-shared
+  key. Otherwise, the empty string.
+- psk_id: If 'mode_psk' has been selected, the value of the protected
+  "psk_id" header parameter in the COSE_Recipient. Otherwise, the empty
+  string.
 - info: Deterministic encoding of the Recipient_structure. See {{AddInfo}}.
 - aad: SHOULD be empty. See {{AddInfo}}.
 - ct: The contents of the COSE_Recipient ciphertext field.
@@ -924,6 +949,9 @@ the 'COSE Header Parameters' registries.
 -  Value Registry: N/A
 -  Description: A key identifier (kid) for the pre-shared key
 as defined in {{Section 5.1.2 of I-D.ietf-hpke-hpke}}
+-  Usage: This parameter MUST be carried in the protected header bucket of
+   the COSE_Encrypt0 or COSE_Recipient structure associated with the HPKE
+   operation. It MUST NOT appear in an unprotected header bucket.
 -  Reference: [[TBD: This RFC]]
 
 --- back
