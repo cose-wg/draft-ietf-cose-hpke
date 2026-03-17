@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-15T02:45:37.569026+00:00",
+  "timestamp": "2026-03-17T02:30:01.532650+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -1647,15 +1647,15 @@
       "id": "I_kwDOGr5frc7pheIM",
       "title": "recipient_aad",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/116",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "laurencelundblade",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "\u201cRecipient_aad\u201d is discussed as if it were a field in a structure. It\u2019s not a term of use in COSE or HPKE. There\u2019s a whole paragraph discussing \u201crecipient_aad\u201d that I find confusing.",
       "createdAt": "2026-02-09T19:55:09Z",
-      "updatedAt": "2026-03-14T23:49:44Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-15T06:43:36Z",
+      "closedAt": "2026-03-15T06:43:35Z",
       "comments": [
         {
           "author": "laurencelundblade",
@@ -1677,6 +1677,13 @@
           "body": "> The mention of recipient_aad came back. Not sure if its restoration was intentional or not.\n\nThis wasn't intentional.  I was a result of an incorrect resolution to a merge conflict.\n\n@laurencelundblade could you please create a new PR to restore the intent of your original PR?  Thanks.",
           "createdAt": "2026-03-14T23:49:44Z",
           "updatedAt": "2026-03-14T23:49:44Z"
+        },
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed in PR 146",
+          "createdAt": "2026-03-15T06:43:36Z",
+          "updatedAt": "2026-03-15T06:43:36Z"
         }
       ]
     },
@@ -1845,15 +1852,15 @@
       "id": "I_kwDOGr5frc7ySrqk",
       "title": "The PSK test vectors do not include psk_id, etc.",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/141",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "dajiaji",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "It may be that the PSK-mode test vectors are only placeholders for now, but I wanted to point this out just in case.\n\n- The PSK-mode test vectors do not include psk_id. I assume it should be included in the protected header, but it is not present.\n- The input values for both psk_id and psk are not specified. Since they are not provided, the vectors cannot be tested.",
       "createdAt": "2026-03-12T14:14:54Z",
-      "updatedAt": "2026-03-14T22:31:43Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-15T06:42:25Z",
+      "closedAt": "2026-03-15T06:42:25Z",
       "comments": [
         {
           "author": "hannestschofenig",
@@ -1890,15 +1897,15 @@
       "id": "I_kwDOGr5frc7yTCdJ",
       "title": "Insufficient explanation of PSK mode.",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/issues/142",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "dajiaji",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "I feel that the explanation of PSK mode is insufficient.\n\nIt seems that the required inputs for performing encryption and decryption in PSK mode are not fully documented, such as including psk_id in the protected header and passing psk_id and psk to open and seal.\n\nI\u2019m sorry if I\u2019m missing the current state of the discussion and this comment is off the mark.",
       "createdAt": "2026-03-12T14:28:30Z",
-      "updatedAt": "2026-03-15T01:13:19Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-15T06:42:45Z",
+      "closedAt": "2026-03-15T06:42:45Z",
       "comments": [
         {
           "author": "dajiaji",
@@ -9890,6 +9897,351 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 145,
+      "id": "PR_kwDOGr5frc7KrfLN",
+      "title": "Be clear that it is *Single-Shot* Open/Seal, not AEAD Open/Seal",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/145",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "A minor issue, but worth clarifying.\r\n\r\nHPKE defines Seal/Open as both the interface to AEAD and the single-shot API.\r\n",
+      "createdAt": "2026-03-15T02:59:52Z",
+      "updatedAt": "2026-03-15T06:42:07Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "d8803101c38592ba3459c72960ebeebd2244d2b6",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "single-shot",
+      "headRefOid": "abe7f0b0c4cc55c38a03941d45ff187613c1fb98",
+      "closedAt": "2026-03-15T06:42:05Z",
+      "mergedAt": "2026-03-15T06:42:05Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "55d13d05bfd6a7ddacb4b212aed47f0628376ebd"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7ra5mI",
+          "commit": {
+            "abbreviatedOid": "abe7f0b"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thanks!",
+          "createdAt": "2026-03-15T04:46:51Z",
+          "updatedAt": "2026-03-15T04:46:51Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rbJ2s",
+          "commit": {
+            "abbreviatedOid": "abe7f0b"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "I think it is good to explicitly mention that we are talking about the single-shot API only in the draft.",
+          "createdAt": "2026-03-15T06:36:43Z",
+          "updatedAt": "2026-03-15T06:36:43Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 146,
+      "id": "PR_kwDOGr5frc7Krf8f",
+      "title": "remove para discussing recipient_aad",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/146",
+      "state": "MERGED",
+      "author": "laurencelundblade",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Address #116",
+      "createdAt": "2026-03-15T03:03:00Z",
+      "updatedAt": "2026-03-15T06:41:55Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "d8803101c38592ba3459c72960ebeebd2244d2b6",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "no_r_aad2",
+      "headRefOid": "b2dbc3b18d0d8d1f2c2ffdfcb57fab3a2b752dc1",
+      "closedAt": "2026-03-15T06:41:52Z",
+      "mergedAt": "2026-03-15T06:41:52Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "f8b59363334ab06ad14f4d853829bdb0d694a4da"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7rapy9",
+          "commit": {
+            "abbreviatedOid": "b2dbc3b"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-15T03:07:35Z",
+          "updatedAt": "2026-03-15T03:07:35Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rbJvm",
+          "commit": {
+            "abbreviatedOid": "b2dbc3b"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "The removal of the paragraph is fine for me.",
+          "createdAt": "2026-03-15T06:35:57Z",
+          "updatedAt": "2026-03-15T06:35:57Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 147,
+      "id": "PR_kwDOGr5frc7Kr5uj",
+      "title": "docs: add PSK/PSK ID to test vector inputs and update PSK test vectors",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/147",
+      "state": "MERGED",
+      "author": "dajiaji",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #141 \r\n\r\n- Document PSK and PSK ID values used in PSK testvectors in the draft\r\n- Refresh ciphertext and COSE_Key values in testvectors.txt for KE+PSK cases, with psk_id placed in the protected header.",
+      "createdAt": "2026-03-15T04:30:31Z",
+      "updatedAt": "2026-03-15T06:42:26Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "d8803101c38592ba3459c72960ebeebd2244d2b6",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "docs-psk-testvectors",
+      "headRefOid": "05c0c35c46e51b96a5765b2716148d8811cc94ca",
+      "closedAt": "2026-03-15T06:42:23Z",
+      "mergedAt": "2026-03-15T06:42:23Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "5a22b4712552251e345b19a11a823a7dc2bdf671"
+      },
+      "comments": [
+        {
+          "author": "dajiaji",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I have confirmed that, in the PRs for the following two implementations, the tests using the test vectors included in this PR pass correctly.\r\n\r\n- https://github.com/dajiaji/python-cwt/pull/662\r\n- https://github.com/dajiaji/hpke-js/pull/731",
+          "createdAt": "2026-03-15T05:05:20Z",
+          "updatedAt": "2026-03-15T05:05:20Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7ra5Kz",
+          "commit": {
+            "abbreviatedOid": "05c0c35"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thanks for doing this!",
+          "createdAt": "2026-03-15T04:43:44Z",
+          "updatedAt": "2026-03-15T04:43:44Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 148,
+      "id": "PR_kwDOGr5frc7KsE-A",
+      "title": "docs(spec): require psk_id in protected header and document psk/psk_id inputs",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/148",
+      "state": "MERGED",
+      "author": "dajiaji",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #142 \r\n\r\n- Require psk_id in protected header bucket for COSE_Encrypt0/COSE_Recipient\r\n- Clarify PSK must not be encoded in COSE structure\r\n- Add psk and psk_id to HPKE Seal/Open inputs for both integrated and key distribution modes\r\n- Require psk_id in protected header when mode_psk; forbid when mode_base\r\n- Add Usage to psk_id header parameter registry (protected only)",
+      "createdAt": "2026-03-15T05:21:11Z",
+      "updatedAt": "2026-03-15T06:42:47Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "d8803101c38592ba3459c72960ebeebd2244d2b6",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "docs/psk-id-protected-header-requirement",
+      "headRefOid": "b6f1cf8c617702c7b759d38bb48315e8873c058c",
+      "closedAt": "2026-03-15T06:42:44Z",
+      "mergedAt": "2026-03-15T06:42:44Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "73828f611e184e5fa634313f69bc1588f321ec4d"
+      },
+      "comments": [
+        {
+          "author": "dajiaji",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@selfissued thanks! I've applied your suggestions.",
+          "createdAt": "2026-03-15T06:28:28Z",
+          "updatedAt": "2026-03-15T06:28:28Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7rbGS3",
+          "commit": {
+            "abbreviatedOid": "8bc2d87"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-15T06:13:43Z",
+          "updatedAt": "2026-03-15T06:13:43Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\nThe \"psk_id\" header parameter, when present, MUST be a protected header parameter of the\nCOSE structure of the corresponding HPKE operation. The PSK value\n```",
+              "createdAt": "2026-03-15T06:13:43Z",
+              "updatedAt": "2026-03-15T06:13:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rbGoG",
+          "commit": {
+            "abbreviatedOid": "8bc2d87"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-15T06:15:32Z",
+          "updatedAt": "2026-03-15T06:15:32Z",
+          "comments": [
+            {
+              "originalPosition": 73,
+              "body": "```suggestion\n-  Usage: This header parameter MUST be a protected header parameter of\n   the COSE_Encrypt0 or COSE_Recipient structure for the HPKE\n   operation. It MUST NOT be present as an unprotected header parameter.\n```",
+              "createdAt": "2026-03-15T06:15:32Z",
+              "updatedAt": "2026-03-15T06:15:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rbGuD",
+          "commit": {
+            "abbreviatedOid": "8bc2d87"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Please apply my change suggestions before merging.",
+          "createdAt": "2026-03-15T06:15:52Z",
+          "updatedAt": "2026-03-15T06:15:52Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7rbJQE",
+          "commit": {
+            "abbreviatedOid": "b6f1cf8"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for the PR. The changes look good to me.",
+          "createdAt": "2026-03-15T06:33:07Z",
+          "updatedAt": "2026-03-15T06:33:07Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 149,
+      "id": "PR_kwDOGr5frc7KsKo-",
+      "title": "fix(draft): correct author organization to bibital LLC",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/149",
+      "state": "MERGED",
+      "author": "dajiaji",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Sorry for the minor detail, but please allow me to correct my affiliation.",
+      "createdAt": "2026-03-15T05:44:10Z",
+      "updatedAt": "2026-03-15T06:41:39Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "d8803101c38592ba3459c72960ebeebd2244d2b6",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "fix/author-organization",
+      "headRefOid": "b6f97cce3aceb64dc9cbc5fc232c1e7739223759",
+      "closedAt": "2026-03-15T06:41:33Z",
+      "mergedAt": "2026-03-15T06:41:33Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "3fdfa474f7846dfe0cdb3a50e16b891e0f7f1cc6"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7rbFtV",
+          "commit": {
+            "abbreviatedOid": "b6f97cc"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-15T06:09:58Z",
+          "updatedAt": "2026-03-15T06:09:58Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 150,
+      "id": "PR_kwDOGr5frc7Kt6Kj",
+      "title": "Making Mike the Document Editor",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/150",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I am suggesting to have Mike become the document editor for the work he has done over the last year in getting us closer to the finish line.\r\n\r\nThanks a lot for your work, Mike!",
+      "createdAt": "2026-03-15T12:20:58Z",
+      "updatedAt": "2026-03-15T12:28:58Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "73828f611e184e5fa634313f69bc1588f321ec4d",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "hannestschofenig-patch-17",
+      "headRefOid": "7ce2c21a97a391515f05395b2e541ee080667f90",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7rcfrx",
+          "commit": {
+            "abbreviatedOid": "835046a"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "I'm honored by the suggestion.  I'll leave it up to the rest of you.",
+          "createdAt": "2026-03-15T12:25:14Z",
+          "updatedAt": "2026-03-15T12:25:14Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
