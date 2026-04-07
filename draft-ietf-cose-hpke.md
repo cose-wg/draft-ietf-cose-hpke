@@ -53,13 +53,14 @@ author:
 normative:
   RFC2119:
   RFC8174:
+  RFC8610:
+  RFC8937:
   RFC8949:
   RFC9052:
   RFC9053:
   I-D.ietf-hpke-hpke:
 
 informative:
-  RFC8937:
   RFC9864:
   I-D.irtf-cfrg-dnhpke:
   I-D.ietf-lamps-cms-cek-hkdf-sha256:
@@ -164,9 +165,8 @@ and has no recipient structure(s).
 Because COSE-HPKE supports header protection, if the "alg" parameter is present, it MUST be included
 in the protected header and MUST be a COSE-HPKE algorithm.
 
-Although the use of the "kid" parameter in COSE_Encrypt0 is
-discouraged by RFC 9052, this document RECOMMENDS the use of the "kid" parameter
-(or other parameters) to explicitly identify the static recipient public key
+The use of the "kid" header parameter is RECOMMENDED
+to explicitly identify the static recipient public key
 used by the sender. If the COSE_Encrypt0 structure includes a "kid" parameter, the
 recipient MAY use it to select the corresponding private key.
 
@@ -180,7 +180,7 @@ When encrypting, the inputs to the HPKE Seal Single-Shot operation are set as fo
 - psk_id: If 'mode_psk' has been selected, the value of the protected
   "psk_id" header parameter. Otherwise, the empty string.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
-- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052.
+- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in {{Section 5.3 of RFC9052}}.
 
 For the Integrated Encryption mode the context string will be "Encrypt0".
 Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
@@ -209,7 +209,7 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - psk_id: If 'mode_psk' has been selected, the value of the protected
   "psk_id" header parameter. Otherwise, the empty string.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
-- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in Section 5.3 of RFC 9052. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
+- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in {{Section 5.3 of RFC9052}}. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
 - enc: The contents of the layer "ek" parameter.
 - ct: The contents of the layer ciphertext.
 
@@ -249,6 +249,7 @@ COSE-HPKE does not use the COSE_KDF_Context in any way.
 The Recipient_structure works akin to Sig_structure and Enc_structure defined in {{RFC9052}}.
 It is constructed independently by the sender and the receiver only as an input to the cryptographic algorithms.
 It is not actually conveyed in the COSE message.
+A CDDL {{RFC8610}} description of the data structure is as follows:
 
 ~~~
 Recipient_structure = [
@@ -963,10 +964,11 @@ contributions to the draft as co-authors of initial versions.
 # Acknowledgements
 
 We would like to thank
+Thomas Fossati,
 John Mattsson,
+Ivaylo Petrov,
 Mike Prorock,
 Michael Richardson,
-Thomas Fossati,
 and
 Göran Selander
 for their contributions to the specification.
