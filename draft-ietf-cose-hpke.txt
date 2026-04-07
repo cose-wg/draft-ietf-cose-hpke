@@ -4,15 +4,15 @@
 
 COSE                                                       H. Tschofenig
 Internet-Draft                                                  UniBw M.
-Intended status: Standards Track                          O. Steele, Ed.
-Expires: 16 September 2026                                  Tradeverifyd
+Intended status: Standards Track                           M. Jones, Ed.
+Expires: 9 October 2026                           Self-Issued Consulting
+                                                               O. Steele
+                                                            Tradeverifyd
                                                               D. Ajitomi
                                                              bibital LLC
                                                             L. Lundblade
                                                      Security Theory LLC
-                                                                M. Jones
-                                                  Self-Issued Consulting
-                                                           15 March 2026
+                                                            7 April 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 September 2026.
+   This Internet-Draft will expire on 9 October 2026.
 
 Copyright Notice
 
@@ -1385,8 +1385,8 @@ Appendix C.  Testvectors
 
    *  HPKE AAD: "external-hpke-aad"
 
-   *  PSK (for the PSK testvectors only): h'0247fd33b913760fa1fa51e1892d
-      9f307fbe65eb171e8132c2af18555a738b82'
+   *  PSK (for the PSK testvectors only):
+      h'0247fd33b913760fa1fa51e1892d9f307fbe65eb171e8132c2af18555a738b82'
 
    *  PSK ID (for the PSK testvectors only):
       h'456e6e796e20447572696e206172616e204d6f726961' (= "Ennyn Durin
@@ -3795,7 +3795,14 @@ Authors' Addresses
    Email: hannes.tschofenig@gmx.net
 
 
-   Orie Steele (editor)
+   Michael B. Jones (editor)
+   Self-Issued Consulting
+   United States
+   Email: michael_b_jones@hotmail.com
+   URI:   https://self-issued.info/
+
+
+   Orie Steele
    Tradeverifyd
    United States
    Email: orie@or13.io
@@ -3811,10 +3818,3 @@ Authors' Addresses
    Security Theory LLC
    United States
    Email: lgl@securitytheory.com
-
-
-   Michael B. Jones
-   Self-Issued Consulting
-   United States
-   Email: michael_b_jones@hotmail.com
-   URI:   https://self-issued.info/
