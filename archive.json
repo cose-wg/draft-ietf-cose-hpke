@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-17T02:30:01.532650+00:00",
+  "timestamp": "2026-04-09T02:40:39.981822+00:00",
   "repo": "cose-wg/draft-ietf-cose-hpke",
   "labels": [
     {
@@ -10208,24 +10208,26 @@
       "id": "PR_kwDOGr5frc7Kt6Kj",
       "title": "Making Mike the Document Editor",
       "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/150",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "I am suggesting to have Mike become the document editor for the work he has done over the last year in getting us closer to the finish line.\r\n\r\nThanks a lot for your work, Mike!",
       "createdAt": "2026-03-15T12:20:58Z",
-      "updatedAt": "2026-03-15T12:28:58Z",
+      "updatedAt": "2026-04-07T16:29:33Z",
       "baseRepository": "cose-wg/draft-ietf-cose-hpke",
       "baseRefName": "main",
       "baseRefOid": "73828f611e184e5fa634313f69bc1588f321ec4d",
       "headRepository": "cose-wg/draft-ietf-cose-hpke",
       "headRefName": "hannestschofenig-patch-17",
       "headRefOid": "7ce2c21a97a391515f05395b2e541ee080667f90",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-04-07T16:29:33Z",
+      "mergedAt": "2026-04-07T16:29:33Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "8505f5a95ffd826d86d6cb5642baedf81346c159"
+      },
       "comments": [],
       "reviews": [
         {
@@ -10239,6 +10241,61 @@
           "body": "I'm honored by the suggestion.  I'll leave it up to the rest of you.",
           "createdAt": "2026-03-15T12:25:14Z",
           "updatedAt": "2026-03-15T12:25:14Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOGr5frc7yg7ii",
+          "commit": {
+            "abbreviatedOid": "7ce2c21"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-04-07T14:06:46Z",
+          "updatedAt": "2026-04-07T14:06:46Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 151,
+      "id": "PR_kwDOGr5frc7QklX3",
+      "title": "Apply shepherd review comments by Ivaylo Petrov",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-hpke/pull/151",
+      "state": "MERGED",
+      "author": "selfissued",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-04-07T17:30:02Z",
+      "updatedAt": "2026-04-07T17:38:38Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-hpke",
+      "baseRefName": "main",
+      "baseRefOid": "8505f5a95ffd826d86d6cb5642baedf81346c159",
+      "headRepository": "cose-wg/draft-ietf-cose-hpke",
+      "headRefName": "mbj-ivo",
+      "headRefOid": "b77ed7efa1a5a90da6e1b755b809d452e91ed244",
+      "closedAt": "2026-04-07T17:38:38Z",
+      "mergedAt": "2026-04-07T17:38:38Z",
+      "mergedBy": "selfissued",
+      "mergeCommit": {
+        "oid": "8c5fafad63ca3e1b0f1e49d20e3ea38cbbcbdf92"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOGr5frc7ymSsM",
+          "commit": {
+            "abbreviatedOid": "b77ed7e"
+          },
+          "author": "ivajloip",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thanks!",
+          "createdAt": "2026-04-07T17:37:45Z",
+          "updatedAt": "2026-04-07T17:37:45Z",
           "comments": []
         }
       ]
