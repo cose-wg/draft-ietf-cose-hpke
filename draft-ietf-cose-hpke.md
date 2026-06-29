@@ -234,7 +234,7 @@ it is included in the COSE_Encrypt structure.
 
 - Layer 1 contains a COSE_Recipient with the parameters needed for
 HPKE to generate a shared secret used to encrypt the CEK. This layer conveys the
-encrypted CEK in the COSE_recipient structure using a COSE-HPKE algorithm.
+encrypted CEK in the COSE_Recipient structure using a COSE-HPKE algorithm.
 
 This two-layer structure is used to encrypt content that can also be shared with
 multiple recipients at the expense of a single additional encryption operation.
@@ -261,12 +261,12 @@ Recipient_structure = [
 ~~~
 
 "next_layer_alg":
-: The algorithm ID of the COSE layer for which the COSE_recipient is encrypting a key.
+: The algorithm ID of the COSE layer for which the COSE_Recipient is encrypting a key.
 It is the algorithm that the key MUST be used with.
 This value MUST match the "alg" parameter in the next lower COSE layer.
 
 "recipient_protected_header":
-: The protected header parameters from the COSE_recipient.
+: The protected header parameters from the COSE_Recipient.
 
 "recipient_extra_info":
 : Defaults to empty byte string. See {{AddInfo}}.
@@ -306,7 +306,7 @@ If 'mode_psk' has been selected, then the protected header MUST also contain
 the "psk_id" parameter. If 'mode_base' has been chosen, then the protected
 header MUST NOT contain the "psk_id" parameter.
 
-Next, construct a Recipeint_structure as described above.
+Next, construct a Recipient_structure as described above.
 
 Next, the HPKE Seal Single-Shot operation is invoked with the following inputs:
 
@@ -328,7 +328,7 @@ The outputs go into the COSE_Recipient as follows:
 - enc: MUST be placed into the "ek" (encapsulated key) header parameter in the unprotected bucket.
 - ct: MUST be placed in the ciphertext field.
 
-The COSE_recipient structure is computed for each recipient.
+A COSE_Recipient structure is computed for each recipient.
 
 Decrypting is largely the inverse of encrypting.
 
@@ -349,8 +349,6 @@ When decrypting, the inputs to the HPKE Open operation are as follows:
 - ct: The contents of the COSE_Recipient ciphertext field.
 
 The plaintext output from the HPKE Open operation is the CEK.
-
-The COSE_recipient structure is computed for each recipient.
 
 When encrypting the content at layer 0, the instructions in {{Section 5.3
 of RFC9052}} MUST be followed, including the calculation of the
@@ -488,12 +486,6 @@ it might be beneficial to register ciphersuites for use with COSE-HPKE.
 Additionally, ciphersuites utilizing the compact encoding of the public keys,
 as defined in {{I-D.irtf-cfrg-dnhpke}}, may be standardized for use in
 constrained environments.
-
-As a guideline for ciphersuite submissions to the IANA COSE algorithm
-registry, the designated experts must only register combinations of
-(KEM, KDF, AEAD) triple that constitute valid combinations for use with
-HPKE, the KDF used should (if possible) match one internally used by the
-KEM, and components should not be mixed between global and national standards.
 
 ## COSE_Keys for COSE-HPKE Ciphersuites
 
@@ -761,6 +753,14 @@ but may not be guaranteed by non-AEAD ciphers.
 This document requests IANA to add new values to the 'COSE Algorithms' and to
 the 'COSE Header Parameters' registries.
 
+## Designated Expert Guidance {#designated-expert-guidance}
+
+For ciphersuite submissions to the IANA COSE Algorithms registry, designated
+experts must only register combinations of (KEM, KDF, AEAD) triple that
+constitute valid combinations for use with HPKE. The KDF used should, if
+possible, match one internally used by the KEM. Components should not be mixed
+between global and national standards.
+
 ## COSE Algorithms Registry
 
 ### HPKE-0
@@ -965,6 +965,7 @@ contributions to the draft as co-authors of initial versions.
 
 We would like to thank
 Thomas Fossati,
+Chris Inacio,
 John Mattsson,
 Ivaylo Petrov,
 Mike Prorock,
