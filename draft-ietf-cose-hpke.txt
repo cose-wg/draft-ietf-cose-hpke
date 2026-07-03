@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                  UniBw M.
 Intended status: Standards Track                           M. Jones, Ed.
-Expires: 9 October 2026                           Self-Issued Consulting
+Expires: 4 January 2027                           Self-Issued Consulting
                                                                O. Steele
                                                             Tradeverifyd
                                                               D. Ajitomi
                                                              bibital LLC
                                                             L. Lundblade
                                                      Security Theory LLC
-                                                            7 April 2026
+                                                             3 July 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 October 2026.
+   This Internet-Draft will expire on 4 January 2027.
 
 Copyright Notice
 
@@ -112,26 +112,27 @@ Table of Contents
        5.3.3.  KEM Public Key for HPKE-4
    6.  Security Considerations
    7.  IANA Considerations
-     7.1.  COSE Algorithms Registry
-       7.1.1.  HPKE-0
-       7.1.2.  HPKE-1
-       7.1.3.  HPKE-2
-       7.1.4.  HPKE-3
-       7.1.5.  HPKE-4
-       7.1.6.  HPKE-5
-       7.1.7.  HPKE-6
-       7.1.8.  HPKE-7
-       7.1.9.  HPKE-0-KE
-       7.1.10. HPKE-1-KE
-       7.1.11. HPKE-2-KE
-       7.1.12. HPKE-3-KE
-       7.1.13. HPKE-4-KE
-       7.1.14. HPKE-5-KE
-       7.1.15. HPKE-6-KE
-       7.1.16. HPKE-7-KE
-     7.2.  COSE Header Parameters
-       7.2.1.  ek Header Parameter
-       7.2.2.  psk_id Header Parameter
+     7.1.  Designated Expert Guidance
+     7.2.  COSE Algorithms Registry
+       7.2.1.  HPKE-0
+       7.2.2.  HPKE-1
+       7.2.3.  HPKE-2
+       7.2.4.  HPKE-3
+       7.2.5.  HPKE-4
+       7.2.6.  HPKE-5
+       7.2.7.  HPKE-6
+       7.2.8.  HPKE-7
+       7.2.9.  HPKE-0-KE
+       7.2.10. HPKE-1-KE
+       7.2.11. HPKE-2-KE
+       7.2.12. HPKE-3-KE
+       7.2.13. HPKE-4-KE
+       7.2.14. HPKE-5-KE
+       7.2.15. HPKE-6-KE
+       7.2.16. HPKE-7-KE
+     7.3.  COSE Header Parameters
+       7.3.1.  ek Header Parameter
+       7.3.2.  psk_id Header Parameter
    8.  References
      8.1.  Normative References
      8.2.  Informative References
@@ -341,7 +342,7 @@ Table of Contents
 
    *  Layer 1 contains a COSE_Recipient with the parameters needed for
       HPKE to generate a shared secret used to encrypt the CEK.  This
-      layer conveys the encrypted CEK in the COSE_recipient structure
+      layer conveys the encrypted CEK in the COSE_Recipient structure
       using a COSE-HPKE algorithm.
 
    This two-layer structure is used to encrypt content that can also be
@@ -372,12 +373,12 @@ Table of Contents
    ]
 
    "next_layer_alg":  The algorithm ID of the COSE layer for which the
-      COSE_recipient is encrypting a key.  It is the algorithm that the
+      COSE_Recipient is encrypting a key.  It is the algorithm that the
       key MUST be used with.  This value MUST match the "alg" parameter
       in the next lower COSE layer.
 
    "recipient_protected_header":  The protected header parameters from
-      the COSE_recipient.
+      the COSE_Recipient.
 
    "recipient_extra_info":  Defaults to empty byte string.  See
       Section 3.3.4.
@@ -424,7 +425,7 @@ Table of Contents
    "psk_id" parameter.  If 'mode_base' has been chosen, then the
    protected header MUST NOT contain the "psk_id" parameter.
 
-   Next, construct a Recipeint_structure as described above.
+   Next, construct a Recipient_structure as described above.
 
    Next, the HPKE Seal Single-Shot operation is invoked with the
    following inputs:
@@ -458,7 +459,7 @@ Table of Contents
 
    *  ct: MUST be placed in the ciphertext field.
 
-   The COSE_recipient structure is computed for each recipient.
+   A COSE_Recipient structure is computed for each recipient.
 
    Decrypting is largely the inverse of encrypting.
 
@@ -491,8 +492,6 @@ Table of Contents
    *  ct: The contents of the COSE_Recipient ciphertext field.
 
    The plaintext output from the HPKE Open operation is the CEK.
-
-   The COSE_recipient structure is computed for each recipient.
 
    When encrypting the content at layer 0, the instructions in
    Section 5.3 of [RFC9052] MUST be followed, including the calculation
@@ -707,13 +706,6 @@ Table of Contents
    with COSE-HPKE.  Additionally, ciphersuites utilizing the compact
    encoding of the public keys, as defined in [I-D.irtf-cfrg-dnhpke],
    may be standardized for use in constrained environments.
-
-   As a guideline for ciphersuite submissions to the IANA COSE algorithm
-   registry, the designated experts must only register combinations of
-   (KEM, KDF, AEAD) triple that constitute valid combinations for use
-   with HPKE, the KDF used should (if possible) match one internally
-   used by the KEM, and components should not be mixed between global
-   and national standards.
 
 4.1.  COSE_Keys for COSE-HPKE Ciphersuites
 
@@ -976,9 +968,18 @@ Table of Contents
    This document requests IANA to add new values to the 'COSE
    Algorithms' and to the 'COSE Header Parameters' registries.
 
-7.1.  COSE Algorithms Registry
+7.1.  Designated Expert Guidance
 
-7.1.1.  HPKE-0
+   For ciphersuite submissions to the IANA COSE Algorithms registry,
+   designated experts must only register combinations of (KEM, KDF,
+   AEAD) triple that constitute valid combinations for use with HPKE.
+   The KDF used should, if possible, match one internally used by the
+   KEM.  Components should not be mixed between global and national
+   standards.
+
+7.2.  COSE Algorithms Registry
+
+7.2.1.  HPKE-0
 
    *  Name: HPKE-0
 
@@ -995,7 +996,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.2.  HPKE-1
+7.2.2.  HPKE-1
 
    *  Name: HPKE-1
 
@@ -1012,7 +1013,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.3.  HPKE-2
+7.2.3.  HPKE-2
 
    *  Name: HPKE-2
 
@@ -1029,7 +1030,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.4.  HPKE-3
+7.2.4.  HPKE-3
 
    *  Name: HPKE-3
 
@@ -1046,7 +1047,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.5.  HPKE-4
+7.2.5.  HPKE-4
 
    *  Name: HPKE-4
 
@@ -1063,7 +1064,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.6.  HPKE-5
+7.2.6.  HPKE-5
 
    *  Name: HPKE-5
 
@@ -1080,7 +1081,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.7.  HPKE-6
+7.2.7.  HPKE-6
 
    *  Name: HPKE-6
 
@@ -1097,7 +1098,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.8.  HPKE-7
+7.2.8.  HPKE-7
 
    *  Name: HPKE-7
 
@@ -1114,7 +1115,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.9.  HPKE-0-KE
+7.2.9.  HPKE-0-KE
 
    *  Name: HPKE-0-KE
 
@@ -1131,7 +1132,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.10.  HPKE-1-KE
+7.2.10.  HPKE-1-KE
 
    *  Name: HPKE-1-KE
 
@@ -1148,7 +1149,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.11.  HPKE-2-KE
+7.2.11.  HPKE-2-KE
 
    *  Name: HPKE-2-KE
 
@@ -1165,7 +1166,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.12.  HPKE-3-KE
+7.2.12.  HPKE-3-KE
 
    *  Name: HPKE-3-KE
 
@@ -1182,7 +1183,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.13.  HPKE-4-KE
+7.2.13.  HPKE-4-KE
 
    *  Name: HPKE-4-KE
 
@@ -1199,7 +1200,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.14.  HPKE-5-KE
+7.2.14.  HPKE-5-KE
 
    *  Name: HPKE-5-KE
 
@@ -1216,7 +1217,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.15.  HPKE-6-KE
+7.2.15.  HPKE-6-KE
 
    *  Name: HPKE-6-KE
 
@@ -1233,7 +1234,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.1.16.  HPKE-7-KE
+7.2.16.  HPKE-7-KE
 
    *  Name: HPKE-7-KE
 
@@ -1250,9 +1251,9 @@ Table of Contents
 
    *  Recommended: Yes
 
-7.2.  COSE Header Parameters
+7.3.  COSE Header Parameters
 
-7.2.1.  ek Header Parameter
+7.3.1.  ek Header Parameter
 
    *  Name: ek
 
@@ -1266,7 +1267,7 @@ Table of Contents
 
    *  Reference: [[TBD: This RFC]]
 
-7.2.2.  psk_id Header Parameter
+7.3.2.  psk_id Header Parameter
 
    *  Name: psk_id
 
@@ -1349,9 +1350,9 @@ Table of Contents
    [I-D.irtf-cfrg-dnhpke]
               Harkins, D., "Deterministic Nonce-less Hybrid Public Key
               Encryption", Work in Progress, Internet-Draft, draft-irtf-
-              cfrg-dnhpke-07, 16 October 2025,
+              cfrg-dnhpke-08, 20 April 2026,
               <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
-              dnhpke-07>.
+              dnhpke-08>.
 
    [RFC9864]  Jones, M.B. and O. Steele, "Fully-Specified Algorithms for
               JSON Object Signing and Encryption (JOSE) and CBOR Object
@@ -1374,9 +1375,9 @@ Appendix A.  Contributors
 
 Appendix B.  Acknowledgements
 
-   We would like to thank Thomas Fossati, John Mattsson, Ivaylo Petrov,
-   Mike Prorock, Michael Richardson, and Göran Selander for their
-   contributions to the specification.
+   We would like to thank Thomas Fossati, Chris Inacio, John Mattsson,
+   Ivaylo Petrov, Mike Prorock, Michael Richardson, and Göran Selander
+   for their contributions to the specification.
 
 Appendix C.  Testvectors
 
