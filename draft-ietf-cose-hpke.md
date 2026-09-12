@@ -54,13 +54,13 @@ normative:
   RFC2119:
   RFC8174:
   RFC8610:
-  RFC8937:
   RFC8949:
   RFC9052:
   RFC9053:
   I-D.ietf-hpke-hpke:
 
 informative:
+  RFC8937:
   RFC9864:
   I-D.irtf-cfrg-dnhpke:
   I-D.ietf-lamps-cms-cek-hkdf-sha256:
@@ -733,9 +733,10 @@ Both HPKE and HPKE COSE assume that the sender possesses the recipient's
 public key. Therefore, some form of public key distribution mechanism is
 assumed to exist, but this is outside the scope of this document.
 
-HPKE relies on a source of randomness to be available on the device. Additionally,
-with the two layer structure the CEK is randomly generated and it MUST be
-ensured that the guidelines in {{RFC8937}} for random number generation are followed.
+HPKE requires a cryptographically secure source of randomness. In HPKE Key
+Encryption mode, the CEK MUST also be generated using a cryptographically secure
+random number generator. {{RFC8937}} describes a technique for improving
+resilience to weaknesses in random number generation.
 
 HPKE in Base mode does not offer authentication as part of the HPKE KEM. In this
 case COSE constructs like COSE_Sign, COSE_Sign1, COSE_Mac, or COSE_Mac0 can be
