@@ -965,14 +965,18 @@ contributions to the draft as co-authors of initial versions.
 # Acknowledgements
 
 We would like to thank
+Linda Dunbar,
 Thomas Fossati,
 Chris Inacio,
+Mallory Knodel,
 John Mattsson,
 Ivaylo Petrov,
 Mike Prorock,
 Michael Richardson,
+Göran Selander,
+Brian Sipos,
 and
-Göran Selander
+Valery Smyslov
 for their contributions to the specification.
 
 # Testvectors
