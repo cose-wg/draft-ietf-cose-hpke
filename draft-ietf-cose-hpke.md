@@ -142,8 +142,11 @@ Algorithm identifiers MUST only be used in the COSE HPKE mode
 that is specified for them.
 
 In both cases, the new COSE header parameter "ek" MUST be present.
-It contains the encapsulated KEM shared secret.
-The value of this parameter MUST be the "enc" value output by the HPKE Seal() Single-Shot operation, as defined in {{Section 6.1 of I-D.ietf-hpke-hpke}}.
+It carries the HPKE encapsulated key, which is the output of the KEM
+encapsulation operation that the recipient needs, together with its private key,
+to recover the KEM shared secret. The shared secret itself is never transmitted.
+HPKE names this encapsulated key "enc". Hence, the value of the "ek" parameter MUST be
+the "enc" value output by the HPKE Seal() Single-Shot operation, as defined in {{Section 6.1 of I-D.ietf-hpke-hpke}}.
 The "ek" header parameter MUST be encoded as a CBOR byte string.
 
 HPKE defines several authentication modes, as described in Table 1 of {{I-D.ietf-hpke-hpke}}.
@@ -214,6 +217,13 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - ct: The contents of the layer ciphertext.
 
 The plaintext output is the raw message plaintext.
+
+Externally provided information used for the info parameter and for
+external_aad is not transmitted in the COSE message. The sender and the
+recipient need to use exactly the same byte strings for these values.
+Otherwise, the HPKE Open operation fails. COSE-HPKE treats these values
+as opaque byte strings, so an application using them needs to
+specify their content and their exact encoding.
 
 The COSE_Encrypt0 MAY be tagged or untagged.
 
@@ -388,6 +398,7 @@ Its value would be authenticated and would also influence the HPKE key setup.
 Because all header parameters are transmitted in the clear, they cannot be used to bind information that must remain secret.
 The "recipient_extra_info" field in the Recipient_structure is also included in the HPKE Single-Shot Seal/Open info parameter, but unlike header parameters it is not transmitted.
 This makes it suitable for binding context information that is, for example, provided in other layers of the protocol stack or via out-of-band means. It is the responsibility of the specific use case to ensure that both sender and receiver possess this context information.
+Because "recipient_extra_info" is an opaque byte string that is input to the HPKE key schedule, the sender and the receiver need to use exactly the same byte string, which requires the use case to specify its content and its exact encoding; with differing values, decryption of the CEK fails.
 
 There are minor size considerations.
 HPKE guarantees support for at least 64 bytes in the info parameter, and implementations are expected to support up to 16,384 bytes.
