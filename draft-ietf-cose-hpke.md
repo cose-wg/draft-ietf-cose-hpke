@@ -146,7 +146,7 @@ It contains the encapsulated KEM shared secret.
 The value of this parameter MUST be the "enc" value output by the HPKE Seal() Single-Shot operation, as defined in {{Section 6.1 of I-D.ietf-hpke-hpke}}.
 The "ek" header parameter MUST be encoded as a CBOR byte string.
 
-HPKE defines several authentication modes, as described in Table 1 of {{I-D.ietf-hpke-hpke}}.
+HPKE defines two authentication modes, as described in Table 1 of {{I-D.ietf-hpke-hpke}}.
 This specification uses both 'mode_base' and 'mode_psk'.
 The mode is 'mode_psk' if the "psk_id" header parameter is present; otherwise, the mode defaults to 'mode_base'.
 'mode_base' is described in {{Section 5.1.1 of I-D.ietf-hpke-hpke}}, which only enables encryption
@@ -154,7 +154,7 @@ to the holder of a given KEM private key. 'mode_psk' is described in {{Section 5
 which authenticates using a pre-shared key.
 The "psk_id" header parameter, when present, MUST be a protected header parameter of the
 COSE structure of the corresponding HPKE operation. The PSK value
-itself is an external input to HPKE and MUST NOT be encoded in the COSE
+itself is an external input to HPKE and is not encoded in the COSE
 structure.
 
 ## HPKE Integrated Encryption Mode {#one-layer}
@@ -167,8 +167,8 @@ in the protected header and MUST be a COSE-HPKE algorithm.
 
 The use of the "kid" header parameter is RECOMMENDED
 to explicitly identify the static recipient public key
-used by the sender. If the COSE_Encrypt0 structure includes a "kid" parameter, the
-recipient MAY use it to select the corresponding private key.
+used by the sender. The "kid" parameter is used as described in
+{{Section 3.1 of RFC9052}}; COSE-HPKE does not change its semantics.
 
 When encrypting, the inputs to the HPKE Seal Single-Shot operation are set as follows:
 
@@ -183,7 +183,7 @@ When encrypting, the inputs to the HPKE Seal Single-Shot operation are set as fo
 - aad: MUST contain the byte string for the authenticated data structure according to the steps defined in {{Section 5.3 of RFC9052}}.
 
 For the Integrated Encryption mode the context string will be "Encrypt0".
-Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
+Externally provided AAD information MAY be provided and, if provided, MUST be passed into the Enc_structure via the external_aad field.
 
 - aead_id: From the ciphersuite. See {{ciphersuite}}.
 - pt: The raw message plaintext.
@@ -209,7 +209,7 @@ When decrypting, the inputs to the HPKE Open operation are set as follows:
 - psk_id: If 'mode_psk' has been selected, the value of the protected
   "psk_id" header parameter. Otherwise, the empty string.
 - info: Defaults to the empty string; externally provided information MAY be used instead.
-- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in {{Section 5.3 of RFC9052}}. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and MUST be passed into the Enc_structure via the external_aad field.
+- aad: MUST contain the byte string for the authenticated data structure according to the steps defined in {{Section 5.3 of RFC9052}}. For the Integrated Encryption mode the context string will be "Encrypt0". Externally provided AAD information MAY be provided and, if provided, MUST be passed into the Enc_structure via the external_aad field.
 - enc: The contents of the layer "ek" parameter.
 - ct: The contents of the layer ciphertext.
 
@@ -243,7 +243,7 @@ Layer 1 may also contain other COSE_Recipients using other content key distribut
 
 ### Recipient_structure
 
-When constructing a COSE_Recipient for COSE-HPKE, the Recipient_structure defined here is used in place of COSE_KDF_Context to aggregate the items that require protection.
+When constructing a COSE_Recipient for COSE-HPKE, the Recipient_structure defined here is used in place of COSE_KDF_Context ({{Section 5.2 of RFC9053}}) to aggregate the items that require protection.
 COSE-HPKE does not use the COSE_KDF_Context in any way.
 
 The Recipient_structure works akin to Sig_structure and Enc_structure defined in {{RFC9052}}.
@@ -293,7 +293,7 @@ Any bulk external data that requires protection should be handled at layer 0 usi
 Next, assemble the protected headers.
 Note that they will be wrapped in a byte string.
 
-While the "alg" header parameter is not strictly required in the COSE_Recipient, if present, it must be the ciphersuite used to specify the HPKE algorithms.
+While the "alg" header parameter is not strictly required in the COSE_Recipient, if present, it MUST be the ciphersuite used to specify the HPKE algorithms.
 See {{ciphersuite}}.
 If the "alg" header parameter is present, it MUST be a protected header parameter.
 
@@ -403,7 +403,7 @@ However, it remains available for special cases and has no practical size limit.
 The COSE_Key with the existing key types can be used to represent KEM private
 or public keys. When using a COSE_Key for COSE-HPKE, the following checks are made:
 
-* If the "kty" field is "AKP", then the public and private keys SHALL be the raw HPKE public and private
+* If the "kty" field is "AKP", then the public and private keys MUST be the raw HPKE public and private
 keys (respectively) for the KEM used by the algorithm.
 * Otherwise, the key MUST be suitable for the KEM used by the algorithm. In case the "kty" parameter
 is "EC2" or "OKP", this means the value of "crv" parameter is suitable. The valid combinations of
