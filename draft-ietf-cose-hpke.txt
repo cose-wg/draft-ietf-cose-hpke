@@ -5,14 +5,14 @@
 COSE                                                       H. Tschofenig
 Internet-Draft                                                  UniBw M.
 Intended status: Standards Track                           M. Jones, Ed.
-Expires: 16 March 2027                            Self-Issued Consulting
+Expires: 17 May 2027                              Self-Issued Consulting
                                                                O. Steele
                                                             Tradeverifyd
                                                               D. Ajitomi
                                                              bibital LLC
                                                             L. Lundblade
                                                      Security Theory LLC
-                                                       12 September 2026
+                                                        13 November 2026
 
 
 Use of Hybrid Public-Key Encryption (HPKE) with CBOR Object Signing and
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 March 2027.
+   This Internet-Draft will expire on 17 May 2027.
 
 Copyright Notice
 
@@ -1295,9 +1295,9 @@ Table of Contents
    [I-D.ietf-hpke-hpke]
               Barnes, R., Bhargavan, K., Lipp, B., and C. A. Wood,
               "Hybrid Public Key Encryption", Work in Progress,
-              Internet-Draft, draft-ietf-hpke-hpke-04, 6 July 2026,
+              Internet-Draft, draft-ietf-hpke-hpke-06, 28 October 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-hpke-
-              hpke-04>.
+              hpke-06>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1376,9 +1376,10 @@ Appendix A.  Contributors
 
 Appendix B.  Acknowledgements
 
-   We would like to thank Thomas Fossati, Chris Inacio, John Mattsson,
-   Ivaylo Petrov, Mike Prorock, Michael Richardson, and Göran Selander
-   for their contributions to the specification.
+   We would like to thank Linda Dunbar, Thomas Fossati, Chris Inacio,
+   Mallory Knodel, John Mattsson, Ivaylo Petrov, Mike Prorock, Michael
+   Richardson, Göran Selander, Brian Sipos, and Valery Smyslov for their
+   contributions to the specification.
 
 Appendix C.  Testvectors
 
