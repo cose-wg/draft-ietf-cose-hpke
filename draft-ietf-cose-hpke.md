@@ -99,6 +99,13 @@ with the single-shot APIs defined in {{Section 6 of I-D.ietf-hpke-hpke}}. Multip
 invocations of Open() / Seal() on the same context, as discussed in
 {{Section 9.7.1 of I-D.ietf-hpke-hpke}} are not supported.
 
+The HPKE Integrated Encryption mode defined in this document uses the aad
+input of the single-shot APIs, and the HPKE Key Encryption mode uses the
+info input. Some HPKE libraries do not expose both of these inputs in their
+single-shot APIs. With such a library, the single-shot operation can be
+emulated by setting up an HPKE context with the info input and then invoking Seal() or
+Open() on that context exactly once with the aad input.
+
 Algorithm identifiers follow a ciphersuite scheme in which a single COSE algorithm ID maps to the three algorithm IDs required for HPKE:
 the Key Encapsulation Mechanism (KEM), the Key Derivation Function (KDF), and the Authenticated Encryption with Associated Data (AEAD) algorithm.
 
@@ -527,7 +534,8 @@ for better readability.
 This example uses the following:
 
 - Suite: HPKE-0 (P-256 / HKDF-SHA256 / AES-128-GCM)
-- Plaintext: "This is the content."
+- Plaintext: h'546869732069732074686520636f6e74656e742e'
+  (the ASCII text "This is the content.")
 - External AAD: empty
 - External Info: empty
 - Recipient kid: "bob"
@@ -535,10 +543,10 @@ This example uses the following:
 The ciphertext (hex) transmitted to "bob" is:
 
 ~~~
-d08344a1011823a20443626f622358410457229bdd99407b384a9e59fa15
-53224d58b106e9ebebdaa06d2126bd96757674847669966ecb0dcdf21af5
-623f19f0b799b0cddf3ee930b739dd474f6282de0158253f3c1595e9d252
-e816215a9ce73f47ba4b57acb06ecc39ca5a03a14108bbe7807af5688d61
+d08344a1011823a20443626f62235841046814c4c2b3384846b99bafa017
+563ee66e8b802901f83db402f2815efb6239dd5b3531346ab05497e258d1
+e3540cd6b9dfcf08326af18db5ac6ca48cce0ee3e558242245363b009501
+992d354125436c3fbf13549559978277f1a3ff1f21a8b24a7e335b32df
 ~~~
 {: #hpke-example-ciphertext title="Hex-Encoding of COSE_Encrypt0"}
 
@@ -549,12 +557,12 @@ COSE_Encrypt0 pretty-printed:
   h'A1011823',
   {
     4: 'bob',
-    -4: h'0457229BDD99407B384A9E59FA1553224D58B106E9EBEBDA
-    A06D2126BD96757674847669966ECB0DCDF21AF5623F19F0B799B0
-    CDDF3EE930B739DD474F6282DE01'
+    -4: h'046814C4C2B3384846B99BAFA017563EE66E8B802901F83D
+    B402F2815EFB6239DD5B3531346AB05497E258D1E3540CD6B9DFCF
+    08326AF18DB5AC6CA48CCE0EE3E5'
   },
-  h'3F3C1595E9D252E816215A9CE73F47BA4B57ACB06ECC39CA5A03A1
-  4108BBE7807AF5688D61'
+  h'2245363B009501992D354125436C3FBF13549559978277F1A3FF1F
+  21A8B24A7E335B32DF'
   ])
 ~~~
 {: #hpke-example-one title="COSE_Encrypt0 Example for HPKE"}
@@ -586,7 +594,8 @@ inserted for better readability.
 This example uses the following input parameters:
 
 - Content encryption algorithm: AES-128-GCM
-- plaintext: "This is the content."
+- plaintext: h'546869732069732074686520636f6e74656e742e'
+  (the ASCII text "This is the content.")
 - kid:"bob"
 - alg: HPKE-0-KE (assumed 46) - Key Encryption, DHKEM(P-256, HKDF-SHA256), KDF: HKDF-SHA256, AEAD: AES-128-GCM
 - external aad and info are empty
