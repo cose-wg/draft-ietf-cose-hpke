@@ -243,7 +243,7 @@ Table of Contents
    of [I-D.ietf-hpke-hpke].  The "ek" header parameter MUST be encoded
    as a CBOR byte string.
 
-   HPKE defines several authentication modes, as described in Table 1 of
+   HPKE defines two authentication modes, as described in Table 1 of
    [I-D.ietf-hpke-hpke].  This specification uses both 'mode_base' and
    'mode_psk'.  The mode is 'mode_psk' if the "psk_id" header parameter
    is present; otherwise, the mode defaults to 'mode_base'. 'mode_base'
@@ -253,8 +253,8 @@ Table of Contents
    which authenticates using a pre-shared key.  The "psk_id" header
    parameter, when present, MUST be a protected header parameter of the
    COSE structure of the corresponding HPKE operation.  The PSK value
-   itself is an external input to HPKE and MUST NOT be encoded in the
-   COSE structure.
+   itself is an external input to HPKE and is not encoded in the COSE
+   structure.
 
 3.2.  HPKE Integrated Encryption Mode
 
@@ -266,9 +266,9 @@ Table of Contents
    COSE-HPKE algorithm.
 
    The use of the "kid" header parameter is RECOMMENDED to explicitly
-   identify the static recipient public key used by the sender.  If the
-   COSE_Encrypt0 structure includes a "kid" parameter, the recipient MAY
-   use it to select the corresponding private key.
+   identify the static recipient public key used by the sender.  The
+   "kid" parameter is used as described in Section 3.1 of [RFC9052];
+   COSE-HPKE does not change its semantics.
 
    When encrypting, the inputs to the HPKE Seal Single-Shot operation
    are set as follows:
@@ -293,8 +293,9 @@ Table of Contents
       [RFC9052].
 
    For the Integrated Encryption mode the context string will be
-   "Encrypt0".  Externally provided AAD information MAY be provided and
-   MUST be passed into the Enc_structure via the external_aad field.
+   "Encrypt0".  Externally provided AAD information MAY be provided and,
+   if provided, MUST be passed into the Enc_structure via the
+   external_aad field.
 
    *  aead_id: From the ciphersuite.  See Section 4.
 
@@ -340,8 +341,8 @@ Table of Contents
       structure according to the steps defined in Section 5.3 of
       [RFC9052].  For the Integrated Encryption mode the context string
       will be "Encrypt0".  Externally provided AAD information MAY be
-      provided and MUST be passed into the Enc_structure via the
-      external_aad field.
+      provided and, if provided, MUST be passed into the Enc_structure
+      via the external_aad field.
 
    *  enc: The contents of the layer "ek" parameter.
 
@@ -391,8 +392,8 @@ Table of Contents
 
    When constructing a COSE_Recipient for COSE-HPKE, the
    Recipient_structure defined here is used in place of COSE_KDF_Context
-   to aggregate the items that require protection.  COSE-HPKE does not
-   use the COSE_KDF_Context in any way.
+   (Section 5.2 of [RFC9053]) to aggregate the items that require
+   protection.  COSE-HPKE does not use the COSE_KDF_Context in any way.
 
    The Recipient_structure works akin to Sig_structure and Enc_structure
    defined in [RFC9052].  It is constructed independently by the sender
@@ -446,7 +447,7 @@ Table of Contents
    in a byte string.
 
    While the "alg" header parameter is not strictly required in the
-   COSE_Recipient, if present, it must be the ciphersuite used to
+   COSE_Recipient, if present, it MUST be the ciphersuite used to
    specify the HPKE algorithms.  See Section 4.  If the "alg" header
    parameter is present, it MUST be a protected header parameter.
 
@@ -622,9 +623,9 @@ Table of Contents
    private or public keys.  When using a COSE_Key for COSE-HPKE, the
    following checks are made:
 
-   *  If the "kty" field is "AKP", then the public and private keys
-      SHALL be the raw HPKE public and private keys (respectively) for
-      the KEM used by the algorithm.
+   *  If the "kty" field is "AKP", then the public and private keys MUST
+      be the raw HPKE public and private keys (respectively) for the KEM
+      used by the algorithm.
 
    *  Otherwise, the key MUST be suitable for the KEM used by the
       algorithm.  In case the "kty" parameter is "EC2" or "OKP", this
